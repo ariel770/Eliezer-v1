@@ -10,6 +10,7 @@
   "author": "ariel",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "bootstrap": "^4.5.2",
     "connect-flash": "^0.1.1",
     "connect-mongo": "^3.2.0",
