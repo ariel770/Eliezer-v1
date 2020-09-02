@@ -1,0 +1,24 @@
+<%- include ("../partials/header")%>
+<div class="container">
+    <div class="row">
+        <h1 style="text-align: center;">טופס מעקב </h1>
+        <div style="width:30%; margin: 20px auto;">
+            <a href="/report">הצג הכל</a>
+            <form action="/report" method="POST">
+
+                <div class="form-group">
+                    <input type="number" class="form-control" name="report[tours]" placeholder="מספר סיורים">
+                </div>
+                <div class="form-group">
+                    <input type="number" class="form-control" name="report[meeting]" placeholder="מספר סיורים">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-lg btn-primary btn-block ">שלח טופס</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+<%- include ("../partials/footer")%>
