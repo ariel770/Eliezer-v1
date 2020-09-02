@@ -8,7 +8,7 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(reportRoute);
 // mongoose.connect("mongodb://localhost:27017/eliezer_v1",{useNewUrlParser:true});
-mongoose.connect("mongodb+srv://pinjas:pinjas@cluster0-849zr.mongodb.net/test?retryWrites=true&w=majority",{useNewUrlParser:true,
+mongoose.connect("mongodb+srv://pinjas:pinjas@cluster0.s9va8.mongodb.net/<dbname>?retryWrites=true&w=majority",{useNewUrlParser:true,
 useCreateIndex:true}).then(()=>{
    console.log("CONNECTED TO DB") 
 }).catch((err) => {
