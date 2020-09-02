@@ -3,7 +3,7 @@
     <div class="row">
         <h1 style="text-align: center;">   <%=report.id%>   :  עדכן</h1>
         <div style="width:30%; margin: 20px auto;">
-            <form action="/report/<%=report.id%>?_method=PUT" method="POST">
+            <form action="/<%=report.id%>?_method=PUT" method="POST">
 
                 <div class="form-group">
                     <input type="number" class="form-control" name="report[tours]" value="<%=report.tours%>" placeholder="מספר סיורים">

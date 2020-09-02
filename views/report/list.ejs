@@ -4,10 +4,10 @@
         <h1 style="text-align: center;">טופס מעקב  </h1>
         <div style="text-align: center;">
 
-            <a href="/report/new">טופס</a>
+            <a href="/new">טופס</a>
             <%for(i=0 ;i<report.length;i++){%>
               
-                <p> <strong><a href="/report/<%=report[i].id%>">More Detaills</a></strong>  <%=report[i].tours%> <strong>   <%=report[i].meeting%></strong></p>
+                <p> <strong><a href="/<%=report[i].id%>">More Detaills</a></strong>  <%=report[i].tours%> <strong>   <%=report[i].meeting%></strong></p>
                    
                 <%}%>
                 

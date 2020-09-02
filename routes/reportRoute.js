@@ -3,7 +3,7 @@ var route = express.Router();
 var Reports = require("../models/reports.js");
 
 //SHOW ALL THE REPORT (NEED TO SPECIFIC TO THE AGENT )
-route.get("/report", function (req, res) {
+route.get("/", function (req, res) {
 
     Reports.find({}, function (err, report) {
         if (err) {
@@ -16,7 +16,7 @@ route.get("/report", function (req, res) {
 })
 
 //CREATE NEW REPORT 
-route.get("/report/new", function (req, res) {
+route.get("/new", function (req, res) {
     res.render("report/newReport.ejs")
 
 });
@@ -25,7 +25,7 @@ route.get("/report/new", function (req, res) {
 
 
 //INSERT TO DATABASE AND REDIRECT TO THE REPORT PAGE FORM 
-route.post("/report", function (req, res) {
+route.post("/", function (req, res) {
     Reports.create(req.body.report, function (err, report) {
         if (err) {
             console.log(err)
@@ -36,7 +36,7 @@ route.post("/report", function (req, res) {
 
 })
 
-route.get("/report/:id", function (req, res) {
+route.get("/:id", function (req, res) {
     Reports.findById(req.params.id,function(err,report){
        if(err){
      
@@ -50,7 +50,7 @@ route.get("/report/:id", function (req, res) {
 })
 
 //EDIT SPECIFIC REPORT 
-route.get("/report/:id/edit", function (req, res) {
+route.get("/:id/edit", function (req, res) {
    
     Reports.findById(req.params.id, function (err, report) {
         if (err) {
@@ -64,7 +64,7 @@ route.get("/report/:id/edit", function (req, res) {
 });
 
 //INSERT THE FIX REPORT TO THE DB
-route.post("/report/:id", function (req, res) {
+route.post("/:id", function (req, res) {
     Reports.findByIdAndUpdate(req.params.id, req.body.report, function (err, report) {
         if (err) {
             console.log(err)

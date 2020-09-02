@@ -12,6 +12,7 @@ var methodOverride           = require('method-override');
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(reportRoute);
 app.use(methodOverride("_method"));
+app.use("/report",reportRoute);
 
 mongoose.connect(process.env.DATABASEURL,{useNewUrlParser:true,
 useCreateIndex:true}).then(()=>{
