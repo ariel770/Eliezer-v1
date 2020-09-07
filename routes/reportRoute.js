@@ -1,9 +1,11 @@
 var express = require('express');
 var route = express.Router();
 var Reports = require("../models/reports.js");
+var middlewhere  = require('../middlewhere/index.js');
+const Agents = require('../models/agents.js');
 
 //SHOW ALL THE REPORT (NEED TO SPECIFIC TO THE AGENT )
-route.get("/", function (req, res) {
+route.get("/report",middlewhere.isLoggedIn, function (req, res) {
 
     Reports.find({}, function (err, report) {
         if (err) {
@@ -16,7 +18,7 @@ route.get("/", function (req, res) {
 })
 
 //CREATE NEW REPORT 
-route.get("/new", function (req, res) {
+route.get("/report/new", function (req, res) {
     res.render("report/newReport.ejs")
 
 });
@@ -25,18 +27,32 @@ route.get("/new", function (req, res) {
 
 
 //INSERT TO DATABASE AND REDIRECT TO THE REPORT PAGE FORM 
-route.post("/", function (req, res) {
-    Reports.create(req.body.report, function (err, report) {
-        if (err) {
-            console.log(err)
-        } else {
-            res.redirect("/report/new");
-        }
-    })
+route.post("/report", function (req, res) {
+  
+console.log("req.user"+ req.user);
+
+  Agents.findById(req.user ,function(err,agents){
+      if(err){
+
+      }else{
+        Reports.create(req.body.report, function (err, report) {
+            if (err) {
+                console.log(err)
+            } else {
+                agents.reports.push(report.id);
+                agents.save();
+                res.redirect("/report/new");
+            }
+        })
+      }
+  })
+  
+  
+  
 
 })
 
-route.get("/:id", function (req, res) {
+route.get("/report/:id", function (req, res) {
     Reports.findById(req.params.id,function(err,report){
        if(err){
      
@@ -50,7 +66,7 @@ route.get("/:id", function (req, res) {
 })
 
 //EDIT SPECIFIC REPORT 
-route.get("/:id/edit", function (req, res) {
+route.get("/report/:id/edit", function (req, res) {
    
     Reports.findById(req.params.id, function (err, report) {
         if (err) {
@@ -64,7 +80,8 @@ route.get("/:id/edit", function (req, res) {
 });
 
 //INSERT THE FIX REPORT TO THE DB
-route.post("/:id", function (req, res) {
+route.post("/report/:id", function (req, res) {
+    console.log(req.params.id)
     Reports.findByIdAndUpdate(req.params.id, req.body.report, function (err, report) {
         if (err) {
             console.log(err)

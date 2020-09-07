@@ -1,37 +1,55 @@
 require('dotenv').config();
 var express = require("express");
 var app = express();
-var bodyParser =require('body-parser');
+var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var reportRoute = require('./routes/reportRoute'),
-    agentRoute = require('./routes/agentRoute');
-var methodOverride           = require('method-override');
+var Agents = require('./models/agents.js');
+var reportRoute = require('./routes/reportRoute');
+var agentRoute = require('./routes/agentRoute');
+var indexRoute = require('./routes/indexRoute');
+var methodOverride = require('method-override');
+var //AUTHENTICATE
+    passport = require('passport'),
+    LocalStrategy = require('passport-local'),
+    PassportLocalMongoose = require('passport-local-mongoose');
+
+//passport configurate
+app.use(require('cookie-parser')());
+app.use(require('express-session')({
+    secret: "Mendel chono is the best cuted in the worlld",
+    resave: false,
+    saveUninitialized: false
+}))
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(Agents.authenticate()));
+passport.serializeUser(Agents.serializeUser());
+passport.deserializeUser(Agents.deserializeUser());
 
 
-    app.set("view engine", "ejs");
-app.use(bodyParser.urlencoded({extended:true}));
+
+app.set("view engine", "ejs");
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(indexRoute);
 app.use(reportRoute);
+app.use(agentRoute);
 app.use(methodOverride("_method"));
-app.use("/report",reportRoute);
 
-mongoose.connect(process.env.DATABASEURL,{useNewUrlParser:true,
-useCreateIndex:true}).then(()=>{
-   console.log("CONNECTED TO DB") 
+mongoose.connect(process.env.DATABASEURL, {
+    useNewUrlParser: true,
+    useCreateIndex: true
+}).then(() => {
+    console.log("CONNECTED TO DB")
 }).catch((err) => {
-        console.log("ERROR!!!"+err);
+    console.log("ERROR!!!" + err);
 
 });
+
 
 var server_port = process.env.YOUR_PORT || process.env.PORT || 3000;
 var server_host = process.env.YOUR_HOST || '0.0.0.0';
 
-app.listen(server_port, server_host, function() {
+app.listen(server_port, server_host, function () {
     console.log('Listening on port %d', server_port);
 });
-
-
-
-// app.listen(3000, "localhost", function (req, res) {
-
-//     console.log("server is ready  ... ")
-// })

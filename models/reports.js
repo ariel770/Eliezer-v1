@@ -1,9 +1,12 @@
 var mongoose = require("mongoose");
 var reportsSchema = new mongoose.Schema({
-    // agent: {
-    //     id: mongoose.Schema.Types.ObjectId,
-    //     ref: "Agents"
-    // },
+    agent: {
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Agents"
+        },
+        username: String
+    },
     tours: Number,
     meeting:Number
 })

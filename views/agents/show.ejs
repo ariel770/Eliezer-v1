@@ -1,0 +1,35 @@
+<%- include ("../partials/header")%>
+<div class="container">
+    <div class="row">
+
+        <div style="text-align: center;">
+            <h1>סוכן<%=agent.username%> </h1>
+            <button><a href="/agent">הצג רשימת סוכנים </a></button>
+            <p></p>
+            סטטוס <%=agent.status%>
+            <p></p>
+            <%for(i=0 ;i<statistics.length ; i++ ){%>
+            פגישות נדרשות <%=statistics[i].meetings%>
+            <p></p>
+            ממוצע לסגירת עסקה <%=statistics[i].approachesToClosingDeal%>
+            <p></p>
+            ממוצע קונים ממתענינים <%=statistics[i].interestedWhoeBuying%>
+            <p></p>
+            ממוצע הצגת נכסים לפני קנייה <%=statistics[i].propertiesShowUp%>
+            <p></p>
+            עמלת סוכן <%=statistics[i].commissionFee%>
+            <p></p>
+            ממוצע עמלת עסקה <%=statistics[i].averageTransaction%>
+            <p></p>
+            ממוצע מכירה בבלעדיות <%=statistics[i].salesExclusivity%> 
+            <p></p>
+            ממוצע פגישות בבלעדיות <%=statistics[i].meetingsExclusivity%> 
+            <%}%>
+            
+            <p></p>
+            <button><a href="/agent/<%=agent.id%>/edit">EDIT</a></button>
+        </div>
+    </div>
+</div>
+</div>
+<%- include ("../partials/footer")%>

@@ -1,0 +1,22 @@
+<%- include ("../partials/header")%>
+<div class="container">
+    <div class="row">
+   
+        <div style="text-align: center;">
+            <h1>רשימת סוכנים </h1>
+     
+            <%for(i=0 ;i<agents.length;i++){%>
+              
+                <p> <strong><a href="/agent/<%=agents[i].id%>">הצג סוכן </a></strong>  <%=agents[i].username%> <%=agents[i].status%>  </p>
+                   
+                <%}%>
+                
+
+            <a href="/agent/new">הוסף סוכן </a>
+               
+                
+            </div>
+            </div> 
+        </div>
+    </div>
+    <%- include ("../partials/footer")%>

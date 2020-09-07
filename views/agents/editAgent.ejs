@@ -1,0 +1,64 @@
+<%- include ("../partials/header")%>
+<div class="container">
+    <div class="row">
+        <h1 style="text-align: center;"> <%=agent.username%> : עדכן</h1>
+        <div style="width:30%; margin: 20px auto;">
+            <form action="/agent/<%=agent.id%>?_method=PUT" method="POST">
+                     
+                <div class="form-group">
+                    <input type="text" class="form-control" name="agent[username]" value="<%=agent.username%>">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="agent[status]" value="<%=agent.status%>">
+                </div>
+                <%for(i=0 ; i<statistics.length ;i++){%>
+                <div class="form-group">
+                    <input type="number" class="form-control" name="meetings" value="<%=statistics[i].meetings %>">
+                </div>
+                <div class="form-group">
+                    <input type="number" class="form-control" name="approachesToClosingDeal"
+                        value="<%=statistics[i].meetings %>" placeholder="ממוצע פגישות לסגירת עסקה ">
+                </div>
+
+                <div class="form-group">
+                    <input type="number" class="form-control" name="interestedWhoeBuying"
+                        value="<%=statistics[i].interestedWhoeBuying %>" placeholder="מתענינים שקונים">
+                </div>
+
+                <div class="form-group">
+                    <input type="number" class="form-control" name="propertiesShowUp"
+                        value="<%=statistics[i].propertiesShowUp %>" placeholder="ממוצע הצעות ">
+                </div>
+
+                <div class="form-group">
+                    <input type="number" class="form-control" name="commissionFee"
+                        value="<%=statistics[i].commissionFee %>" placeholder="עמלת סוכן ">
+                </div>
+                <div class="form-group">
+                    <input type="number" class="form-control" name="averageTransaction"
+                        value="<%=statistics[i].averageTransaction %>" placeholder="ממוצע  עסקה  ">
+                </div>
+                <div class="form-group">
+                    <input type="number" class="form-control" name="salesExclusivity"
+                        value="<%=statistics[i].salesExclusivity %>" placeholder="מכירות בבלעדיות  ">
+                </div>
+                <div class="form-group">
+                    <input type="number" class="form-control" name="meetingsExclusivity"
+                        value="<%=statistics[i].meetingsExclusivity %>" placeholder="פגישות בבלעדיות  ">
+                </div>
+                <%}%>
+    
+    <div class="form-group">
+        <button class="btn btn-lg btn-primary btn-block ">הוסף איש קשר </button>
+</div>
+
+
+
+
+
+</form>
+
+        </div>
+    </div>
+</div>
+<%- include ("../partials/footer")%>

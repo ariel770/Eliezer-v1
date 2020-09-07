@@ -1,7 +1,27 @@
-var mongoose =require('mongoose');
- 
+var mongoose = require('mongoose');
+var PassportLocalMongoose = require('passport-local-mongoose');
 var agentsSchema = new mongoose.Schema({
-    name : String
-})
+    contact: {
+        phone: Number,
+        email: String,
+    },
+    reports: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Report"
+        }
+    ],
+    statistic: {
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Statistics"
+        },
+    },
+    username: String,
+    status: String,
+    passport: String,
+    UserType: String,
 
-module.exports = mongoose.model("Agents",agentsSchema)
+});
+agentsSchema.plugin(PassportLocalMongoose)
+module.exports = mongoose.model("Agents", agentsSchema);
