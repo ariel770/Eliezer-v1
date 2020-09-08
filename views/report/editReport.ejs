@@ -1,9 +1,9 @@
 <%- include ("../partials/header")%>
 <div class="container">
     <div class="row">
-        <h1 style="text-align: center;">   <%=report.id%>   :  עדכן</h1>
+        <h1 style="text-align: center;">   <%=agents.id%>   :  עדכן</h1>
         <div style="width:30%; margin: 20px auto;">
-            <form action="/report/<%=report.id%>" method="POST">
+            <form action="/agent/<%=agents.id%>/report/<%=report.id%>" method="POST">
 
                 <div class="form-group">
                     <input type="number" class="form-control" name="report[tours]" value="<%=report.tours%>" placeholder="מספר סיורים">

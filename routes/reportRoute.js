@@ -1,25 +1,31 @@
 var express = require('express');
 var route = express.Router();
 var Reports = require("../models/reports.js");
-var middlewhere  = require('../middlewhere/index.js');
 const Agents = require('../models/agents.js');
+const middlewhereObj = require('../middlewhere/index.js');
 
-//SHOW ALL THE REPORT (NEED TO SPECIFIC TO THE AGENT )
-route.get("/report",middlewhere.isLoggedIn, function (req, res) {
+route.get("/",middlewhereObj.isLoggedIn, function (req, res) {
 
     Reports.find({}, function (err, report) {
         if (err) {
             console.log(err)
         } else {
-            res.render("report/list.ejs", { report: report });
+            Agents.findById(req.user,function(err,agents){
+                res.render("report/list.ejs", { report: report,agents:agents});
+            })
         }
     })
 
 })
 
 //CREATE NEW REPORT 
-route.get("/report/new", function (req, res) {
-    res.render("report/newReport.ejs")
+route.get("/new", function (req, res) { 
+
+    Agents.findById(req.user,function(err,agents){
+      
+
+        res.render("report/newReport.ejs", {agents:agents})
+    })
 
 });
 
@@ -27,10 +33,7 @@ route.get("/report/new", function (req, res) {
 
 
 //INSERT TO DATABASE AND REDIRECT TO THE REPORT PAGE FORM 
-route.post("/report", function (req, res) {
-  
-console.log("req.user"+ req.user);
-
+route.post("/", function (req, res) {
   Agents.findById(req.user ,function(err,agents){
       if(err){
 
@@ -41,7 +44,7 @@ console.log("req.user"+ req.user);
             } else {
                 agents.reports.push(report.id);
                 agents.save();
-                res.redirect("/report/new");
+                res.redirect("/agent/"+agents.id+"/report/new");
             }
         })
       }
@@ -52,41 +55,51 @@ console.log("req.user"+ req.user);
 
 })
 
-route.get("/report/:id", function (req, res) {
-    Reports.findById(req.params.id,function(err,report){
-       if(err){
-     
-         console.log(err)
+route.get("/:report_id", function (req, res) {
+
+
+    Agents.findById(req.user,function(err ,agents){
+        if(err){
         }else{
- 
-        res.render("report/show.ejs",{report:report})
-       }
+            Reports.findById(req.params.report_id,function(err,report){
+                if(err){
+                    console.log(err)
+                }else{
+                res.render("report/show.ejs",{report:report ,agents:agents});
+               }
+            })
+        }
     })
-    
 })
 
 //EDIT SPECIFIC REPORT 
-route.get("/report/:id/edit", function (req, res) {
-   
-    Reports.findById(req.params.id, function (err, report) {
-        if (err) {
-            console.log(err)
-        } else {
-            res.render("report/editReport.ejs", { report: report })
-        }
-    })
+route.get("/:report_id/edit", function (req, res) {
+   Agents.findById(req.user,function(err,agents){
+       if(err){
+           console.log(err)
+       }else{
+           Reports.findById(req.params.report_id, function (err, report) {
+               if (err) {
+                   console.log(err)
+               } else {
+                   res.render("report/editReport.ejs", {agents:agents ,report: report })
+               }
+           })
+
+       }
+   })
 
 
 });
 
 //INSERT THE FIX REPORT TO THE DB
-route.post("/report/:id", function (req, res) {
+route.post("/:id", function (req, res) {
     console.log(req.params.id)
     Reports.findByIdAndUpdate(req.params.id, req.body.report, function (err, report) {
         if (err) {
             console.log(err)
         } else {
-            res.redirect("/report/"+req.params.id)
+            res.redirect("/agent/"+req.user+"/report/"+req.params.id)
         }
     })
 

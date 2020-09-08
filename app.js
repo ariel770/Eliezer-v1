@@ -32,8 +32,8 @@ passport.deserializeUser(Agents.deserializeUser());
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(indexRoute);
-app.use(reportRoute);
-app.use(agentRoute);
+app.use("/agent",agentRoute);
+app.use("/agent/:id/report",reportRoute);
 app.use(methodOverride("_method"));
 
 mongoose.connect(process.env.DATABASEURL, {
@@ -45,7 +45,13 @@ mongoose.connect(process.env.DATABASEURL, {
     console.log("ERROR!!!" + err);
 
 });
-
+app.use(function(req,res,next){
+    res.locals.currentUser = req.user; 
+    // res.locals.campGround =req.campground;
+    // res.locals.error = req.flash('error'); 
+    // res.locals.success = req.flash('success'); 
+    next();
+})
 
 var server_port = process.env.YOUR_PORT || process.env.PORT || 3000;
 var server_host = process.env.YOUR_HOST || '0.0.0.0';

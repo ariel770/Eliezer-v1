@@ -3,13 +3,11 @@
     <div class="row">
      
         <div style="text-align: center;">
-                 <h1>Report From   <%=report.id%>  </h1>
-           
-            
-                 <button><a href="/report">SHOW ALL LIST</a></button>
+                 <h1>Report From   <%=agents.username%>  </h1>
+                 <button><a href="/agent/<%=agents.id%>/report">SHOW ALL LIST</a></button>
                 <strong> פגישות   <%=report.tours%>   </strong>
                 <strong>  סיורים  <%=report.meeting%></strong>
-            <button><a href="/report/<%=report.id%>/edit">EDIT</a></button>
+            <button><a href="/agent/<%=agents.id%>/report/<%=report.id%>/edit">EDIT</a></button>
                 
             </div>
             </div> 

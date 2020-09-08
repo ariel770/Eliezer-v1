@@ -14,35 +14,27 @@ route.post("/register", function (req, res) {
     Agents.register(new Agents(newuser), req.body.password, function (err, agent) {
         console.log("newAgent :  " + agent);
         if (err) {
-         
             return res.render("indexview/register.ejs")
         }
-
         Agents.authenticate("local")(req, res, function () {
-
-            res.redirect("/report");
-
+            res.redirect("/agent");
         })
-
     })
-
-
 })
 
-
-
-route.get("/login", function (req, res) {
+route.get("/", function (req, res) {
 
     res.render("indexview/login.ejs");
 
 })
 
-route.post("/login", passport.authenticate("local", {
-    successRedirect: "/report",
-    failureRedirect: "/login"
+route.post("/", passport.authenticate("local", {
+    successRedirect: "/agent",
+    failureRedirect: "/"
 }), function (req, res) {
 
 })
+
 // //AUTH ROUTE  == LOGIN
 // route.get("/login/:id", function (req, res) {
 
@@ -66,13 +58,7 @@ route.post("/login", passport.authenticate("local", {
 
 route.get("/logout", function (req, res) {
     req.logout();
-    res.redirect("/login");
+    res.redirect("/");
 })
 
-function isLoggedIn(req,res,next){
-    if(req.isAuthenticated()){
-        return next();
-    }
-   res.redirect("/login");
-}
 module.exports = route;
