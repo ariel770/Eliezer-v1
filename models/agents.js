@@ -11,12 +11,12 @@ var agentsSchema = new mongoose.Schema({
             ref: "Report"
         }
     ],
-    statistic: {
-        id: {
+    statistic:[ 
+        {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Statistics"
         },
-    },
+    ],
     username: String,
     status: String,
     passport: String,

@@ -4,10 +4,13 @@
 
         <div style="text-align: center;">
             <h1>סוכן<%=agent.username%> </h1>
-            <button><a href="/agent">הצג רשימת סוכנים </a></button>
-            
+            <button><a href="/agent">חזור לרשימת סוכנים </a></button>
+            <%=console.log(report.id)%>
+
+            <%=console.log(report)%>
             <p></p>
-            <a href="/agent/<%=agent.id%>/report"> הצג דוחות  </a>
+          <%=console.log(agent.id)%>
+            <a href="/agent/<%=agent.id%>/report">  הצג דוחות  </a>
             <p></p>
             סטטוס <%=agent.status%>
             <p></p>

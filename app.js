@@ -33,7 +33,7 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(indexRoute);
 app.use("/agent",agentRoute);
-app.use("/agent/:id/report",reportRoute);
+app.use(reportRoute);
 app.use(methodOverride("_method"));
 
 mongoose.connect(process.env.DATABASEURL, {

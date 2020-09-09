@@ -3,11 +3,10 @@ var route = express.Router();
 var Reports = require("../models/reports.js");
 var Statistic = require("../models/statistic.js");
 var Agents = require("../models/agents.js");
-const statistic = require('../models/statistic.js');
 const middlewhereObj = require('../middlewhere/index.js');
 
 //SHOW ALL THE AGENTS (NEED TO SPECIFIC TO THE AGENT )
-route.get("/",middlewhereObj.isLoggedIn, function (req, res) {
+route.get("/", middlewhereObj.isLoggedIn, function (req, res) {
     Agents.find({}, function (err, agents) {
         if (err) {
             console.log(err)
@@ -28,6 +27,8 @@ route.get("/new", function (req, res) {
 
 //INSERT TO DATABASE AND REDIRECT TO THE AGENT PAGE FORM 
 route.post("/", function (req, res) {
+
+
     Agents.create(req.body.agent, function (err, agent) {
         if (err) {
             console.log(err)
@@ -45,8 +46,10 @@ route.post("/", function (req, res) {
                 if (err) {
                     console.log(err);
                 } else {
+                    agent.statistic.push(statistic.id)
+                    agent.save();
+                    res.redirect("/agent")
 
-                    res.redirect("/agent");
                 }
             })
         }
@@ -63,7 +66,13 @@ route.get("/:id", function (req, res) {
                 if (err) {
                     console.log(err)
                 } else {
-                    res.render("agents/show.ejs", { agent: agent, statistics: statistics })
+                    Reports.find({ "agent.id": req.params.id }, function (err, report) {
+                        if (err) {
+                            res.redirect("back")
+                        } else {
+                            res.render("agents/show.ejs", { agent: agent, statistics: statistics ,report:report})
+                        }
+                    })
                 }
             })
         }
@@ -111,7 +120,7 @@ route.post("/:id", function (req, res) {
                 salesExclusivity: req.body.salesExclusivity,
                 meetingsExclusivity: req.body.meetingsExclusivity
             }
-            Statistic.findOneAndUpdate({"agent.id": req.params.id }, statistic, function (err, statistics) {
+            Statistic.findOneAndUpdate({ "agent.id": req.params.id }, statistic, function (err, statistics) {
                 if (err) {
                     console.log(err)
                 } else {
