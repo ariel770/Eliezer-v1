@@ -1,6 +1,7 @@
 var express = require('express');
 var route = express.Router();
 var Agents = require("../models/agents.js");
+var Statistic = require("../models/agents.js");
 var passport = require('passport');
 
 //AUTH ROUTE  == REGISER
@@ -17,7 +18,26 @@ route.post("/register", function (req, res) {
             return res.render("indexview/register.ejs")
         }
         Agents.authenticate("local")(req, res, function () {
-            res.redirect("/agent");
+            var statistic = {
+                agent: {
+                    username: agent.username,
+                    id: agent.id,
+                },
+                meetings: req.body.meetings, approachesToClosingDeal: req.body.approachesToClosingDeal, propertiesShowUp: req.body.propertiesShowUp,
+                commissionFee: req.body.commissionFee, averageTransaction: req.body.averageTransaction, salesExclusivity: req.body.salesExclusivity, meetingsExclusivity: req.bodymeetingsExclusivity
+
+            }
+            Statistic.create(statistic, function (err, statistic) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    agent.statistic.push(statistic.id)
+                    agent.save();
+                    res.redirect("/agent")
+
+                }
+            })
+            // res.redirect("/agent");
         })
     })
 })

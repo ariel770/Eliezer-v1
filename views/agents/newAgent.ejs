@@ -4,13 +4,66 @@
         <h1 style="text-align: center;">טופס מעקב </h1>
         <div style="width:30%; margin: 20px auto;">
             <a href="/agent">הצג הכל</a>
-            <form action="/agent" method="POST">
+            <!-- <form action="/agent" method="POST">
 
                 <div class="form-group">
                     <input type="text" class="form-control" name="agent[username]" placeholder="שם פרטי ">
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control" name="agent[status]" placeholder="סטטוס ">
+                </div>
+                <div class="form-group">
+                    <input type="number" class="form-control" name="meetings" placeholder="מספר פגישות">
+                </div>
+                <div class="form-group">
+                    <input type="number" class="form-control" name="approachesToClosingDeal"
+                        placeholder="ממוצע פגישות לסגירת עסקה ">
+                </div>
+
+                <div class="form-group">
+                    <input type="number" class="form-control" name="interestedWhoeBuying" placeholder="מתענינים שקונים">
+                </div>
+
+                <div class="form-group">
+                    <input type="number" class="form-control" name="propertiesShowUp" placeholder="ממוצע הצעות ">
+                </div>
+
+                <div class="form-group">
+                    <input type="number" class="form-control" name="commissionFee" placeholder="עמלת סוכן ">
+                </div>
+                <div class="form-group">
+                    <input type="number" class="form-control" name="averageTransaction" placeholder="ממוצע  עסקה  ">
+                </div>
+                <div class="form-group">
+                    <input type="number" class="form-control" name="salesExclusivity" placeholder="מכירות בבלעדיות  ">
+                </div>
+                <div class="form-group">
+                    <input type="number" class="form-control" name="meetingsExclusivity"
+                        placeholder="פגישות בבלעדיות  ">
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-lg btn-primary btn-block ">הוסף איש קשר </button>
+                </div>
+
+            </form> -->
+
+            <form action="/register" method="POST">
+
+                <div class="form-group">
+                    <input type="text" class="form-control" name="username" placeholder="שם פרטי ">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="password" placeholder="קוד ">
+                </div>
+                <!-- <div class="form-group">
+                    <input type="text" class="form-control" name="agent[status]" placeholder="סטטוס ">
+                </div> -->
+                <div class="form-group">
+                    <input type="text" class="form-control" name="contact[phone]" placeholder="פלאפון ">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="contact[email]" placeholder="מייל">
                 </div>
                 <div class="form-group">
                     <input type="number" class="form-control" name="meetings" placeholder="מספר פגישות">

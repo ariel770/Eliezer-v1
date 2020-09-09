@@ -80,10 +80,8 @@ route.post("/agent/:id/report", function (req, res) {
 
 
 })
-
+//SHOW SPECIFIC REPORTS TO A SPECIFIC AGENT
 route.get("/agent/:id/report/:report_id", function (req, res) {
-
-
     Agents.findById(req.params.id, function (err, agents) {
         if (err) {
         } else {
@@ -120,8 +118,8 @@ route.get("/agent/:id/report/:report_id/edit", function (req, res) {
 
 //INSERT THE FIX REPORT TO THE DB
 route.post("/agent/:id/report/:report_id", function (req, res) {
-    console.log(req.params.id)
-    Reports.findByIdAndUpdate(req.params.id, req.body.report, function (err, report) {
+
+    Reports.findByIdAndUpdate(req.params.report_id,req.body.report, function (err, report) {
         if (err) {
             console.log(err)
         } else {
