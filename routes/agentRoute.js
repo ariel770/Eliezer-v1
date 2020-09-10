@@ -27,6 +27,7 @@ route.get("/new", function (req, res) {
 
 //INSERT TO DATABASE AND REDIRECT TO THE AGENT PAGE FORM 
 route.post("/", function (req, res) {
+    console.log("post / ")
 
     Agents.create(req.body.agent, function (err, agent) {
         if (err) {

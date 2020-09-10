@@ -5,7 +5,7 @@ var agentsSchema = new mongoose.Schema({
         phone: Number,
         email: String,
     },
-    reports: [
+    reports:[
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Report"
