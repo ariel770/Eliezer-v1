@@ -1,16 +1,84 @@
 <%- include ("../partials/header")%>
+<% var date = new Date(report.date)%>
+<%var month  =  date.getMonth()+1%>
+<%  var formatDate =  date.getDate()+" / "+month+" / "+ date.getFullYear() %>
+
 <div class="container">
     <div class="row">
-     
+        
         <div style="text-align: center;">
-                 <h1>Report From   <%=agents.username%>  </h1>
-                 <button><a href="/agent/<%=agents.id%>/report">SHOW ALL LIST</a></button>
-                <strong> פגישות   <%=report.tours%>   </strong>
-                <strong>  סיורים  <%=report.meeting%></strong>
-            <button><a href="/agent/<%=agents.id%>/report/<%=report.id%>/edit">EDIT</a></button>
+            <h1>   <%=agents.username%>  </h1>
+            <h1> פרטי דיווח לתאריך <%=formatDate%> </h1>
+        
+            <table class="table table-bordered table-dark  ">
+
+                
+                <thead>
+                    <tr>
+                        <th scope="col">הצעות מחיר</th>
+                        <th scope="col">שיחות ללקוחות קודמים</th>
+                        <th scope="col">שתופי פעולה</th>
+                        <th scope="col">סיורי שוכרים </th>
+                        <th scope="col">עסקאות בפועל </th>
+                        <th scope="col">משא ומתן בתהליך</th>
+                        <th scope="col">למידה והתחדשות</th>
+                        <th scope="col">הדבקת פליירים</th>
+                        <th scope="col">פגישות אצל בעלי נכסים</th>
+           
+                        <th scope="col">#</th>
+                    </tr>
+                </thead>
+                <tbody>
+    
+                    <tr>
+                      <td><Strong><%=report.pricesOffer%></Strong></td>
+                      <td><Strong><%=report.conversationsWithPreviousClients%></Strong></td>
+                      <td><Strong><%=report.collaborations%></Strong></td>
+                      <td><Strong><%=report.rentalTours%></Strong></td>
+                      <td><Strong><%=report.actualTransactions%></Strong></td>
+                      <td><Strong><%=report.negotiationsInTheProcess%></Strong></td>
+                      <td><Strong><%=report.learninGandRenewal%></Strong></td>
+                      <td><Strong><%=report.stickerFlyers%></Strong></td>
+                      <td><Strong><%=report.meeting%></Strong></td>
+                      <td><Strong>בפועל</Strong></td>
+                      <td><Strong>#</Strong></td>
+           
+                    </tr>
+                    <thead>
+                        <tr>
+                            <th scope="col">הצעות מחיר</th>
+                            <th scope="col">שיחות ללקוחות קודמים</th>
+                            <th scope="col">שתופי פעולה</th>
+                            <th scope="col">סיורי שוכרים </th>
+                            <th scope="col">עסקאות בפועל </th>
+                            <th scope="col">משא ומתן בתהליך</th>
+                            <th scope="col">למידה והתחדשות</th>
+                            <th scope="col">הדבקת פליירים</th>
+                            <th scope="col">פגישות אצל בעלי נכסים</th>
+                            <th scope="col">#</th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td><Strong></Strong></td>
+                        <td><Strong></Strong></td>
+                        <td><Strong></Strong></td>
+                        <td><Strong></Strong></td>
+                        <td><Strong></Strong></td>
+                        <td><Strong></Strong></td>
+                        <td><Strong></Strong></td>
+                        <td><Strong></Strong></td>
+                        <td><Strong></Strong></td>
+                        <td><Strong>נדרש</Strong></td>
+                        <td><Strong>#</Strong></td>
+             
+                      </tr>
+                  </tbody>
+                </table>
+
+                         <button><a href="/agent/<%=agents.id%>/report">הצג רשימת דוח"ות</a></button>
+     
+            <button><a href="/agent/<%=agents.id%>/report/<%=report.id%>/edit">ערוך דו"ח </a></button>
                 
             </div>
             </div> 
         </div>
-    </div>
-    <%- include ("../partials/footer")%>

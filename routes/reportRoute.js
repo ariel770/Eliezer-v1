@@ -4,7 +4,7 @@ var Reports = require("../models/reports.js");
 const Agents = require('../models/agents.js');
 const middlewhereObj = require('../middlewhere/index.js');
 
-route.get("/agent/:id/report",  function (req, res) {
+route.get("/agent/:id/report",middlewhereObj.isLoggedIn,  function (req, res) {
     
     console.log(req.params.id)
     Agents.findById(req.params.id, function (err, agents) {
@@ -37,7 +37,7 @@ route.get("/agent/:id/report",  function (req, res) {
 })
 
 //CREATE NEW REPORT 
-route.get("/agent/:id/report/new", function (req, res) {
+route.get("/agent/:id/report/new",middlewhereObj.isLoggedIn, function (req, res) {
 
     Agents.findById(req.params.id, function (err, agents) {
 
@@ -51,7 +51,7 @@ route.get("/agent/:id/report/new", function (req, res) {
 
 
 //INSERT TO DATABASE AND REDIRECT TO THE REPORT PAGE FORM 
-route.post("/agent/:id/report", function (req, res) {
+route.post("/agent/:id/report",middlewhereObj.isLoggedIn, function (req, res) {
     Agents.findById(req.params.id, function (err, agents) {
         if (err) {
 
@@ -61,8 +61,16 @@ route.post("/agent/:id/report", function (req, res) {
                     id: agents.id,
                     username: agents.username
                 },
-                tours: req.body.tours,
-                meeting: req.body.meeting
+                date : new Date(),
+                meeting: req.body.meeting,
+                stickerFlyers:req.body.stickerFlyers,
+                learninGandRenewal:req.body.learninGandRenewal,
+                negotiationsInTheProcess:req.body.negotiationsInTheProcess,
+                actualTransactions:req.body.actualTransactions,
+                rentalTours:req.body.rentalTours,
+                collaborations:req.body.collaborations,
+                conversationsWithPreviousClients:req.body.conversationsWithPreviousClients,
+                pricesOffer:req.body.pricesOffer,
             }
             Reports.create(newReport, function (err, report) {
                 if (err) {
@@ -81,7 +89,7 @@ route.post("/agent/:id/report", function (req, res) {
 
 })
 //SHOW SPECIFIC REPORTS TO A SPECIFIC AGENT
-route.get("/agent/:id/report/:report_id", function (req, res) {
+route.get("/agent/:id/report/:report_id",middlewhereObj.isLoggedIn, function (req, res) {
     Agents.findById(req.params.id, function (err, agents) {
         if (err) {
         } else {
@@ -97,11 +105,12 @@ route.get("/agent/:id/report/:report_id", function (req, res) {
 })
 
 //EDIT SPECIFIC REPORT 
-route.get("/agent/:id/report/:report_id/edit", function (req, res) {
+route.get("/agent/:id/report/:report_id/edit",function (req, res) {
     Agents.findById(req.params.id, function (err, agents) {
         if (err) {
             console.log(err)
         } else {
+
             Reports.findById(req.params.report_id, function (err, report) {
                 if (err) {
                     console.log(err)
@@ -118,8 +127,10 @@ route.get("/agent/:id/report/:report_id/edit", function (req, res) {
 
 //INSERT THE FIX REPORT TO THE DB
 route.post("/agent/:id/report/:report_id", function (req, res) {
+    
 
     Reports.findByIdAndUpdate(req.params.report_id,req.body.report, function (err, report) {
+        console.log(report);
         if (err) {
             console.log(err)
         } else {

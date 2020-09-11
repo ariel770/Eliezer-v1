@@ -25,37 +25,35 @@ route.get("/new", function (req, res) {
 
 
 
-//INSERT TO DATABASE AND REDIRECT TO THE AGENT PAGE FORM 
-route.post("/", function (req, res) {
-    console.log("post / ")
+// //INSERT TO DATABASE AND REDIRECT TO THE AGENT PAGE FORM 
+// route.post("/", function (req, res) {
+//     Agents.create(req.body.agent, function (err, agent) {
+//         if (err) {
+//             console.log(err)
+//         } else {
+//             var statistic = {
+//                 agent: {
+//                     username: agent.username,
+//                     id: agent.id,
+//                 },
+//                 meetings: req.body.meetings, approachesToClosingDeal: req.body.approachesToClosingDeal, propertiesShowUp: req.body.propertiesShowUp,
+//                 commissionFee: req.body.commissionFee, averageTransaction: req.body.averageTransaction, salesExclusivity: req.body.salesExclusivity, meetingsExclusivity: req.bodymeetingsExclusivity
 
-    Agents.create(req.body.agent, function (err, agent) {
-        if (err) {
-            console.log(err)
-        } else {
-            var statistic = {
-                agent: {
-                    username: agent.username,
-                    id: agent.id,
-                },
-                meetings: req.body.meetings, approachesToClosingDeal: req.body.approachesToClosingDeal, propertiesShowUp: req.body.propertiesShowUp,
-                commissionFee: req.body.commissionFee, averageTransaction: req.body.averageTransaction, salesExclusivity: req.body.salesExclusivity, meetingsExclusivity: req.bodymeetingsExclusivity
+//             }
+//             Statistic.create(statistic, function (err, statistic) {
+//                 if (err) {
+//                     console.log(err);
+//                 } else {
+//                     agent.statistic.push(statistic.id)
+//                     agent.save();
+//                     res.redirect("/agent")
 
-            }
-            Statistic.create(statistic, function (err, statistic) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    agent.statistic.push(statistic.id)
-                    agent.save();
-                    res.redirect("/agent")
+//                 }
+//             })
+//         }
+//     })
 
-                }
-            })
-        }
-    })
-
-})
+// })
 
 route.get("/:id", function (req, res) {
     Agents.findById(req.params.id, function (err, agent) {

@@ -1,18 +1,58 @@
 <%- include ("../partials/header")%>
 <div class="container">
     <div class="row">
-        <h1 style="text-align: center;">   <%=agents.id%>   :  עדכן</h1>
         <div style="width:30%; margin: 20px auto;">
+            <h1 style="text-align: center;"> <%=agents.username%> : עדכן</h1>
             <form action="/agent/<%=agents.id%>/report/<%=report.id%>" method="POST">
+                <label for="meeting">פגישות אצל בעלי נכסים</label>
+                <div class="form-group">
+                    <input type="number" class="form-control" id="meeting" name="report[meeting]"
+                        value="<%=report.meeting%>">
+                </div>
+                <label for="stickerFlyers">הדבקת פליירים </label>
+                <div class="form-group">
+                    <input type="number" class="form-control" id="stickerFlyers" name="report[stickerFlyers]"
+                        value="<%=report.stickerFlyers%>">
+                </div>
+                <label for="learninGandRenewal">למידה והתחדשות </label>
+                <div class="form-group">
+                    <input type="number" class="form-control" id="learninGandRenewal" name="report[learninGandRenewal]"
+                        value="<%=report.learninGandRenewal%>">
+                </div>
+                <label for="negotiationsInTheProcess">משא ומתן בתהליך </label>
+                <div class="form-group">
+                    <input type="number" class="form-control" id="negotiationsInTheProcess"
+                        name="report[negotiationsInTheProcess]" value="<%=report.negotiationsInTheProcess%>">
+                </div>
+                <label for="actualTransactions">עסקאות בפועל </label>
+                <div class="form-group">
+                    <input type="number" class="form-control" id="actualTransactions" name="report[actualTransactions]"
+                        value="<%=report.actualTransactions%>">
+                </div>
+                <label for="rentalTours">סיורי שוכרים </label>
+                <div class="form-group">
+                    <input type="number" class="form-control" id="rentalTours" name="report[rentalTours]"
+                        value="<%=report.rentalTours%>">
+                </div>
+                <label for="collaborations">שתופי פעולה </label>
 
+                <!-- <div class="form-group">
+                    <input type="number" class="form-control" id="collaborations" name="report[collaborations]"
+                        value="<%=report.collaborations%>">
+                </div> -->
+
+                <label for="conversationsWithPreviousClients">שיחות ללקוחות קודמים </label>
                 <div class="form-group">
-                    <input type="number" class="form-control" name="report[tours]" value="<%=report.tours%>" placeholder="מספר סיורים">
+                    <input type="number" class="form-control" id="conversationsWithPreviousClients"
+                        name="report[collaborations]" value="<%=report.conversationsWithPreviousClients%>">
+                </div>
+                <label for="pricesOffer">הצעות מחיר </label>
+                <div class="form-group">
+                    <input type="number" class="form-control" id="pricesOffer" name="report[pricesOffer]"
+                        value="<%=report.pricesOffer%>">
                 </div>
                 <div class="form-group">
-                    <input type="number" class="form-control" name="report[meeting]"  value="<%=report.meeting%>" placeholder="מספר סיורים">
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-lg btn-primary btn-block ">שלח טופס</button>
+                    <button class="btn btn-lg btn-primary btn-block ">עדכן דו"ח</button>
                 </div>
 
             </form>

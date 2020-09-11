@@ -6,12 +6,41 @@
         <div style="width:30%; margin: 20px auto;">
             <a href="/agent/<%=agents.id%>/report">הצג הכל</a>
             <form action="/agent/<%=agents.id%>/report" method="POST">
-
+            <label for="meeting">פגישות אצל בעלי נכסים</label>
+            <div class="form-group">
+                <input type="number" class="form-control" id="meeting" name="meeting" >   
+            </div>
+            <label for="stickerFlyers">הדבקת פליירים </label>
+            <div class="form-group">
+                <input type="number" class="form-control" id="stickerFlyers" name="stickerFlyers" >    
+            </div>
+            <label for="learninGandRenewal">למידה והתחדשות </label>
+            <div class="form-group">
+                <input type="number" class="form-control" id="learninGandRenewal" name="learninGandRenewal" >
+            </div>
+            <label for="negotiationsInTheProcess">משא ומתן בתהליך </label>
+            <div class="form-group">
+                <input type="number" class="form-control" id="negotiationsInTheProcess"  name="negotiationsInTheProcess" >
+            </div>
+            <label for="actualTransactions">עסקאות בפועל </label>
+            <div class="form-group">
+                <input type="number" class="form-control" id="actualTransactions" name="actualTransactions" >
+            </div>
+            <label for="rentalTours">סיורי שוכרים </label>
+            <div class="form-group">
+                <input type="number" class="form-control" id="rentalTours" name="rentalTours" >
+            </div>
+            <label for="collaborations">שתופי פעולה  </label>
+            <div class="form-group">
+                <input type="number" class="form-control" id="collaborations" name="collaborations" >
+            </div>
+            <label for="conversationsWithPreviousClients">שיחות ללקוחות קודמים   </label>
                 <div class="form-group">
-                    <input type="number" class="form-control" name="tours" placeholder="מספר סיורים">
+                    <input type="number" class="form-control" id="conversationsWithPreviousClients" name="conversationsWithPreviousClients" >
                 </div>
+            <label for="pricesOffer">הצעות מחיר   </label>
                 <div class="form-group">
-                    <input type="number" class="form-control" name="meeting" placeholder="מספר סיורים">
+                    <input type="number" class="form-control" id="pricesOffer" name="pricesOffer" >
                 </div>
                 <div class="form-group">
                     <button class="btn btn-lg btn-primary btn-block ">שלח טופס</button>

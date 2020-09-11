@@ -1,22 +1,62 @@
 <%- include ("../partials/header")%>
 <div class="container">
+
     <div class="row">
-        <h1 style="text-align: center;">טופס מעקב   <strong>   <%=agents.username%></strong></h1>
+        <h1 style="text-align: center;">טופס מעקב <strong> <%=agents.username%></strong></h1>
         <div style="text-align: center;">
             <a href="/agent/<%=agents.id%>/report/new">טופס</a>
-            <%for(i=0 ;i<report.length;i++){%>
-            <%for(b=0 ;b<agents.reports.length;b++){%>
-               
-              
-                <%if(report[i].id == agents.reports[b]){%>
-               
-                <p> <strong><a href="/agent/<%=agents.id%>/report/<%=report[i].id%>">More Detaills</a></strong>  <%=report[i].tours%> <strong>   <%=report[i].meeting%></strong>   </p>
-                           
-                <%}%>
-                <%}%>
-                <%}%>
-                
-            </div>
+
+            <table class="table table-bordered table-dark  ">
+
+
+                <thead>
+                    <tr>
+                        <th scope="col">הצעות מחיר</th>
+                        <th scope="col">שיחות ללקוחות קודמים</th>
+                        <th scope="col">שתופי פעולה</th>
+                        <th scope="col">סיורי שוכרים </th>
+                        <th scope="col">עסקאות בפועל </th>
+                        <th scope="col">משא ומתן בתהליך</th>
+                        <th scope="col">למידה והתחדשות</th>
+                        <th scope="col">הדבקת פליירים</th>
+                        <th scope="col">פגישות אצל בעלי נכסים</th>
+                        <th scope="col">תאריך</th>
+                        <th scope="col">#</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+
+
+                    <%for(i=0 ;i<report.length;i++){%>
+                    <%for(b=0 ;b<agents.reports.length;b++){%>
+
+
+                    <%if(report[i].id == agents.reports[b]){%>
+                    <% var date = new Date(report[i].date)%>
+                    <%var month  =  date.getMonth()+1%>
+                    <%  var formatDate =  date.getDate()+" / "+month+" / "+ date.getFullYear() %>
+                    <tr>
+                        <td><Strong><%=report[i].pricesOffer%></Strong></td>
+                        <td><Strong><%=report[i].conversationsWithPreviousClients%></Strong></td>
+                        <td><Strong><%=report[i].collaborations%></Strong></td>
+                        <td><Strong><%=report[i].rentalTours%></Strong></td>
+                        <td><Strong><%=report[i].actualTransactions%></Strong></td>
+                        <td><Strong><%=report[i].negotiationsInTheProcess%></Strong></td>
+                        <td><Strong><%=report[i].learninGandRenewal%></Strong></td>
+                        <td><Strong><%=report[i].stickerFlyers%></Strong></td>
+                        <td><Strong><%=report[i].meeting%></Strong></td>
+                        <td><Strong><%=formatDate%></Strong></td>
+                        <td><Strong><a href="/agent/<%=agents.id%>/report/<%=report[i].id%>">פרטים נוספים</a></Strong>
+                        </td>
+                    </tr>
+                    <%}%>
+                    <%}%>
+                    <%}%>
+                </tbody>
+              </table>
+                    
+                </div>
             </div> 
         </div>
     </div>
