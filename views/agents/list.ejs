@@ -1,22 +1,40 @@
 <%- include ("../partials/header")%>
 <div class="container">
     <div class="row">
-   
-        <div style="text-align: center;">
-            <h1>רשימת סוכנים </h1>
-     
-            <%for(i=0 ;i<agents.length;i++){%>
-              
-                <p> <strong><a href="/agent/<%=agents[i].id%>">הצג סוכן </a></strong>  <%=agents[i].username%> <%=agents[i].status%>  </p>
-                   
-                <%}%>
-                
 
-            <a href="/agent/new">הוסף סוכן </a>
-               
-                
-            </div>
-            </div> 
+        <div style="text-align: center;">
+
+            <h1>רשימת סוכנים </h1>
+
+            <button> <a href="/agent/new">הוסף סוכן </a></button>
+
+
+            <table class="table table-bordered table-dark  ">
+
+                <thead>
+                    <tr>
+                        <th scope="col">סטטוס</th>
+                        <th scope="col">שם</th>
+                        <th scope="col">#</th>
+                    </tr>
+                </thead>
+                <%for(i=0 ;i<agents.length;i++){%>
+                <tbody>
+
+                    <tr>
+
+                        <td><Strong><%=agents[i].status%> </Strong></td>
+                        <td><Strong><%=agents[i].username%> </Strong></td>
+                        <td> <a href="/agent/<%=agents[i].id%>"> הצג פרטים </a></td>
+                    </tr>
+                </tbody>
+                <%}%>
+            </table>
+
+
+
         </div>
     </div>
-    <%- include ("../partials/footer")%>
+</div>
+</div>
+<%- include ("../partials/footer")%>

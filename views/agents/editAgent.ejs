@@ -2,48 +2,67 @@
 <div class="container">
     <div class="row">
         <h1 style="text-align: center;"> <%=agent.username%> : עדכן</h1>
-        <div style="width:30%; margin: 20px auto;">
+        <div style="width:30%; margin: 20px auto;text-align: center;">
             <form action="/agent/<%=agent.id%>?_method=PUT" method="POST">
-                     
+                <label for="username"> שם </label>
+
                 <div class="form-group">
-                    <input type="text" class="form-control" name="agent[username]" value="<%=agent.username%>">
+                    <input type="text" id="username" class="form-control" name="agent[username]"
+                        value="<%=agent.username%>">
                 </div>
+                <label for="status"> סטטוס</label>
                 <div class="form-group">
-                    <input type="text" class="form-control" name="agent[status]" value="<%=agent.status%>">
+                    <input type="text" id="status" class="form-control" name="agent[status]" value="<%=agent.status%>">
                 </div>
                 <%for(i=0 ; i<statistics.length ;i++){%>
-                <div class="form-group">
-                    <input type="number" class="form-control" name="meetings" value="<%=statistics[i].meetings %>">
-                </div>
-                <div class="form-group">
-                    <input type="number" class="form-control" name="approachesToClosingDeal"
-                        value="<%=statistics[i].meetings %>" placeholder="ממוצע פגישות לסגירת עסקה ">
-                </div>
+
+                <label for="mettings"> פגישות נדרשות </label>
+
 
                 <div class="form-group">
-                    <input type="number" class="form-control" name="interestedWhoeBuying"
+                    <input type="number" id="mettings" class="form-control" name="meetings"
+                        value="<%=statistics[i].meetings %>">
+                </div>
+                <label for="approachesToClosingDeal"> ממוצע פגישות לסגירת עסקה </label>
+                
+                <div class="form-group">
+                    <input type="number" id="approachesToClosingDeal" class="form-control"
+                    name="approachesToClosingDeal" value="<%=statistics[i].approachesToClosingDeal %>">
+                </div>
+                <label for="interestedWhoeBuying"> מספר מתענינים הקונים</label>
+
+                <div class="form-group">
+                    <input type="number" id="interestedWhoeBuying" class="form-control" name="interestedWhoeBuying"
                         value="<%=statistics[i].interestedWhoeBuying %>" placeholder="מתענינים שקונים">
                 </div>
+                <label for="propertiesShowUp">הצגת נכסים </label>
 
                 <div class="form-group">
-                    <input type="number" class="form-control" name="propertiesShowUp"
+                    <input type="number" id="propertiesShowUp" class="form-control" name="propertiesShowUp"
                         value="<%=statistics[i].propertiesShowUp %>" placeholder="ממוצע הצעות ">
                 </div>
+                <label for="commissionFee">עמלת סוכן  </label>
 
                 <div class="form-group">
-                    <input type="number" class="form-control" name="commissionFee"
+                    <input type="number" id="commissionFee" class="form-control" name="commissionFee"
                         value="<%=statistics[i].commissionFee %>" placeholder="עמלת סוכן ">
                 </div>
+                <label for="averageTransaction">ממוצע עסקה  </label>
+
                 <div class="form-group">
-                    <input type="number" class="form-control" name="averageTransaction"
+                    <input type="number" id="averageTransaction" class="form-control" name="averageTransaction"
                         value="<%=statistics[i].averageTransaction %>" placeholder="ממוצע  עסקה  ">
                 </div>
+                <label for="averageTransaction">מכירות בבלעדיות  </label>
+
                 <div class="form-group">
-                    <input type="number" class="form-control" name="salesExclusivity"
+                    <input type="number" id="averageTransaction" class="form-control" name="salesExclusivity"
                         value="<%=statistics[i].salesExclusivity %>" placeholder="מכירות בבלעדיות  ">
                 </div>
+                <label for="meetingsExclusivity">פגישות בבלעדיות   </label>
+
                 <div class="form-group">
-                    <input type="number" class="form-control" name="meetingsExclusivity"
+                    <input type="number" id="meetingsExclusivity" class="form-control" name="meetingsExclusivity"
                         value="<%=statistics[i].meetingsExclusivity %>" placeholder="פגישות בבלעדיות  ">
                 </div>
                 <%}%>

@@ -1,51 +1,61 @@
 <%- include ("../partials/header")%>
 <div class="container">
     <div class="row">
-        <h1 style="text-align: center;">טופס מעקב </h1>
-        <div style="width:30%; margin: 20px auto;">
-            <a href="/agent">הצג הכל</a>
-            <form action="/register" method="POST">
+        <div style="width:30%; margin: 20px auto; text-align: center">
+            <h1 style="text-align: center;">הוספת סוכן  </h1>
+            <button> <a href="/agent">הצג סוכנים</a></button>
+            <form action="/register" autocomplete="off" method="POST">
+                <label for="username"> שם </label>
                 <div class="form-group">
-                    <input type="text" class="form-control" name="username" placeholder="שם פרטי ">
+                    <input type="text" id="username" class="form-control" name="username" >
                 </div>
+                <label for="password"> סיסמא</label>
                 <div class="form-group">
-                    <input type="password" class="form-control" name="password" placeholder="קוד ">
+                    <input type="password"  id="password" class="form-control" name="password">
                 </div>
-     
+                
+                <label for="phone"> פלאפון</label>
                 <div class="form-group">
-                    <input type="text" class="form-control" name="contact[phone]" placeholder="פלאפון ">
+                    <input type="text" id="phone" class="form-control" name="contact[phone]">
                 </div>
+                <label for="mail"> מייל</label>
                 <div class="form-group">
-                    <input type="text" class="form-control" name="contact[email]" placeholder="מייל">
+                    <input type="text"  id="mail" class="form-control" name="contact[email]" >
                 </div>
+                <label for="mettings"> פגישות נדרשות </label>
                 <div class="form-group">
-                    <input type="number" class="form-control" name="meetings" placeholder="מספר פגישות">
+                    <input type="number" id="mettings" class="form-control" name="meetings" >
                 </div>
-                <div class="form-group">
-                    <input type="number" class="form-control" name="approachesToClosingDeal"
-                        placeholder="ממוצע פגישות לסגירת עסקה ">
+                <label for="approachesToClosingDeal"> ממוצע פגישות לסגירת עסקה </label>
+                <div class="form-group"> 
+                    <input type="number" class="form-control" id="approachesToClosingDeal" name="approachesToClosingDeal">
                 </div>
-
+                
+                <label for="interestedWhoeBuying"> מספר מתענינים הקונים</label>
                 <div class="form-group">
-                    <input type="number" class="form-control" name="interestedWhoeBuying" placeholder="מתענינים שקונים">
+                    <input type="number" id="interestedWhoeBuying" class="form-control" name="interestedWhoeBuying">
                 </div>
-
+                
+                <label for="propertiesShowUp">הצגת נכסים </label>
                 <div class="form-group">
-                    <input type="number" class="form-control" name="propertiesShowUp" placeholder="ממוצע הצעות ">
+                    <input type="number" class="form-control" id="propertiesShowUp" name="propertiesShowUp">
                 </div>
-
+                
+                <label for="commissionFee">עמלת סוכן  </label>
                 <div class="form-group">
-                    <input type="number" class="form-control" name="commissionFee" placeholder="עמלת סוכן ">
+                    <input type="number" class="form-control" id="commissionFee" name="commissionFee">
                 </div>
+                <label for="averageTransaction">ממוצע עסקה  </label>
                 <div class="form-group">
-                    <input type="number" class="form-control" name="averageTransaction" placeholder="ממוצע  עסקה  ">
+                    <input type="number" id="averageTransaction" class="form-control" name="averageTransaction" >
                 </div>
+                <label for="averageTransaction">מכירות בבלעדיות  </label>
                 <div class="form-group">
-                    <input type="number" class="form-control" name="salesExclusivity" placeholder="מכירות בבלעדיות  ">
+                    <input type="number" class="form-control" name="averageTransaction" >
                 </div>
+                <label for="meetingsExclusivity">פגישות בבלעדיות   </label>
                 <div class="form-group">
-                    <input type="number" class="form-control" name="meetingsExclusivity"
-                        placeholder="פגישות בבלעדיות  ">
+                    <input type="number" id="meetingsExclusivity" class="form-control" name="meetingsExclusivity">
                 </div>
 
                 <div class="form-group">

@@ -1,39 +1,46 @@
 <%- include ("../partials/header")%>
 <div class="container">
     <div class="row">
-
         <div style="text-align: center;">
-            <h1>סוכן<%=agent.username%> </h1>
+            <h1>  <strong><%=agent.username%></strong></h1>
+            <h1 style="text-align: center; text-decoration: underline;"> יעדים לסוכן  </h1>
             <button><a href="/agent">חזור לרשימת סוכנים </a></button>
-            <%=console.log(report.id)%>
+            <button><a href="/agent/<%=agent.id%>/report"> הצג דוחות </a></button>
+            <button><a href="/agent/<%=agent.id%>/edit">ערוך יעדים </a></button>
+            <table class="table table-bordered table-dark  ">
+                <p> <%=agent.status%> <strong> : סטטוס </strong>    </p>
+                
 
-            <%=console.log(report)%>
-            <p></p>
-          <%=console.log(agent.id)%>
-            <a href="/agent/<%=agent.id%>/report">  הצג דוחות  </a>
-            <p></p>
-            סטטוס <%=agent.status%>
-            <p></p>
-            <%for(i=0 ;i<statistics.length ; i++ ){%>
-            פגישות נדרשות <%=statistics[i].meetings%>
-            <p></p>
-            ממוצע לסגירת עסקה <%=statistics[i].approachesToClosingDeal%>
-            <p></p>
-            ממוצע קונים ממתענינים <%=statistics[i].interestedWhoeBuying%>
-            <p></p>
-            ממוצע הצגת נכסים לפני קנייה <%=statistics[i].propertiesShowUp%>
-            <p></p>
-            עמלת סוכן <%=statistics[i].commissionFee%>
-            <p></p>
-            ממוצע עמלת עסקה <%=statistics[i].averageTransaction%>
-            <p></p>
-            ממוצע מכירה בבלעדיות <%=statistics[i].salesExclusivity%> 
-            <p></p>
-            ממוצע פגישות בבלעדיות <%=statistics[i].meetingsExclusivity%> 
-            <%}%>
-            
-            <p></p>
-            <button><a href="/agent/<%=agent.id%>/edit">EDIT</a></button>
+                <thead>
+                    <tr>
+                        <th scope="col">פגישות נדרשות</th>
+                        <th scope="col">ממוצע לסגירת עסקה </th>
+                        <th scope="col">סך קונים ממתענינים </th>
+                        <th scope="col">סך הצגת נכסים לפני קניה</th>
+                        <th scope="col">עמלת סוכן </th>
+                        <th scope="col">עמלת עסקה </th>
+                        <th scope="col">מכירות בבלעדיות </th>
+                        <th scope="col">פגישות בבלעדיות </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <%for(i=0 ;i<statistics.length ; i++ ){%>
+                        <td><strong><%=statistics[i].meetings%></strong></td>
+                        <td><strong><%=statistics[i].approachesToClosingDeal%></strong></td>
+                        <td><strong><%=statistics[i].interestedWhoeBuying%></strong></td>
+                        <td><strong><%=statistics[i].propertiesShowUp%></strong></td>
+                        <td><strong><%=statistics[i].commissionFee%></strong></td>
+                        <td><strong><%=statistics[i].averageTransaction%></strong></td>
+                        <td><strong><%=statistics[i].salesExclusivity%></strong></td>
+                        <td><strong><%=statistics[i].meetingsExclusivity%></strong></td>
+                        <%}%>
+                </tr>
+           </tbody>  
+           </table>
+                    
+
         </div>
     </div>
 </div>
