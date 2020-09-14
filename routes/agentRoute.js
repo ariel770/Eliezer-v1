@@ -5,6 +5,17 @@ var Statistic = require("../models/statistic.js");
 var Agents = require("../models/agents.js");
 const middlewhereObj = require('../middlewhere/index.js');
 
+//DELETE AGENT
+route.post("/:id",function(req,res){
+    Agents.findByIdAndRemove(req.params.id,function(err,agent){
+ 
+        if(err){
+            res.redirect("/agent");
+        }else{
+            res.redirect("/agent");
+        }
+    })
+})
 //SHOW ALL THE AGENTS (NEED TO SPECIFIC TO THE AGENT )
 route.get("/", middlewhereObj.isLoggedIn, function (req, res) {
     Agents.find({}, function (err, agents) {
@@ -130,5 +141,5 @@ route.post("/:id", function (req, res) {
     })
 
 });
-
+//DELETE AGENT
 module.exports = route;
