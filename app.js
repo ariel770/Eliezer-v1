@@ -9,10 +9,11 @@ var agentRoute = require('./routes/agentRoute');
 var indexRoute = require('./routes/indexRoute');
 var methodOverride = require('method-override');
 var //AUTHENTICATE
-    passport = require('passport'),
-    LocalStrategy = require('passport-local'),
-    PassportLocalMongoose = require('passport-local-mongoose');
+passport = require('passport'),
+LocalStrategy = require('passport-local'),
+PassportLocalMongoose = require('passport-local-mongoose');
 
+app.use(methodOverride("_method"));
 //passport configurate
 app.use(require('cookie-parser')());
 app.use(require('express-session')({
@@ -34,7 +35,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(indexRoute);
 app.use("/agent",agentRoute);
 app.use(reportRoute);
-app.use(methodOverride("_method"));
 
 mongoose.connect(process.env.DATABASEURL, {
     useNewUrlParser: true,

@@ -5,20 +5,19 @@ var Statistic = require("../models/statistic.js");
 var Agents = require("../models/agents.js");
 const middlewhereObj = require('../middlewhere/index.js');
 
-//DELETE AGENT
-route.post("/:id",function(req,res){
-    Agents.findByIdAndRemove(req.params.id,function(err,agent){
- 
-        if(err){
-            res.redirect("/agent");
-        }else{
-            res.redirect("/agent");
-        }
-    })
-})
+var currentStatistic = {
+     newmeeeting: String
+}
+var suMeetings
+
+
+
+
 //SHOW ALL THE AGENTS (NEED TO SPECIFIC TO THE AGENT )
 route.get("/", middlewhereObj.isLoggedIn, function (req, res) {
     Agents.find({}, function (err, agents) {
+        console.log("create :");
+
         if (err) {
             console.log(err)
         } else {
@@ -65,7 +64,7 @@ route.get("/new", function (req, res) {
 //     })
 
 // })
-
+//SHOW A SPECIFIC AGENT (WITH A  STATISTIC)
 route.get("/:id", function (req, res) {
     Agents.findById(req.params.id, function (err, agent) {
         if (err) {
@@ -75,11 +74,29 @@ route.get("/:id", function (req, res) {
                 if (err) {
                     console.log(err)
                 } else {
+                    console.log("=====1====")
+                    console.log(statistics)
+                    console.log("=====2====")
                     Reports.find({ "agent.id": req.params.id }, function (err, report) {
                         if (err) {
                             res.redirect("back")
                         } else {
-                            res.render("agents/show.ejs", { agent: agent, statistics: statistics ,report:report})
+                            console.log("=====1====")
+                            console.log(report)
+                            console.log("=====2====")
+                            for (i = 0; i < report.length; i++) {
+                                for (b = 0; b < statistics.length; b++) {
+
+                                    if (statistics[b].meetings = report[i].meeting) {
+                                       suMeetings = statistics[b].meetings - report[i].meeting
+                                        currentStatistic.meetings = suMeetings;
+                                    } else {
+                                        console.log("IS inCORRECT")
+
+                                    }
+                                }
+                            }
+                            res.render("agents/show.ejs", { agent: agent, statistics: statistics, report: report, currentStatistic: currentStatistic })
                         }
                     })
                 }
@@ -110,8 +127,10 @@ route.get("/:id/edit", function (req, res) {
 });
 
 //INSERT THE FIX REPORT TO THE DB
-route.post("/:id", function (req, res) {
+route.put("/:id", function (req, res) {
     Agents.findByIdAndUpdate(req.params.id, req.body.agent, function (err, agent) {
+        console.log("update :");
+
         if (err) {
             console.log(err)
         } else {
@@ -142,4 +161,15 @@ route.post("/:id", function (req, res) {
 
 });
 //DELETE AGENT
+route.delete("/:id", function (req, res) {
+    Agents.findByIdAndRemove(req.params.id, function (err, agent) {
+        console.log("delete :");
+
+        if (err) {
+            res.redirect("/agent");
+        } else {
+            res.redirect("/agent");
+        }
+    })
+})
 module.exports = route;

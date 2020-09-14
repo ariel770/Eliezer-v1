@@ -36,8 +36,13 @@ route.post("/register", function (req, res) {
                 meetingsExclusivity: req.bodymeetingsExclusivity
 
             } 
+            console.log("statisitics : ")
             console.log(statistic)
+            console.log("  =====  ")
             Statistics.create(statistic, function (err, newstatistic) {
+                console.log("statisitics : ")
+                console.log(newstatistic)
+                console.log("  =====  ")
                 console.log(newstatistic)
                 if (err) {
                     console.log(err);

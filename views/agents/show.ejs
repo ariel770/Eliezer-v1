@@ -7,9 +7,10 @@
             <button><a href="/agent">חזור לרשימת סוכנים </a></button>
             <button><a href="/agent/<%=agent.id%>/report"> הצג דוחות </a></button>
             <button><a href="/agent/<%=agent.id%>/edit">ערוך יעדים </a></button>
-            <form action="/agent/<%=agent.id%>" method="POST">
-
+            <form action="/agent/<%=agent.id%>?_method=DELETE" method="POST">
+                
                 <button>מחק סוכן</button>
+
 
             </form>
 
@@ -41,8 +42,12 @@
                         <td><strong><%=statistics[i].averageTransaction%></strong></td>
                         <td><strong><%=statistics[i].salesExclusivity%></strong></td>
                         <td><strong><%=statistics[i].meetingsExclusivity%></strong></td>
-                        <%}%>
-                </tr>
+                    </tr>
+                    <tr>
+                        <td><%=currentStatistic.meetings%></td>
+                        <%=console.log(currentStatistic.meetings)%>
+                    </tr>
+                    <%}%>
            </tbody>  
            </table>
                     
