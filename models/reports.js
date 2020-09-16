@@ -8,7 +8,7 @@ var reportsSchema = new mongoose.Schema({
         username: String
     },
     date:Date,
-    meeting: Number,
+   meeting: Number,
     stickerFlyers: Number,
     learninGandRenewal: Number,
     negotiationsInTheProcess: Number,

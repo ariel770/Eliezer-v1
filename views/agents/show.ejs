@@ -2,22 +2,21 @@
 <div class="container">
     <div class="row">
         <div style="text-align: center;">
-            <h1>  <strong><%=agent.username%></strong></h1>
-            <h1 style="text-align: center; text-decoration: underline;"> יעדים לסוכן  </h1>
+            <h1> <strong><%=agent.username%></strong></h1>
+            <h1 style="text-align: center; text-decoration: underline;"> יעדים לסוכן </h1>
             <button><a href="/agent">חזור לרשימת סוכנים </a></button>
             <button><a href="/agent/<%=agent.id%>/report"> הצג דוחות </a></button>
-            <button><a href="/agent/<%=agent.id%>/edit">ערוך יעדים </a></button>
+            <button><a href="/agent/<%=agent.id%>/edit">ערוך שם   </a></button>
+            <button><a href="/agent/<%=agent.id%>/setgoals">קבע יעד </a></button>
             <form action="/agent/<%=agent.id%>?_method=DELETE" method="POST">
                 
                 <button>מחק סוכן</button>
-
-
+                
+                
             </form>
 
             <table class="table table-bordered table-dark  ">
-                <p> <%=agent.status%> <strong> : סטטוס </strong>    </p>
-                
-
+                <p> <%=agent.status%> <strong> : סטטוס </strong> </p>
                 <thead>
                     <tr>
                         <th scope="col">פגישות נדרשות</th>
@@ -28,12 +27,11 @@
                         <th scope="col">עמלת עסקה </th>
                         <th scope="col">מכירות בבלעדיות </th>
                         <th scope="col">פגישות בבלעדיות </th>
-
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <%for(i=0 ;i<statistics.length ; i++ ){%>
+                        <%for(i=0;i<statistics.length ; i++ ){%>
                         <td><strong><%=statistics[i].meetings%></strong></td>
                         <td><strong><%=statistics[i].approachesToClosingDeal%></strong></td>
                         <td><strong><%=statistics[i].interestedWhoeBuying%></strong></td>
@@ -42,10 +40,6 @@
                         <td><strong><%=statistics[i].averageTransaction%></strong></td>
                         <td><strong><%=statistics[i].salesExclusivity%></strong></td>
                         <td><strong><%=statistics[i].meetingsExclusivity%></strong></td>
-                    </tr>
-                    <tr>
-                        <td><%=currentStatistic.meetings%></td>
-                        <%=console.log(currentStatistic.meetings)%>
                     </tr>
                     <%}%>
            </tbody>  

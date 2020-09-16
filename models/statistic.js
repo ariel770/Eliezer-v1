@@ -9,7 +9,7 @@ var statisticsSchema = new mongoose.Schema({
         },
         username: String
     },
-    meetings: Number,
+   meetings: Number,
     approachesToClosingDeal: Number,
     interestedWhoeBuying: Number,
     propertiesShowUp: Number,
