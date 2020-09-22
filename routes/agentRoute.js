@@ -9,13 +9,10 @@ var currentStatistic = {};
 
 
 
-
 //SHOW ALL THE AGENTS (NEED TO SPECIFIC TO THE AGENT )
-route.get("/", middlewhereObj.isLoggedIn, function (req, res) {
+route.get("/", middlewhereObj.isMannager, function (req, res) {
     Agents.find({}, function (err, agents) {
-        console.log("create :");
-
-        if (err) {
+             if (err) {
             console.log(err)
         } else {
             res.render("agents/list.ejs", { agents: agents });
@@ -25,44 +22,37 @@ route.get("/", middlewhereObj.isLoggedIn, function (req, res) {
 })
 
 //CREATE NEW AGENT 
-route.get("/new", function (req, res) {
+route.get("/new",middlewhereObj.isMannager, function (req, res) {
     res.render("agents/newAgent.ejs")
     //REDIRECT TO REGISTER PAGE (IN INDEX )
 });
 
-
-
 //SHOW A SPECIFIC AGENT (WITH A  STATISTIC)
-route.get("/:id", function (req, res) {
+route.get("/:id",middlewhereObj.isMannager, function (req, res) {
     Agents.findById(req.params.id, function (err, agent) {
         if (err) {
-
         } else {
             Statistic.find({ "agent.id": req.params.id }, function (err, statistics) {
                 if (err) {
                     console.log(err)
                 } else {
-
                     Reports.find({ "agent.id": req.params.id }, function (err, report) {
                         if (err) {
                             res.redirect("back")
                         } else {
+                            res.render("agents/show.ejs", { agent: agent, statistics: statistics,report:""})
                             //======================================================= 
                             //ADD THE FUNCTIONS THAT CHECK IF IS OK OR NOT , RASHI !!
                             //======================================================= 
-                            for (i = 0; i < report.length; i++) {
-                                for (b = 0; b < statistics.length; b++) {
-
-                                    if (statistics[b].meetings = report[i].meeting) {
-                                        //    suMeetings = statistics[b].meetings - report[i].meeting
-                                        //     currentStatistic.meetings = suMeetings;
-                                    } else {
-                                        // console.log("IS inCORRECT")
-
-                                    }
-                                }
-                            }
-                            res.render("agents/show.ejs", { agent: agent, statistics: statistics, report: report, currentStatistic: currentStatistic })
+                            // for (i = 0; i < report.length; i++) {
+                            //     for (b = 0; b < statistics.length; b++) {
+                            //         if (statistics[b].meetings = report[i].meeting) {
+                            //             //    suMeetings = statistics[b].meetings - report[i].meeting
+                            //             //     currentStatistic.meetings = suMeetings;
+                            //         } else {
+                            //         }
+                            //     }
+                            // }
                         }
                     })
                 }
@@ -79,14 +69,9 @@ route.get("/:id/edit", function (req, res) {
         if (err) {
             console.log(err)
         } else {
-            // Statistic.find({ "agent.id": req.params.id }, function (err, statistics) {
-            //     if (err) {
-            //         console.log(err)
-            //     } else {
-            // res.render("agents/editAgent.ejs", { agent: agent, statistics: statistics })
+         
             res.render("agents/editAgent.ejs", { agent: agent })
-            //     }
-            // })
+         
         }
     })
 
@@ -96,12 +81,9 @@ route.get("/:id/edit", function (req, res) {
 //INSERT THE FIX AGENTS TO THE DB
 route.put("/:id", function (req, res) {
     Agents.findByIdAndUpdate(req.params.id, req.body.agent, function (err, agent) {
-        console.log("update :");
-
         if (err) {
             console.log(err)
         } else {
-
             res.redirect("/agent/" + req.params.id)
         }
     })
@@ -125,24 +107,31 @@ route.get("/:id/setgoals", function (req, res) {
 })
 
 //ADD THE STATISTICS TO DB
-
 route.post("/:id/setgoals", function (req, res) {
+    var avg;
+    var qtyOfMeeting;
 
     Agents.findById(req.params.id, function (err, agents) {
         if (err) {
             res.redirect("back");
         } else {
             //=============================
-            //NEED TO ADD THE FUNCTIONS !!! 
+            //NEED TO FIX THE FUNCTIONS !!! 
             //=============================
             var goal = req.body.money;
-            var avg = 20000;
-            var qtyOfMeeting = goal / avg;
+            if (req.body.status == "comersial") {
+                avg = 20000;
+                qtyOfMeeting = goal / avg;
 
+            } else {
+                avg = 30000
+                qtyOfMeeting = goal / avg;
+            }
             var statistic = {
                 agent: {
                     username: agents.username,
                     id: agents.id,
+                    status: req.body.status
                 },
                 meetings: qtyOfMeeting,
                 approachesToClosingDeal: qtyOfMeeting,
@@ -157,8 +146,21 @@ route.post("/:id/setgoals", function (req, res) {
                 if (err) {
                     console.log(err)
                 } else {
+                    console.log(statistics)
+                    console.log(agents)
+                    Agents.findByIdAndUpdate(req.params.id, statistic.agent, function (err, agents) {
+                        if (err) {
+                            res.redirect("back")
+                        } else {
+                            console.log(agents)
+                            agents.statistic.push(statistics.id)
+                            console.log(agents)
 
-                    res.redirect("/agent/" + req.params.id)
+                            res.redirect("/agent/" + req.params.id)
+
+                        }
+                    })
+
                 }
             })
 
@@ -169,12 +171,46 @@ route.post("/:id/setgoals", function (req, res) {
 //DELETE AGENT
 route.delete("/:id", function (req, res) {
     Agents.findByIdAndRemove(req.params.id, function (err, agent) {
-        console.log("delete :");
 
         if (err) {
             res.redirect("/agent");
         } else {
             res.redirect("/agent");
+        }
+    })
+})
+
+//GET REPORTS BETWEEN 2 DAYS
+route.post("/getListReports/:id", function (req, res) {
+
+    Reports.find({ "agent.id": req.params.id }, function (err, reports) {
+
+        if (err) {
+            res.redirect("back")
+        } else {
+
+
+            var date1 = new Date(req.body.from);
+            var date2 = new Date(req.body.to);
+            Reports.find({ "agent.id": req.params.id, date: { $gt: date1, $lt: date2 } }, function (err, report) {
+                if (err) {
+
+                } else {
+                    Agents.findById(req.params.id, function (err, agent) {
+                        if (err) {
+
+                        } else {
+                            Statistic.find({ "agent.id": req.params.id }, function (err, statistics) {
+                                if (err) {
+
+                                } else {
+                                    res.render("agents/show.ejs", { agent: agent, statistics: statistics, report: report })
+                                }
+                            })
+                        }
+                    })
+                }
+            })
         }
     })
 })

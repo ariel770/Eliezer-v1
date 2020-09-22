@@ -8,12 +8,16 @@ middlewhereObj.isLoggedIn = function (req,res,next){
    res.redirect("/");
 }
 middlewhereObj.isMannager = function (req,res,next){
-//    console.log(req.user.username)
-//    console.log(process.env.MANAGER)
-//     if(req.isAuthenticated() && req.user.username == process.env.MANAGER){
-//     }
-    return next();
-//    res.redirect("/agent/"+req.user+"/report");
+
+   if(req.isAuthenticated() && req.user.username == process.env.MANAGER){
+       console.log("is manager")
+       return next();
+    }else if(req.isAuthenticated()){
+        console.log("is user")
+    res.redirect("/agent/"+req.user.id+"/report");
+}else{
+    res.redirect("/");
+} 
 }
 
 module.exports = middlewhereObj;

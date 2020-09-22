@@ -7,9 +7,10 @@ var statisticsSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "Agents"
         },
-        username: String
+        username: String,
+        status:String
     },
-   meetings: Number,
+    meetings: Number,
     approachesToClosingDeal: Number,
     interestedWhoeBuying: Number,
     propertiesShowUp: Number,

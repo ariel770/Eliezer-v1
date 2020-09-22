@@ -4,7 +4,7 @@ var Reports = require("../models/reports.js");
 const Agents = require('../models/agents.js');
 const middlewhereObj = require('../middlewhere/index.js');
 
-route.get("/agent/:id/report",middlewhereObj.isLoggedIn,  function (req, res) {
+route.get("/agent/:id/report",  function (req, res) {
     
     console.log(req.params.id)
     Agents.findById(req.params.id, function (err, agents) {

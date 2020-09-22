@@ -29,6 +29,11 @@ passport.serializeUser(Agents.serializeUser());
 passport.deserializeUser(Agents.deserializeUser());
 
 
+app.use(function(req,res,next){
+    res.locals.currentUser = req.user; 
+    res.locals.report = ""; 
+    next();
+})
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -45,13 +50,6 @@ mongoose.connect(process.env.DATABASEURL, {
     console.log("ERROR!!!" + err);
 
 });
-app.use(function(req,res,next){
-    res.locals.currentUser = req.user; 
-    // res.locals.campGround =req.campground;
-    // res.locals.error = req.flash('error'); 
-    // res.locals.success = req.flash('success'); 
-    next();
-})
 
 var server_port = process.env.YOUR_PORT || process.env.PORT || 3000;
 var server_host = process.env.YOUR_HOST || '0.0.0.0';
