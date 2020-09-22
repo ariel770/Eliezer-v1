@@ -4,7 +4,7 @@ var Reports = require("../models/reports.js");
 const Agents = require('../models/agents.js');
 const middlewhereObj = require('../middlewhere/index.js');
 
-route.get("/agent/:id/report",  function (req, res) {
+route.get("/agent/:id/report", middlewhereObj.isLoggedIn, function (req, res) {
     
     console.log(req.params.id)
     Agents.findById(req.params.id, function (err, agents) {
@@ -22,22 +22,10 @@ route.get("/agent/:id/report",  function (req, res) {
         }
     })
 
-
-
-    // Reports.find({}, function (err, report) {
-    //     if (err) {
-    //         console.log(err)
-    //     } else {
-    //         Agents.findById(req.user, function (err, agents) {
-    //             res.render("report/list.ejs", { report: report, agents: agents });
-    //         })
-    //     }
-    // })
-
 })
 
 //CREATE NEW REPORT 
-route.get("/agent/:id/report/new",middlewhereObj.isLoggedIn, function (req, res) {
+route.get("/agent/:id/report/new",middlewhereObj.isUser, function (req, res) {
 
     Agents.findById(req.params.id, function (err, agents) {
 
@@ -51,7 +39,7 @@ route.get("/agent/:id/report/new",middlewhereObj.isLoggedIn, function (req, res)
 
 
 //INSERT TO DATABASE AND REDIRECT TO THE REPORT PAGE FORM 
-route.post("/agent/:id/report",middlewhereObj.isLoggedIn, function (req, res) {
+route.post("/agent/:id/report",middlewhereObj.isUser, function (req, res) {
     Agents.findById(req.params.id, function (err, agents) {
         if (err) {
 
@@ -105,7 +93,7 @@ route.get("/agent/:id/report/:report_id",middlewhereObj.isLoggedIn, function (re
 })
 
 //EDIT SPECIFIC REPORT 
-route.get("/agent/:id/report/:report_id/edit",function (req, res) {
+route.get("/agent/:id/report/:report_id/edit",middlewhereObj.isMannager,function (req, res) {
     Agents.findById(req.params.id, function (err, agents) {
         if (err) {
             console.log(err)
@@ -126,7 +114,7 @@ route.get("/agent/:id/report/:report_id/edit",function (req, res) {
 });
 
 //INSERT THE FIX REPORT TO THE DB
-route.post("/agent/:id/report/:report_id", function (req, res) {
+route.post("/agent/:id/report/:report_id",middlewhereObj.isMannager, function (req, res) {
     
 
     Reports.findByIdAndUpdate(req.params.report_id,req.body.report, function (err, report) {

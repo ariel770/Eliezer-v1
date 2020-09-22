@@ -119,6 +119,12 @@ route.post("/:id/setgoals", function (req, res) {
             //NEED TO FIX THE FUNCTIONS !!! 
             //=============================
             var goal = req.body.money;
+            console.log(req.body.status)
+            console.log(agents)
+            agents.status =  req.body.status;
+            agents.save();
+            console.log(agents)
+
             if (req.body.status == "comersial") {
                 avg = 20000;
                 qtyOfMeeting = goal / avg;
@@ -146,15 +152,12 @@ route.post("/:id/setgoals", function (req, res) {
                 if (err) {
                     console.log(err)
                 } else {
-                    console.log(statistics)
-                    console.log(agents)
                     Agents.findByIdAndUpdate(req.params.id, statistic.agent, function (err, agents) {
                         if (err) {
                             res.redirect("back")
                         } else {
-                            console.log(agents)
+                           
                             agents.statistic.push(statistics.id)
-                            console.log(agents)
 
                             res.redirect("/agent/" + req.params.id)
 
@@ -168,28 +171,17 @@ route.post("/:id/setgoals", function (req, res) {
     })
 })
 
-//DELETE AGENT
-route.delete("/:id", function (req, res) {
-    Agents.findByIdAndRemove(req.params.id, function (err, agent) {
-
-        if (err) {
-            res.redirect("/agent");
-        } else {
-            res.redirect("/agent");
-        }
-    })
-})
 
 //GET REPORTS BETWEEN 2 DAYS
 route.post("/getListReports/:id", function (req, res) {
-
+    
     Reports.find({ "agent.id": req.params.id }, function (err, reports) {
-
+        
         if (err) {
             res.redirect("back")
         } else {
-
-
+            
+            
             var date1 = new Date(req.body.from);
             var date2 = new Date(req.body.to);
             Reports.find({ "agent.id": req.params.id, date: { $gt: date1, $lt: date2 } }, function (err, report) {
@@ -211,6 +203,17 @@ route.post("/getListReports/:id", function (req, res) {
                     })
                 }
             })
+        }
+    })
+})
+//DELETE AGENT
+route.delete("/:id", function (req, res) {
+    Agents.findByIdAndRemove(req.params.id, function (err, agent) {
+
+        if (err) {
+            res.redirect("/agent");
+        } else {
+            res.redirect("/agent");
         }
     })
 })

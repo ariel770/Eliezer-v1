@@ -2,7 +2,16 @@ var middlewhereObj = {};
 
 middlewhereObj.isLoggedIn = function (req, res, next) {
 
+    if (req.isAuthenticated()) {
+        console.log("just authenticate .... ")
+        return next();
+    }
+    res.redirect("/");
+}
+middlewhereObj.isUser = function (req, res, next) {
+    
     if (req.isAuthenticated() && req.user.username !== process.env.MANAGER) {
+        console.log("is user .... ")
         return next();
     }
     res.redirect("/");
