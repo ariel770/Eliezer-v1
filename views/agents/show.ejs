@@ -5,129 +5,131 @@
             <h1> <strong><%=agent.username%></strong></h1>
             <h1 style="text-align: center; text-decoration: underline;"> יעדים לסוכן </h1>
             <button><a href="/agent">חזור לרשימת סוכנים </a></button>
-            <button><a href="/agent/<%=agent.id%>/report"> הצג דוחות </a></button>
+            <button><a href="/agent/<%=agent.id%>/report"> הצג את כל הדוחות </a></button>
             <button><a href="/agent/<%=agent.id%>/edit">ערוך שם </a></button>
-            <button><a href="/agent/<%=agent.id%>/setgoals">קבע יעד </a></button>
-            <p></p>
-      <%=console.log("============================")%>
-            <%if(report == ""){%>
-            <%}else if(report){%>
-                <table class="table table-bordered table-dark  ">
-                    <thead>
-                        <tr>
-                            <th scope="col">הצעות מחיר</th>
-                            <th scope="col">שיחות ללקוחות קודמים</th>
-                            <th scope="col">שתופי פעולה</th>
-                            <th scope="col">סיורי שוכרים </th>
-                            <th scope="col">עסקאות בפועל </th>
-                            <th scope="col">משא ומתן בתהליך</th>
-                            <th scope="col">למידה והתחדשות</th>
-                            <th scope="col">הדבקת פליירים</th>
-                            <th scope="col">פגישות אצל בעלי נכסים</th>
-                            <th scope="col">תאריך</th>
-                            <th scope="col">#</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <%for(i=0 ;i<report.length;i++){%>
-                        <% var date = new Date(report[i].date)%>
-                        <%var month  =  date.getMonth()+1%>
-                        <%  var formatDate =  date.getDate()+" / "+month+" / "+ date.getFullYear() %>
-                        <tr>
-                            <td><Strong><%=report[i].pricesOffer%></Strong></td>
-                            <td><Strong><%=report[i].conversationsWithPreviousClients%></Strong></td>
-                            <td><Strong><%=report[i].collaborations%></Strong></td>
-                            <td><Strong><%=report[i].rentalTours%></Strong></td>
-                            <td><Strong><%=report[i].actualTransactions%></Strong></td>
-                            <td><Strong><%=report[i].negotiationsInTheProcess%></Strong></td>
-                            <td><Strong><%=report[i].learninGandRenewal%></Strong></td>
-                            <td><Strong><%=report[i].stickerFlyers%></Strong></td>
-                            <td><Strong><%=report[i].meeting%></Strong></td>
-                            <td><Strong><%=formatDate%></Strong></td>
-                            </td>
-                        </tr>
-                        <%}%>
-                      
-                    </tbody>
-                  </table>
-
-                <%}%>
-
-
+            <button><a href="/agent/<%=agent.id%>/setgoals"> קבע יעד כספי </a></button>
+            
+            
 
             <form action="/agent/getListReports/<%=agent.id%>" method="post">
-
+                
                 <div class="form-group">
                     <input type="date" id="from" class="form-control myDate" name="from" placeholder="מתאריך"
-                        autocomplete="off">
+                    autocomplete="off">
                 </div>
                 <div class="form-group">
                     <input type="date" id="to" class="form-control myDate" name="to" placeholder="לתאריך"
-                        autocomplete="off">
+                    autocomplete="off">
                 </div>
                 <div class=" form-group">
                     <input class="btn btn-lg btn-primary btn-block" type="submit" class="form-control"
-                        value="הזמן עכשיו">
+                    value="בחר דוח לפי תאריך ">
                 </div>
+                
+                        <div class="form-group">
+                            <button><a class="btn btn-sm btn-danger btn-block" href="javascript:history.back()">עמוד
+                                קודם</a></button>
+                                
+                        </div>
+                    </form>
+                    <p></p>
+                    <%if(report == ""){%>
+                    <%}else if(report){%>
+                    <table class="table table-bordered table-dark  ">
+                        <thead>
+                            <tr>
+                                <th scope="col">הצעות מחיר</th>
+                                <th scope="col">שיחות ללקוחות קודמים</th>
+                                <th scope="col">שתופי פעולה</th>
+                                <th scope="col">סיורי שוכרים </th>
+                                <th scope="col">עסקאות בפועל </th>
+                                <th scope="col">משא ומתן בתהליך</th>
+                                <th scope="col">למידה והתחדשות</th>
+                                <th scope="col">הדבקת פליירים</th>
+                                <th scope="col">פגישות אצל בעלי נכסים</th>
+                                <th scope="col">תאריך</th>
+                                <th scope="col">#</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%for(i=0 ;i<report.length;i++){%>
+                            <% var date = new Date(report[i].date)%>
+                            <%var month  =  date.getMonth()+1%>
+                            <%  var formatDate =  date.getDate()+" / "+month+" / "+ date.getFullYear() %>
+                            <tr>
+                                <td><Strong><%=report[i].pricesOffer%></Strong></td>
+                                <td><Strong><%=report[i].conversationsWithPreviousClients%></Strong></td>
+                                <td><Strong><%=report[i].collaborations%></Strong></td>
+                                <td><Strong><%=report[i].rentalTours%></Strong></td>
+                                <td><Strong><%=report[i].actualTransactions%></Strong></td>
+                                <td><Strong><%=report[i].negotiationsInTheProcess%></Strong></td>
+                                <td><Strong><%=report[i].learninGandRenewal%></Strong></td>
+                                <td><Strong><%=report[i].stickerFlyers%></Strong></td>
+                                <td><Strong><%=report[i].meeting%></Strong></td>
+                                <td><Strong><%=formatDate%></Strong></td>
+                                </td>
+                            </tr>
+                            <%}%>
+                              
+                            </tbody>
+                          </table>
+        <p>================================================================================================</p>
+                        <%}%>
+                    <p></p>
+                    
+                    
+                    
+                    <form action="/agent/<%=agent.id%>?_method=DELETE" method="POST">
 
-                <div class="form-group">
-                    <button><a class="btn btn-sm btn-danger btn-block" href="javascript:history.back()">עמוד
-                            קודם</a></button>
-
-                </div>
-            </form>
-            <p></p>
+                        <button>מחק סוכן</button>
 
 
+                    </form>
 
-            <form action="/agent/<%=agent.id%>?_method=DELETE" method="POST">
-
-                <button>מחק סוכן</button>
-
-
-            </form>
-
-            <%for(i=0;i<statistics.length ; i++ ){%>
-            <table class="table table-bordered table-dark  ">
-                <p> <%=agent.status%> <strong> : סטטוס </strong> </p>
-                <thead>
-                    <tr>
-                        <th scope="col">פגישות נדרשות</th>
-                        <th scope="col">ממוצע לסגירת עסקה </th>
-                        <th scope="col">סך קונים ממתענינים </th>
-                        <th scope="col">סך הצגת נכסים לפני קניה</th>
-                        <th scope="col">עמלת סוכן </th>
-                        <th scope="col">עמלת עסקה </th>
-                        <th scope="col">מכירות בבלעדיות </th>
-                        <th scope="col">פגישות בבלעדיות </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong><%=statistics[i].meetings%></strong></td>
-                        <td><strong><%=statistics[i].approachesToClosingDeal%></strong></td>
-                        <td><strong><%=statistics[i].interestedWhoeBuying%></strong></td>
-                        <td><strong><%=statistics[i].propertiesShowUp%></strong></td>
-                        <td><strong><%=statistics[i].commissionFee%></strong></td>
-                        <td><strong><%=statistics[i].averageTransaction%></strong></td>
-                        <td><strong><%=statistics[i].salesExclusivity%></strong></td>
-                        <td><strong><%=statistics[i].meetingsExclusivity%></strong></td>
-                        <td><strong>נדרש</strong></td>
-                    </tr>
-                    <tr>
-                        <td><strong><%=statistics[i].meetings%></strong></td>
-                        <td><strong><%=statistics[i].approachesToClosingDeal%></strong></td>
-                        <td><strong><%=statistics[i].interestedWhoeBuying%></strong></td>
-                        <td><strong><%=statistics[i].propertiesShowUp%></strong></td>
-                        <td><strong><%=statistics[i].commissionFee%></strong></td>
-                        <td><strong><%=statistics[i].averageTransaction%></strong></td>
-                        <td><strong><%=statistics[i].salesExclusivity%></strong></td>
-                        <td><strong><%=statistics[i].meetingsExclusivity%></strong></td>
-                        <td><strong>בפועל</strong></td>
-                    </tr>
-                </tbody>
-            </table>
-            <%}%>
+                    <%for(i=0;i<statistics.length ; i++ ){%>
+                        <p> <%=statistics[i].agent.status%> <strong> : סטטוס </strong> </p>
+                    <%if(i == statistics.length-1){%>
+                          <p><Strong> נוכחי</Strong></p>
+                    <%}%>
+                    <table class="table table-bordered table-dark  ">
+                        <thead>
+                            <tr>
+                                <th scope="col">פגישות נדרשות</th>
+                                <th scope="col">ממוצע לסגירת עסקה </th>
+                                <th scope="col">סך קונים ממתענינים </th>
+                                <th scope="col">סך הצגת נכסים לפני קניה</th>
+                                <th scope="col">עמלת סוכן </th>
+                                <th scope="col">עמלת עסקה </th>
+                                <th scope="col">מכירות בבלעדיות </th>
+                                <th scope="col">פגישות בבלעדיות </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong><%=statistics[i].meetings%></strong></td>
+                                <td><strong><%=statistics[i].approachesToClosingDeal%></strong></td>
+                                <td><strong><%=statistics[i].interestedWhoeBuying%></strong></td>
+                                <td><strong><%=statistics[i].propertiesShowUp%></strong></td>
+                                <td><strong><%=statistics[i].commissionFee%></strong></td>
+                                <td><strong><%=statistics[i].averageTransaction%></strong></td>
+                                <td><strong><%=statistics[i].salesExclusivity%></strong></td>
+                                <td><strong><%=statistics[i].meetingsExclusivity%></strong></td>
+                                <td><strong>נדרש</strong></td>
+                            </tr>
+                            <tr>
+                                <td><strong><%=statistics[i].meetings%></strong></td>
+                                <td><strong><%=statistics[i].approachesToClosingDeal%></strong></td>
+                                <td><strong><%=statistics[i].interestedWhoeBuying%></strong></td>
+                                <td><strong><%=statistics[i].propertiesShowUp%></strong></td>
+                                <td><strong><%=statistics[i].commissionFee%></strong></td>
+                                <td><strong><%=statistics[i].averageTransaction%></strong></td>
+                                <td><strong><%=statistics[i].salesExclusivity%></strong></td>
+                                <td><strong><%=statistics[i].meetingsExclusivity%></strong></td>
+                                <td><strong>בפועל</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <%}%>
                     
 
         </div>

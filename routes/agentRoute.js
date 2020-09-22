@@ -12,7 +12,7 @@ var currentStatistic = {};
 //SHOW ALL THE AGENTS (NEED TO SPECIFIC TO THE AGENT )
 route.get("/", middlewhereObj.isMannager, function (req, res) {
     Agents.find({}, function (err, agents) {
-             if (err) {
+        if (err) {
             console.log(err)
         } else {
             res.render("agents/list.ejs", { agents: agents });
@@ -22,13 +22,13 @@ route.get("/", middlewhereObj.isMannager, function (req, res) {
 })
 
 //CREATE NEW AGENT 
-route.get("/new",middlewhereObj.isMannager, function (req, res) {
+route.get("/new", middlewhereObj.isMannager, function (req, res) {
     res.render("agents/newAgent.ejs")
     //REDIRECT TO REGISTER PAGE (IN INDEX )
 });
 
 //SHOW A SPECIFIC AGENT (WITH A  STATISTIC)
-route.get("/:id",middlewhereObj.isMannager, function (req, res) {
+route.get("/:id", middlewhereObj.isMannager, function (req, res) {
     Agents.findById(req.params.id, function (err, agent) {
         if (err) {
         } else {
@@ -40,7 +40,7 @@ route.get("/:id",middlewhereObj.isMannager, function (req, res) {
                         if (err) {
                             res.redirect("back")
                         } else {
-                            res.render("agents/show.ejs", { agent: agent, statistics: statistics,report:""})
+                            res.render("agents/show.ejs", { agent: agent, statistics: statistics, report: "" })
                             //======================================================= 
                             //ADD THE FUNCTIONS THAT CHECK IF IS OK OR NOT , RASHI !!
                             //======================================================= 
@@ -69,9 +69,9 @@ route.get("/:id/edit", function (req, res) {
         if (err) {
             console.log(err)
         } else {
-         
+
             res.render("agents/editAgent.ejs", { agent: agent })
-         
+
         }
     })
 
@@ -194,15 +194,15 @@ route.post("/getListReports/:id", function (req, res) {
             var date2 = new Date(req.body.to);
             Reports.find({ "agent.id": req.params.id, date: { $gt: date1, $lt: date2 } }, function (err, report) {
                 if (err) {
-
+                    res.redirect("back")
                 } else {
                     Agents.findById(req.params.id, function (err, agent) {
                         if (err) {
-
+                            res.redirect("back")
                         } else {
                             Statistic.find({ "agent.id": req.params.id }, function (err, statistics) {
                                 if (err) {
-
+                                    res.redirect("back")
                                 } else {
                                     res.render("agents/show.ejs", { agent: agent, statistics: statistics, report: report })
                                 }
