@@ -119,20 +119,51 @@ route.post("/:id/setgoals", function (req, res) {
             //NEED TO FIX THE FUNCTIONS !!! 
             //=============================
             var goal = req.body.money;
-            console.log(req.body.status)
-            console.log(agents)
-            agents.status =  req.body.status;
+            var marketingActivity;
+            var meetings;
+            var apartmentView;
+            var qtyOfDeals;
+            agents.status = req.body.status;
             agents.save();
-            console.log(agents)
+
 
             if (req.body.status == "comersial") {
                 avg = 20000;
-                qtyOfMeeting = goal / avg;
 
             } else {
                 avg = 30000
-                qtyOfMeeting = goal / avg;
             }
+            //1 
+            qtyOfDeals = goal / avg;//33.3333
+            //2
+            apartmentView = qtyOfDeals / 6;
+            var c;
+            c = qtyOfDeals * apartmentView;
+            //3            
+            meetings = apartmentView / 5;
+            //4
+            marketingActivity = meetings / 5;
+
+
+            console.log("C :" + c)
+            console.log("avg :" + avg)
+            console.log("======================");
+            console.log("goal :" + goal);
+            console.log("======================");
+            console.log("qtyOfDeals :" + qtyOfDeals);
+            console.log("======================")
+            console.log("apartmentView :" + apartmentView);
+            console.log("======================");
+            console.log("mettings :" + meetings);
+            console.log("======================");
+            console.log("marketingActivity :" + marketingActivity);
+            console.log("======================");
+            // callsToBuyers = marketingActivity * 5;
+            // mettingToBuyers = (callsToBuyers * 3) + (callsToSalles * 2);
+            // mettingToSalles = (callsToBuyers * 3) + (callsToSalles * 2);
+            // deals = meetingsTosalles * 5 + mettingToBuyers * 10;
+            // delas = callsToBuyers + mettingToBuyers + mettingToSalles;
+
             var statistic = {
                 agent: {
                     username: agents.username,
@@ -156,7 +187,7 @@ route.post("/:id/setgoals", function (req, res) {
                         if (err) {
                             res.redirect("back")
                         } else {
-                           
+
                             agents.statistic.push(statistics.id)
 
                             res.redirect("/agent/" + req.params.id)
@@ -174,14 +205,14 @@ route.post("/:id/setgoals", function (req, res) {
 
 //GET REPORTS BETWEEN 2 DAYS
 route.post("/getListReports/:id", function (req, res) {
-    
+
     Reports.find({ "agent.id": req.params.id }, function (err, reports) {
-        
+
         if (err) {
             res.redirect("back")
         } else {
-            
-            
+
+
             var date1 = new Date(req.body.from);
             var date2 = new Date(req.body.to);
             Reports.find({ "agent.id": req.params.id, date: { $gt: date1, $lt: date2 } }, function (err, report) {

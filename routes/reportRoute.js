@@ -3,29 +3,152 @@ var route = express.Router();
 var Reports = require("../models/reports.js");
 const Agents = require('../models/agents.js');
 const middlewhereObj = require('../middlewhere/index.js');
+const reports = require('../models/reports.js');
+const { db } = require('../models/reports.js');
 
 route.get("/agent/:id/report", middlewhereObj.isLoggedIn, function (req, res) {
-    
-    console.log(req.params.id)
+
     Agents.findById(req.params.id, function (err, agents) {
         if (err) {
             res.redirect("back")
         } else {
+            var oop = {
+                summettings: [], sumstickerFlyers: [], sumlearninGandRenewal: []
+                , sumactualTransactions: [], sumrentalTours: [], sumcollaborations: [],
+                sumconversationsWithPreviousClients: [], sumpricesOffer: []
+            }
             Reports.find({ "agent.id": req.params.id }, function (err, report) {
+
+
+                for (i = 1; i < report.length; i++) {
+                    oop.summettings[i] = report[i].meeting;
+                    oop.sumstickerFlyers[i] = report[i].stickerFlyers;
+                    oop.sumlearninGandRenewal[i] = report[i].learninGandRenewal;
+                    oop.sumactualTransactions[i] = report[i].actualTransactions;
+                    oop.sumrentalTours[i] = report[i].rentalTours;
+                    oop.sumcollaborations[i] = report[i].collaborations;
+                    oop.sumconversationsWithPreviousClients[i] = report[i].conversationsWithPreviousClients;
+                    oop.sumpricesOffer[i] = report[i].pricesOffer;
+                }
                 if (err) {
                     res.redirect("back");
                 } else {
-                   
-                    res.render("report/list.ejs", { report: report, agents: agents });
+                    res.render("report/list.ejs", { report: report, agents: agents, oop: oop })
                 }
             })
         }
     })
 
 })
+route.get("/agent/:id/report/monthlyreports", function (req, res) {
+
+    // Agents.aggregate([
+    //     {
+    //         "$group": {
+
+    //             "_id":   {$match:{username:"pir"}},
+    //             "count": { "$sum": 1 },
+    //             "average": { "$avg": "$amount" }
+    //         }
+    //     }
+    // ], function (err, result) {
+    //     console.log(result);
+    //     res.redirect("back")
+
+    // });
+    // Reports.aggregate([
+    //     {
+    //         "$project": {
+    //             "nominal": 1,
+    //             "month": { "$month": "$timestamp" }
+    //         }
+    //     },
+    //     {
+    //         "$group": {
+    //             "_id": "$month",
+    //             "total": { "$sum": "$nominal" }
+    //         }
+    //     }
+    // ], function (err, result) {
+    //     console.log(result);
+    //     res.redirect("back")
+
+    // });
+    // @@@@
+    // Reports.aggregate( [ { $group : { _id : "$agent.username" }} ],function (err, result) {
+    //     console.log(result);
+    //     res.redirect("back")
+
+    // });
+    // Reports.aggregate([{$group:{_id:"$date"}}],function (err, result) {
+    //         console.log(result);
+    //         res.redirect("back")
+
+    //});
+
+    // Reports.aggregate([  { "$group": {"_id": { "$month": { "$toDate": "$date"}}}}],function (err, result) {
+    //         console.log(result);
+    //         res.redirect("back")
+
+    //     });
+    // Reports.aggregate([  { "$group": {"_id": { "$month": { "$toDate": "$date"}}}}],function (err, result) {
+    //         console.log(result);
+    //         res.redirect("back")
+
+    //     });
+
+    // Reports.aggregate([
+    //     {
+    //         $group: {
+    //             _id: {"month": "$month" }
+    //         }
+    //     }
+    // ], function (err, result) {
+    //     console.log(result);
+    //     res.redirect("back")
+
+    // });
+    // Reports.aggregate(
+    //     [
+    //         {
+    //             $project:
+    //             {
+    //                 year: { $year: "$date" },
+    //                 month: { $month: "$date" },
+    //                 day: { $dayOfMonth: "$date" },
+    //                 hour: { $hour: "$date" },
+    //                 minutes: { $minute: "$date" },
+    //                 seconds: { $second: "$date" },
+    //                 milliseconds: { $millisecond: "$date" },
+    //                 dayOfYear: { $dayOfYear: "$date" },
+    //                 dayOfWeek: { $dayOfWeek: "$date" },
+    //                 week: { $week: "$date" }
+    //             }
+    //         }
+    //     ], function (err, result) {
+    //         console.log(result);
+    //         res.redirect("back")
+
+    //     });
+
+    // Reports.aggregate([
+    //     { "$project": {
+
+    //         "month": { "$month": "$date" }
+    //     }}, 
+    //     { "$group": {
+    //         "_id": "$month", 
+
+    //     }}
+    // ],function (err, result) {
+    //         console.log(result);
+    //         res.redirect("back")
+
+    //     });
+})
 
 //CREATE NEW REPORT 
-route.get("/agent/:id/report/new",middlewhereObj.isUser, function (req, res) {
+route.get("/agent/:id/report/new", middlewhereObj.isUser, function (req, res) {
 
     Agents.findById(req.params.id, function (err, agents) {
 
@@ -39,7 +162,7 @@ route.get("/agent/:id/report/new",middlewhereObj.isUser, function (req, res) {
 
 
 //INSERT TO DATABASE AND REDIRECT TO THE REPORT PAGE FORM 
-route.post("/agent/:id/report",middlewhereObj.isUser, function (req, res) {
+route.post("/agent/:id/report", middlewhereObj.isUser, function (req, res) {
     Agents.findById(req.params.id, function (err, agents) {
         if (err) {
 
@@ -49,16 +172,17 @@ route.post("/agent/:id/report",middlewhereObj.isUser, function (req, res) {
                     id: agents.id,
                     username: agents.username
                 },
-                date : new Date(),
+                date: new Date(),
                 meeting: req.body.meeting,
-                stickerFlyers:req.body.stickerFlyers,
-                learninGandRenewal:req.body.learninGandRenewal,
-                negotiationsInTheProcess:req.body.negotiationsInTheProcess,
-                actualTransactions:req.body.actualTransactions,
-                rentalTours:req.body.rentalTours,
-                collaborations:req.body.collaborations,
-                conversationsWithPreviousClients:req.body.conversationsWithPreviousClients,
-                pricesOffer:req.body.pricesOffer,
+                stickerFlyers: req.body.stickerFlyers,
+                learninGandRenewal: req.body.learninGandRenewal,
+                negotiationsInTheProcess: req.body.negotiationsInTheProcess,
+                actualTransactions: req.body.actualTransactions,
+                rentalTours: req.body.rentalTours,
+                collaborations: req.body.collaborations,
+                conversationsWithPreviousClients: req.body.conversationsWithPreviousClients,
+                pricesOffer: req.body.pricesOffer,
+                remarks: req.body.remarks
             }
             Reports.create(newReport, function (err, report) {
                 if (err) {
@@ -77,7 +201,7 @@ route.post("/agent/:id/report",middlewhereObj.isUser, function (req, res) {
 
 })
 //SHOW SPECIFIC REPORTS TO A SPECIFIC AGENT
-route.get("/agent/:id/report/:report_id",middlewhereObj.isLoggedIn, function (req, res) {
+route.get("/agent/:id/report/:report_id", middlewhereObj.isLoggedIn, function (req, res) {
     Agents.findById(req.params.id, function (err, agents) {
         if (err) {
         } else {
@@ -85,6 +209,7 @@ route.get("/agent/:id/report/:report_id",middlewhereObj.isLoggedIn, function (re
                 if (err) {
                     console.log(err)
                 } else {
+
                     res.render("report/show.ejs", { report: report, agents: agents });
                 }
             })
@@ -93,7 +218,7 @@ route.get("/agent/:id/report/:report_id",middlewhereObj.isLoggedIn, function (re
 })
 
 //EDIT SPECIFIC REPORT 
-route.get("/agent/:id/report/:report_id/edit",middlewhereObj.isMannager,function (req, res) {
+route.get("/agent/:id/report/:report_id/edit", middlewhereObj.isMannager, function (req, res) {
     Agents.findById(req.params.id, function (err, agents) {
         if (err) {
             console.log(err)
@@ -114,11 +239,11 @@ route.get("/agent/:id/report/:report_id/edit",middlewhereObj.isMannager,function
 });
 
 //INSERT THE FIX REPORT TO THE DB
-route.post("/agent/:id/report/:report_id",middlewhereObj.isMannager, function (req, res) {
-    
+route.post("/agent/:id/report/:report_id", middlewhereObj.isMannager, function (req, res) {
 
-    Reports.findByIdAndUpdate(req.params.report_id,req.body.report, function (err, report) {
-        console.log(report);
+
+    Reports.findByIdAndUpdate(req.params.report_id, req.body.report, function (err, report) {
+
         if (err) {
             console.log(err)
         } else {

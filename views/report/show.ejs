@@ -1,14 +1,16 @@
 <%- include ("../partials/header")%>
-<% var date = new Date(report.date)%>
-<%var month  =  date.getMonth()+1%>
-<%  var formatDate =  date.getDate()+" / "+month+" / "+ date.getFullYear() %>
-
+<% var d = new Date(report.date)%>
+<%var month  =  d.getMonth()+1%>
+<%var hour  =  d.getHours();%>
+<%var minutes  =  d.getMinutes();%>
+<%var datestring = d.getDate()  + "-" + d.getMonth()+1 + "-" + d.getFullYear() + " " +d.getHours() + ":" + d.getMinutes()%>
+<%=console.log(datestring)%>
 <div class="container">
     <div class="row">
         
         <div style="text-align: center;">
             <h1>   <%=agents.username%>  </h1>
-            <h1> פרטי דיווח לתאריך <%=formatDate%> </h1>
+            <h1> פרטי דיווח לתאריך <%=datestring%> </h1>
         
             <table class="table table-bordered table-dark  ">
 
@@ -32,7 +34,7 @@
     
                     <tr>
                       <td><Strong><%=report.pricesOffer%></Strong></td>
-                      <td><Strong><%=report.conversationsWithPreviousClients%></Strong></td>
+                      <td><Strong><%=report.conversationsWithPreviousClients %></Strong></td>
                       <td><Strong><%=report.collaborations%></Strong></td>
                       <td><Strong><%=report.rentalTours%></Strong></td>
                       <td><Strong><%=report.actualTransactions%></Strong></td>

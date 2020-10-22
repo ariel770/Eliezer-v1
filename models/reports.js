@@ -7,8 +7,8 @@ var reportsSchema = new mongoose.Schema({
         },
         username: String
     },
-    date:Date,
-   meeting: Number,
+    date: Date,
+    meeting: Number,
     stickerFlyers: Number,
     learninGandRenewal: Number,
     negotiationsInTheProcess: Number,
@@ -16,7 +16,8 @@ var reportsSchema = new mongoose.Schema({
     rentalTours: Number,
     collaborations: Number,
     conversationsWithPreviousClients: Number,
-    pricesOffer: Number
+    pricesOffer: Number,
+    remarks:String
 
 })
 module.exports = mongoose.model("Reports", reportsSchema);

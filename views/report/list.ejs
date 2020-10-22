@@ -2,62 +2,115 @@
 <div class="container">
 
     <div class="row">
+
         <h1 style="text-align: center;">טופס מעקב <strong> <%=agents.username%></strong></h1>
         <div style="text-align: center;">
             <a href="/agent/<%=agents.id%>/report/new">מלא דוח </a>
-<p></p>
-            <table class="table table-bordered table-dark  ">
+            <a href="/agent/<%=agents.id%>/report/monthlyreports">דוחות חודשיים </a>
+
+            <h1>
+                <%=oop.summettings.reduce((a, b) => a + b, 0)%>
+                <%=oop.sumstickerFlyers.reduce((a, b) => a + b, 0)%>
+            </h1>
 
 
+            <%for(i=0 ;i<report.length;i++){%>
+
+            <%for(b=0 ;b<agents.reports.length;b++){%>
+
+
+            <%var date = new Date(report[i].date)%>
+
+            <%var firstDay = new Date(date.getFullYear(), date.getMonth(), 1)%>
+
+            <%var lastDay =  new Date(date.getFullYear(), date.getMonth() + 1, 0)%>
+
+            <% var d = new Date(report[i].date)%>
+            <%var month  =  d.getMonth()+1%>
+            <%var hour  =  d.getHours()%>
+            <%var minutes  =  d.getMinutes()%>
+            <%var datestring = d.getDate()  + "-" + d.getMonth()+1 + "-" + d.getFullYear() + " " +d.getHours() + ":" + d.getMinutes()%>
+    
+            <%if(report[i].id == agents.reports[b]){%>
+
+            <table class="table table-bordered table-dark " style="margin-bottom: 100px; width:200px;">
                 <thead>
                     <tr>
-                        <th scope="col">הצעות מחיר</th>
-                        <th scope="col">שיחות ללקוחות קודמים</th>
-                        <th scope="col">שתופי פעולה</th>
-                        <th scope="col">סיורי שוכרים </th>
-                        <th scope="col">עסקאות בפועל </th>
-                        <th scope="col">משא ומתן בתהליך</th>
-                        <th scope="col">למידה והתחדשות</th>
-                        <th scope="col">הדבקת פליירים</th>
-                        <th scope="col">פגישות אצל בעלי נכסים</th>
-                        <th scope="col">תאריך</th>
-                        <th scope="col">#</th>
+                        <th colspan="2"><%=datestring%></th>
                     </tr>
                 </thead>
                 <tbody>
-
-
-
-                    <%for(i=0 ;i<report.length;i++){%>
-                    <%for(b=0 ;b<agents.reports.length;b++){%>
-
-
-                    <%if(report[i].id == agents.reports[b]){%>
-                    <% var date = new Date(report[i].date)%>
-                    <%var month  =  date.getMonth()+1%>
-                    <%  var formatDate =  date.getDate()+" / "+month+" / "+ date.getFullYear() %>
+                    <% if(report[i].pricesOffer != null){%>
                     <tr>
+                        <td>הצעות מחיר</td>
                         <td><Strong><%=report[i].pricesOffer%></Strong></td>
-                        <td><Strong><%=report[i].conversationsWithPreviousClients%></Strong></td>
-                        <td><Strong><%=report[i].collaborations%></Strong></td>
-                        <td><Strong><%=report[i].rentalTours%></Strong></td>
-                        <td><Strong><%=report[i].actualTransactions%></Strong></td>
-                        <td><Strong><%=report[i].negotiationsInTheProcess%></Strong></td>
-                        <td><Strong><%=report[i].learninGandRenewal%></Strong></td>
-                        <td><Strong><%=report[i].stickerFlyers%></Strong></td>
-                        <td><Strong><%=report[i].meeting%></Strong></td>
-                        <td><Strong><%=formatDate%></Strong></td>
-                        <td><Strong><a href="/agent/<%=agents.id%>/report/<%=report[i].id%>">פרטים נוספים</a></Strong>
-                        </td>
+
                     </tr>
                     <%}%>
+                   <% if(report[i].conversationsWithPreviousClients != null){%>
+                    <tr>
+                        <td>שיחות ללקוחות קודמים</td>
+                        <td><Strong><%=report[i].conversationsWithPreviousClients%></Strong></td>
+                    </tr>
                     <%}%>
+                    <% if(report[i].collaborations != null){%>
+                    <tr>
+                        <td>שתופי פעולה</td>
+                        <td><Strong><%=report[i].collaborations%></Strong></td>
+                    </tr>
+                    <%}%>
+                    <% if(report[i].rentalTours != null){%>
+                    <tr>
+                        <td>סיורי שוכרים </td>
+                        <td><Strong><%=report[i].rentalTours%></Strong></td>
+                    </tr>
+                    <%}%>
+                    <% if(report[i].actualTransactions != null){%>
+                    <tr>
+                        <td>עסקאות בפועל </td>
+                        <td><Strong><%=report[i].actualTransactions%></Strong></td>
+                    </tr>
+                    <%}%>
+                    <% if(report[i].negotiationsInTheProcess != null){%>
+                    <tr>
+                        <td>משא ומתן בתהליך</td>
+                        <td><Strong><%=report[i].negotiationsInTheProcess%></Strong></td>
+                    </tr>
+                    <%}%>
+                    <% if(report[i].learninGandRenewal != null){%>
+                    <tr>
+                        <td>למידה והתחדשות</td>
+                        <td><Strong><%=report[i].learninGandRenewal%></Strong></td>
+                    </tr>
+                    <%}%>
+                    <% if(report[i].stickerFlyers != null){%>
+                    <tr>
+                        <td>הדבקת פליירים</td>
+                        <td><Strong><%=report[i].stickerFlyers%></Strong></td>
+                    </tr>
+                    <%}%>
+                    <% if(report[i].meeting != null){%>
+                    <tr>
+                        <td>פגישות אצל בעלי נכסים</td>
+                        <td><Strong><%=report[i].meeting%></Strong></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><%=report[i].remarks%></td>
+                    </tr>
+
                     <%}%>
                 </tbody>
-              </table>
-                    
-                </div>
-            </div> 
+                                        
+                <%}%>
+                    <%}%>
+                <%}%>
+
+
+
+
+
         </div>
     </div>
-    <%- include ("../partials/footer")%>
+</div>
+</div>
+<%- include ("../partials/footer")%>
