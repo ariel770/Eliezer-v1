@@ -145,6 +145,7 @@ route.get("/agent/:id/report/monthlyreports", function (req, res) {
     //         res.redirect("back")
 
     //     });
+    res.redirect("back");
 })
 
 //CREATE NEW REPORT 
