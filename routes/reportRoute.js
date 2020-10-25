@@ -61,6 +61,11 @@ route.get("/agent/:id/report/monthlyreports", function (req, res) {
         //     }
         // }
         {
+            $match:{
+                'agent.id': new mongoose.Types.ObjectId(req.user.id),
+            } 
+        },
+        {
             $group: {
                 _id:{ $month: "$date"},
                 count: {
