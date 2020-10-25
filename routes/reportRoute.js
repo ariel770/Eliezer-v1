@@ -62,7 +62,7 @@ route.get("/agent/:id/report/monthlyreports", function (req, res) {
         // }
         {
             $group: {
-                username: '$agent.username',
+                _id:{ $month: "$date"},
                 count: {
                     $sum: '$meeting'
                 }
