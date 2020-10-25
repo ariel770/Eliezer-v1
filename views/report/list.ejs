@@ -21,17 +21,18 @@
 
             <%var date = new Date(report[i].date)%>
 
-            <%var firstDay = new Date(date.getFullYear(), date.getMonth(), 1)%>
-
-            <%var lastDay =  new Date(date.getFullYear(), date.getMonth() + 1, 0)%>
 
             <% var d = new Date(report[i].date)%>
             <%var month  =  d.getMonth()+1%>
             <%var hour  =  d.getHours()%>
             <%var minutes  =  d.getMinutes()%>
-            <%var datestring = d.getDate()  + "-" + d.getMonth()+1 + "-" + d.getFullYear() + " " +d.getHours() + ":" + d.getMinutes()%>
-    
+            <%var year  =  d.getFullYear()%>
+             
+            <%var datestring = d.getDate()  + "-" + month + "-" + year + " " +hour+ ":" + minutes%>
+        
             <%if(report[i].id == agents.reports[b]){%>
+               
+     
 
             <table class="table table-bordered table-dark " style="margin-bottom: 100px; width:200px;">
                 <thead>

@@ -40,113 +40,42 @@ route.get("/agent/:id/report", middlewhereObj.isLoggedIn, function (req, res) {
     })
 
 })
-route.get("/agent/:id/report/monthlyreports", function (req, res) {
+route.get("/agent/:id/report/monthlyreports", function (req, res) {  
 
-    // Agents.aggregate([
-    //     {
-    //         "$group": {
 
-    //             "_id":   {$match:{username:"pir"}},
-    //             "count": { "$sum": 1 },
-    //             "average": { "$avg": "$amount" }
-    //         }
-    //     }
-    // ], function (err, result) {
-    //     console.log(result);
-    //     res.redirect("back")
+    Reports.aggregate([
+        //  IS WORK WITH AGENT BUT NOT BY DATE(MONTH) ============
+    
+        // {
+        //     $group: {
+        //         _id: { $month: "$date" },
+        //         numberofbookings: { $sum: '$meeting' }
+        //     }
+        // }
 
-    // });
-    // Reports.aggregate([
-    //     {
-    //         "$project": {
-    //             "nominal": 1,
-    //             "month": { "$month": "$timestamp" }
-    //         }
-    //     },
-    //     {
-    //         "$group": {
-    //             "_id": "$month",
-    //             "total": { "$sum": "$nominal" }
-    //         }
-    //     }
-    // ], function (err, result) {
-    //     console.log(result);
-    //     res.redirect("back")
+        // {
+        //     $group: {
+        //         // username: '$agent.username',
+        //         _id: { $substr: ['$date', 5, 2] },
+        //         summettings: { $sum: '$meeting' }
+        //     }
+        // }
+        {
+            $group: {
+                username: '$agent.username',
+                count: {
+                    $sum: '$meeting'
+                }
+            }
+        }
+    ], function (err, result) {
 
-    // });
-    // @@@@
-    // Reports.aggregate( [ { $group : { _id : "$agent.username" }} ],function (err, result) {
-    //     console.log(result);
-    //     res.redirect("back")
+        console.log(result)
+        console.log("succsess")
+        res.redirect("back");
+    })
 
-    // });
-    // Reports.aggregate([{$group:{_id:"$date"}}],function (err, result) {
-    //         console.log(result);
-    //         res.redirect("back")
-
-    //});
-
-    // Reports.aggregate([  { "$group": {"_id": { "$month": { "$toDate": "$date"}}}}],function (err, result) {
-    //         console.log(result);
-    //         res.redirect("back")
-
-    //     });
-    // Reports.aggregate([  { "$group": {"_id": { "$month": { "$toDate": "$date"}}}}],function (err, result) {
-    //         console.log(result);
-    //         res.redirect("back")
-
-    //     });
-
-    // Reports.aggregate([
-    //     {
-    //         $group: {
-    //             _id: {"month": "$month" }
-    //         }
-    //     }
-    // ], function (err, result) {
-    //     console.log(result);
-    //     res.redirect("back")
-
-    // });
-    // Reports.aggregate(
-    //     [
-    //         {
-    //             $project:
-    //             {
-    //                 year: { $year: "$date" },
-    //                 month: { $month: "$date" },
-    //                 day: { $dayOfMonth: "$date" },
-    //                 hour: { $hour: "$date" },
-    //                 minutes: { $minute: "$date" },
-    //                 seconds: { $second: "$date" },
-    //                 milliseconds: { $millisecond: "$date" },
-    //                 dayOfYear: { $dayOfYear: "$date" },
-    //                 dayOfWeek: { $dayOfWeek: "$date" },
-    //                 week: { $week: "$date" }
-    //             }
-    //         }
-    //     ], function (err, result) {
-    //         console.log(result);
-    //         res.redirect("back")
-
-    //     });
-
-    // Reports.aggregate([
-    //     { "$project": {
-
-    //         "month": { "$month": "$date" }
-    //     }}, 
-    //     { "$group": {
-    //         "_id": "$month", 
-
-    //     }}
-    // ],function (err, result) {
-    //         console.log(result);
-    //         res.redirect("back")
-
-    //     });
-    res.redirect("back");
-})
+});
 
 //CREATE NEW REPORT 
 route.get("/agent/:id/report/new", middlewhereObj.isUser, function (req, res) {

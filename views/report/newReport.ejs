@@ -6,8 +6,11 @@
         <%var month  =  d.getMonth()+1%>
         <%var hour  =  d.getHours();%>
         <%var minutes  =  d.getMinutes();%>
-        <%var datestring = d.getDate()  + "-" + d.getMonth()+1 + "-" + d.getFullYear() + " " +d.getHours() + ":" + d.getMinutes()%>
-        <%=console.log(datestring)%>
+        <%var year  =   d.getFullYear();%>
+        <%var date  =   d.getDate();%>
+         
+        <%var datestring = date+ "-" + month+ "-" +year+ "-" +hour + ":" +minutes%>
+    
         <h1 style="text-align: center;"> <strong> <%=agents.username%></strong> טופס מעקב </h1>
 
         <div style="width:30%; margin: 20px auto;">
