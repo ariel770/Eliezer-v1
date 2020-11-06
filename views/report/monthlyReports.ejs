@@ -1,0 +1,194 @@
+<%- include ("../partials/header")%>
+<div class="container">
+
+    <div class="row">
+        <div style="text-align: center;">
+            <h1 style="text-align: center;"><strong> דוחות חודשיים </strong></h1>
+
+            <table class="table table-bordered table-dark " style="margin-bottom: 130px; width:230px;">
+                <thead>
+                    <tr>
+                        <th colspan="9">יעדים חודשיים </th>
+                    </tr>
+                    <tr>
+                        <th>פגישות </th>
+                        <th>הדבקת מודעות </th>
+                        <th>לימוד והתקדמות </th>
+                        <th>משא ומתן בתהליך </th>
+                        <th>עסקאות בפועל </th>
+                        <th>סיורי שוכרים </th>
+                        <th>שתופי פעולה </th>
+                        <th>שיחות ללקוחות קודמים </th>
+                        <th>הצעות מחיר </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <%=analisys.monthlyNeedMeetings%>
+                        </td>
+                        <td>
+                            <%=analisys.monthlyNeedstickerFlyers%>
+                        </td>
+                        <td>
+                            <%= analisys.monthlyNeedlearninGandRenewal%>
+                        </td>
+                        <td>
+                            <%=analisys.monthlyNeednegotiationsInTheProcess%>
+                        </td>
+                        <td>
+                            <%=analisys.monthlyNeedactualTransactions%>
+                        </td>
+                        <td>
+                            <%=analisys.monthlyNeedrentalTours%>
+                        </td>
+                        <td>
+                            <%=analisys.monthlyNeedcollaborations%>
+                        </td>
+                        <td>
+                            <%=analisys.monthlyNeedconversationsWithPreviousClients%>
+                        </td>
+                        <td>
+                            <%=analisys.monthlyNeedpricesOffer %>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+
+            <%for(i=0;i<report.length;i++){%>
+            <!-- flyers vars -->
+            <%var dailyNeedStickerFliyers = analisys.monthlyNeedstickerFlyers / analisys.currentMonthTotalDays[i] %>
+            <%var currentDayGoalStickerFliyers = analisys.currentDayFromMonth[i] * dailyNeedStickerFliyers%>
+            <%var monthlyStickerfliyersBalance = analisys.sumMonthlyStickerFlyers[i] - currentDayGoalStickerFliyers%>
+            <!-- meetings vars -->
+            <%var dailyNeedMeetings = analisys.monthlyNeedMeetings / analisys.currentMonthTotalDays[i] %>
+            <%var currentDayGoal = analisys.currentDayFromMonth[i] * dailyNeedMeetings%>
+            <%var monthlyMeetingsBalance = analisys.sumMonthlyMeetings[i] - currentDayGoal%>
+            <!-- learninGandRenewal -->
+            <%var dailyNeedLearninGandRenewal = analisys.monthlyNeedlearninGandRenewal / analisys.currentMonthTotalDays[i] %>
+            <%var currentDayGoalLearninGandRenewal = analisys.currentDayFromMonth[i] * dailyNeedLearninGandRenewal%>
+            <%var monthlyLearninGandRenewalBalance = analisys.sumMonthlyLearninGandRenewal[i] - currentDayGoalLearninGandRenewal%>
+            <!-- negotiationsInTheProcess -->
+            <%var dailyNeedNegotiationsInTheProcess = analisys.monthlyNeednegotiationsInTheProcess / analisys.currentMonthTotalDays[i] %>
+            <%var currentDayGoalNegotiationsInTheProcess = analisys.currentDayFromMonth[i] * dailyNeedNegotiationsInTheProcess%>
+            <%var monthlyNegotiationsInTheProcessBalance = analisys.sumMonthlyNegotiationsInTheProcess[i] - currentDayGoalNegotiationsInTheProcess%>
+            <!-- sumMonthlyActualTransactions -->
+            <%var dailyNeedActualTransactions = analisys.monthlyNeedactualTransactions / analisys.currentMonthTotalDays[i] %>
+            <%var currentDayGoalActualTransactions = analisys.currentDayFromMonth[i] * dailyNeedActualTransactions%>
+            <%var monthlyActualTransactionsBalance = analisys.sumMonthlyActualTransactions[i] - currentDayGoalActualTransactions%>
+            <!-- RentalTours -->
+            <%var dailyNeedRentalTours = analisys.monthlyNeedrentalTours / analisys.currentMonthTotalDays[i] %>
+            <%var currentDayGoalRentalTours = analisys.currentDayFromMonth[i] * dailyNeedRentalTours%>
+            <%var monthlyRentalToursBalance = analisys.sumMonthlyRentalTours[i] - currentDayGoalRentalTours%>
+            <!-- Collaborations -->
+            <%var dailyNeedCollaborations = analisys.monthlyNeedcollaborations / analisys.currentMonthTotalDays[i] %>
+            <%var currentDayGoalCollaborations = analisys.currentDayFromMonth[i] * dailyNeedCollaborations%>
+            <%var monthlyCollaborationsBalance = analisys.sumMonthlyCollaborations[i] - currentDayGoalCollaborations%>
+            <!-- ConversationsWithPreviousClients -->
+            <%var dailyNeedConversationsWithPreviousClients = analisys.monthlyNeedconversationsWithPreviousClients / analisys.currentMonthTotalDays[i] %>
+            <%var currentDayGoalConversationsWithPreviousClients = analisys.currentDayFromMonth[i] * dailyNeedConversationsWithPreviousClients%>
+            <%var monthlyConversationsWithPreviousClientsBalance = analisys.sumMonthlyConversationsWithPreviousClients[i] - currentDayGoalConversationsWithPreviousClients%>
+            <!-- PricesOffer -->
+            <%var dailyNeedPricesOffer = analisys.monthlyNeedpricesOffer / analisys.currentMonthTotalDays[i] %>
+            <%var currentDayGoalPricesOffer = analisys.currentDayFromMonth[i] * dailyNeedPricesOffer%>
+            <%var monthlyPricesOfferBalance = analisys.sumMonthlyPricesOffer[i] - currentDayGoalPricesOffer%>
+
+            <table class="table table-bordered table-dark " style="margin-bottom: 100px; width:200px;">
+                <thead>
+                    <tr>
+                        <th colspan="5"><%=analisys.year[i] +" / "+analisys.month[i] %></th>
+                    </tr>
+                    <tr>
+                        <th> </th>
+                        <th> סה"כ</th>
+                        <th> יעד יומי</th>
+                        <th> יעד עד לתאריך נוכחי </th>
+                        <th>  פער מהיעד הנוכחי</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>הדבקת פליירים</td>
+                        <td><%=report[i].countstickerflyers%></td>
+                        <td><%=dailyNeedStickerFliyers.toFixed(2)%></td>
+                        <td><%=currentDayGoalStickerFliyers.toFixed(2)%></td>
+                        <td class="change_color"><%=monthlyStickerfliyersBalance.toFixed(2)%></td>
+                    </tr>
+                    <tr>
+                        <td>פגישות אצל בעלי נכסים</td>
+                        <td><%=report[i].countmeeting%></td>
+                        <td><%=dailyNeedMeetings.toFixed(2)%></td>
+                        <td><%=currentDayGoal.toFixed(2)%></td>
+                        <td class="change_color"><%=monthlyMeetingsBalance.toFixed(2)%></td>
+                    </tr>
+                    <tr>
+                        <td>למידה והתחדשות</td>
+                        <td><%=report[i].countlearninGandRenewal%></td>
+                        <td><%=dailyNeedLearninGandRenewal.toFixed(2)%></td>
+                        <td><%=currentDayGoalLearninGandRenewal.toFixed(2)%></td>
+                        <td class="change_color"><%=monthlyLearninGandRenewalBalance.toFixed(2)%></td>
+                    </tr>
+                    <tr>
+                        <td>משא ומתן בתהליך</td>
+                        <td><%=report[i].countnegotiationsInTheProcess%></td>
+                        <td><%=dailyNeedNegotiationsInTheProcess.toFixed(2)%></td>
+                        <td><%=currentDayGoalNegotiationsInTheProcess.toFixed(2)%></td>
+                        <td class="change_color"><%=monthlyNegotiationsInTheProcessBalance.toFixed(2)%></td>
+                    </tr>
+                    <tr>
+                        <td>עסקאות בפועל </td>
+                        <td><%=report[i].countactualTransactions%></td>
+                        <td><%=dailyNeedActualTransactions.toFixed(2)%></td>
+                        <td><%=currentDayGoalActualTransactions.toFixed(2)%></td>
+                        <td class="change_color"><%=monthlyActualTransactionsBalance.toFixed(2)%></td>
+                    </tr>
+                    <tr>
+                        <td>סיורי שוכרים </td>
+                        <td><%=report[i].countrentalTours%></td>
+                        <td><%=dailyNeedRentalTours.toFixed(2)%></td>
+                        <td><%=currentDayGoalRentalTours.toFixed(2)%></td>
+                        <td class="change_color"><%=monthlyRentalToursBalance.toFixed(2)%></td>
+                    </tr>
+                    <tr>
+                        <td>שתופי פעולה</td>
+                        <td><%=report[i].countcollaborations%></td>
+                        <td><%=dailyNeedCollaborations.toFixed(2)%></td>
+                        <td><%=currentDayGoalCollaborations.toFixed(2)%></td>
+                        <td class="change_color"><%=monthlyCollaborationsBalance.toFixed(2)%></td>
+                    </tr>
+                    <tr>
+
+                        <td>שיחות ללקוחות קודמים</td>
+                        <td><%=report[i].countconversationsWithPreviousClients%></td>
+                        <td><%=dailyNeedConversationsWithPreviousClients.toFixed(2)%></td>
+                        <td><%=currentDayGoalConversationsWithPreviousClients.toFixed(2)%></td>
+                        <td class="change_color"><%=monthlyConversationsWithPreviousClientsBalance.toFixed(2)%></td>
+                    </tr>
+                    <tr>
+                        <td>הצעות מחיר</td>
+                        <td><%=report[i].countpricesOffer%></td>
+                        <td><%=dailyNeedPricesOffer.toFixed(2)%></td>
+                        <td><%=currentDayGoalPricesOffer.toFixed(2)%></td>
+                        <td class="change_color"><%=monthlyPricesOfferBalance.toFixed(2)%></td>
+
+                    </tr>
+                </tbody>
+
+            </table>
+            <%}%>
+            </div>
+        </div>
+    </div>
+    <script>
+        var x = document.querySelectorAll("td");
+        var i;
+        for (i = 0; i < x.length; i++) {
+            if(x[i].innerText < -5 ){
+    
+                x[i].style.backgroundColor = "red";
+            }
+        }
+    </script>
+    <%- include ("../partials/footer")%>

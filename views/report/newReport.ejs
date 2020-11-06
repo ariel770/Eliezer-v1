@@ -9,18 +9,21 @@
         <%var year  =   d.getFullYear();%>
         <%var date  =   d.getDate();%>
          
-        <%var datestring = date+ "-" + month+ "-" +year+ "-" +hour + ":" +minutes%>
+        <%var datestring = date+ "-" + month+ "-" +year+ "    " +hour + ":" +minutes%>
     
         <h1 style="text-align: center;"> <strong> <%=agents.username%></strong> טופס מעקב </h1>
-
-        <div style="width:30%; margin: 20px auto;">
-            <a href="/agent/<%=agents.id%>/report">הצג הכל</a>
+               
+        <div style="width:30%; margin: 20px auto;text-align: center;">
+           
+            <button>  <a href="/agent/<%=agents.id%>/report">יומן</a></button> 
+            <button> <a href="/agent/<%=agents.id%>/report/monthlyreports">דוחות חודשיים </a></button>
+            <button>  <a href="/agent/<%=agents.id%>/report/dayreport">דוחות יומיים  </a></button>
             <form action="/agent/<%=agents.id%>/report" method="POST">
-
+                
                 <table>
                     <thead>
                         <tr>
-                        
+                            
                             <th colspan="2"><%=datestring%></th>
                         </tr>
                     </thead>
@@ -64,54 +67,17 @@
                         <tr>
                             <td colspan="2" ><input type="text" class="form-control" name="remarks" placeholder="הערות "> </td>
                         </tr>
-
+                        
                     </tbody>
                 </table>
-
-                <!-- <label for="meeting">פגישות אצל בעלי נכסים</label>
-            <div class="form-group">
-                <input type="number" class="form-control" id="meeting" name="meeting" >   
-            </div>
-            <label for="stickerFlyers">הדבקת פליירים </label>
-            <div class="form-group">
-                <input type="number" class="form-control" id="stickerFlyers" name="stickerFlyers" >    
-            </div>
-            <label for="learninGandRenewal">למידה והתחדשות </label>
-            <div class="form-group">
-                <input type="number" class="form-control" id="learninGandRenewal" name="learninGandRenewal" >
-            </div>
-            
-            <label for="negotiationsInTheProcess">משא ומתן בתהליך </label>
-            <div class="form-group">
-                <input type="number" class="form-control" id="negotiationsInTheProcess"  name="negotiationsInTheProcess" >
-            </div>
-
-
-            <label for="actualTransactions">עסקאות בפועל </label>
-            <div class="form-group">
-                <input type="number" class="form-control" id="actualTransactions" name="actualTransactions" >
-            </div>
-            <label for="rentalTours">סיורי שוכרים </label>
-            <div class="form-group">
-                <input type="number" class="form-control" id="rentalTours" name="rentalTours" >
-            </div>
-            <label for="collaborations">שתופי פעולה  </label>
-            <div class="form-group">
-                <input type="number" class="form-control" id="collaborations" name="collaborations" >
-            </div>
-            <label for="conversationsWithPreviousClients">שיחות ללקוחות קודמים   </label>
-                <div class="form-group">
-                    <input type="number" class="form-control" id="conversationsWithPreviousClients" name="conversationsWithPreviousClients" >
-                </div>
-            <label for="pricesOffer">הצעות מחיר   </label>
-                <div class="form-group">
-                    <input type="number" class="form-control" id="pricesOffer" name="pricesOffer" >
-                </div> -->
+                
                 <div class="form-group">
                     <button class="btn btn-lg btn-primary btn-block ">שלח טופס</button>
                 </div>
-            </form>
 
+            </form>
+         
+             <button><a href="/logout">התנתק</a>   </button>
         </div>
     </div>
 </div>

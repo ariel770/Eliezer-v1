@@ -5,17 +5,10 @@
 
         <h1 style="text-align: center;">טופס מעקב <strong> <%=agents.username%></strong></h1>
         <div style="text-align: center;">
-            <a href="/agent/<%=agents.id%>/report/new">מלא דוח </a>
-            <a href="/agent/<%=agents.id%>/report/monthlyreports">דוחות חודשיים </a>
-
-            <h1>
-                <%=oop.summettings.reduce((a, b) => a + b, 0)%>
-                <%=oop.sumstickerFlyers.reduce((a, b) => a + b, 0)%>
-            </h1>
-
-
-            <%for(i=0 ;i<report.length;i++){%>
-
+           <button> <a href="/agent/<%=agents.id%>/report/new">מלא דוח </a></button>
+          
+            <%for (var i = report.length - 1; i >= 0; i--) {%>
+          
             <%for(b=0 ;b<agents.reports.length;b++){%>
 
 

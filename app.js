@@ -1,4 +1,5 @@
 require('dotenv').config();
+require('datejs')
 var express = require("express");
 var app = express();
 var bodyParser = require('body-parser');
@@ -40,7 +41,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(indexRoute);
 app.use("/agent",agentRoute);
 app.use(reportRoute);
-  
 
 mongoose.connect(process.env.DATABASEURL, {
     useNewUrlParser: true,

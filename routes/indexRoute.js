@@ -10,12 +10,18 @@ const middlewhereObj = require('../middlewhere/index.js');
 route.get("/register", function (req, res) {
     res.render("indexview/register.ejs");
 });
-
+var userType ;
 route.post("/register", function (req, res) {
-    var newuser = { username: req.body.username, UserType: 'user', contact: req.body.contact }
+    if(req.body.username == process.env.MANAGER){
+        userType = 'manager'
+    }else{
+        userType = 'user'
+    }
+    var newuser = { username: req.body.username, UserType: userType, contact: req.body.contact }
     Agents.register(new Agents(newuser), req.body.password, function (err, agent) {
-        if (err) {
-            return res.render("indexview/register.ejs")
+        if (err) { 
+                res.render("agents/newAgent.ejs",{agent:agent})   
+            return res.redirect("back")
         }
         Agents.authenticate("local")(req, res, function () {
             console.log("authenticate success ... ");
@@ -38,25 +44,6 @@ route.post("/", passport.authenticate("local", {
 }), function (req, res) {
 
 })
-
-// //AUTH ROUTE  == LOGIN
-// route.get("/login/:id", function (req, res) {
-
-//     res.render("indexview/login.ejs", { report: req.params.id });
-
-// })
-
-// route.post('/login/:id', function (req, res, next) {
-//     passport.authenticate('local', { failureFlash: true }, function (err, user, info) {
-//         if (err) { return next(err); }
-//         if (!user) { return res.redirect('/login'); }
-//         req.logIn(user, function (err) {
-//             if (err) { return next(err); }
-//             return res.redirect('/report/' + req.params.id);
-//         });
-//     })(req, res, next);
-// });
-
 
 //AUTH ROUTE  == LOGOUT
 

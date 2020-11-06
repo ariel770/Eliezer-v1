@@ -1,10 +1,11 @@
 var express = require('express');
 var route = express.Router();
 var Reports = require("../models/reports.js");
+var Statistic = require("../models/statistic.js");
 const Agents = require('../models/agents.js');
 const middlewhereObj = require('../middlewhere/index.js');
-const reports = require('../models/reports.js');
-const { db } = require('../models/reports.js');
+const statistic = require('../models/statistic.js');
+var ObjectId = require('mongodb').ObjectID;
 
 route.get("/agent/:id/report", middlewhereObj.isLoggedIn, function (req, res) {
 
@@ -12,72 +13,286 @@ route.get("/agent/:id/report", middlewhereObj.isLoggedIn, function (req, res) {
         if (err) {
             res.redirect("back")
         } else {
-            var oop = {
-                summettings: [], sumstickerFlyers: [], sumlearninGandRenewal: []
-                , sumactualTransactions: [], sumrentalTours: [], sumcollaborations: [],
-                sumconversationsWithPreviousClients: [], sumpricesOffer: []
-            }
             Reports.find({ "agent.id": req.params.id }, function (err, report) {
 
-
-                for (i = 1; i < report.length; i++) {
-                    oop.summettings[i] = report[i].meeting;
-                    oop.sumstickerFlyers[i] = report[i].stickerFlyers;
-                    oop.sumlearninGandRenewal[i] = report[i].learninGandRenewal;
-                    oop.sumactualTransactions[i] = report[i].actualTransactions;
-                    oop.sumrentalTours[i] = report[i].rentalTours;
-                    oop.sumcollaborations[i] = report[i].collaborations;
-                    oop.sumconversationsWithPreviousClients[i] = report[i].conversationsWithPreviousClients;
-                    oop.sumpricesOffer[i] = report[i].pricesOffer;
-                }
                 if (err) {
                     res.redirect("back");
                 } else {
-                    res.render("report/list.ejs", { report: report, agents: agents, oop: oop })
+                    res.render("report/list.ejs", { report: report, agents: agents })
+
                 }
             })
         }
     })
 
 })
-route.get("/agent/:id/report/monthlyreports", function (req, res) {  
 
 
+
+route.get("/agent/:id/report/monthlyreports", function (req, res) {
     Reports.aggregate([
-        //  IS WORK WITH AGENT BUT NOT BY DATE(MONTH) ============
-    
-        // {
-        //     $group: {
-        //         _id: { $month: "$date" },
-        //         numberofbookings: { $sum: '$meeting' }
-        //     }
-        // }
-
-        // {
-        //     $group: {
-        //         // username: '$agent.username',
-        //         _id: { $substr: ['$date', 5, 2] },
-        //         summettings: { $sum: '$meeting' }
-        //     }
-        // }
         {
-            $match:{
-                'agent.id': new mongoose.Types.ObjectId(req.user.id),
-            } 
-        },
-        {
+            $match: {
+                'agent.id': ObjectId(req.params.id)
+            }
+        }, {
             $group: {
-                _id:{ $month: "$date"},
-                count: {
+
+                _id: {
+                    year: { '$year': '$date' },
+                    month: { '$month': '$date' }
+                },
+                countmeeting: {
                     $sum: '$meeting'
+                },
+                countstickerflyers: {
+                    $sum: '$stickerFlyers'
+                },
+                countlearninGandRenewal: {
+                    $sum: '$learninGandRenewal'
+                },
+                countnegotiationsInTheProcess: {
+                    $sum: '$negotiationsInTheProcess'
+                },
+                countactualTransactions: {
+                    $sum: '$actualTransactions'
+                },
+                countrentalTours: {
+                    $sum: '$rentalTours'
+                },
+                countcollaborations: {
+                    $sum: '$collaborations'
+                },
+                countconversationsWithPreviousClients: {
+                    $sum: '$conversationsWithPreviousClients'
+                },
+                countpricesOffer: {
+                    $sum: '$pricesOffer'
                 }
             }
         }
-    ], function (err, result) {
+    ], function (err, report) {
+        if (err) {
+            console.log("error  : " + err)
+            res.redirect("back")
+        } else {
+            // I do not need that object  I can send just object from report  but ... i just do it 
+            var analisys = {
+                year: [],
+                month: [],
+                monthlyNeedMeetings: Number,
+                monthlyNeedstickerFlyers: Number,
+                monthlyNeedlearninGandRenewal: Number,
+                monthlyNeednegotiationsInTheProcess: Number,
+                monthlyNeedactualTransactions: Number,
+                monthlyNeedrentalTours: Number,
+                monthlyNeedcollaborations: Number,
+                monthlyNeedconversationsWithPreviousClients: Number,
+                monthlyNeedpricesOffer: Number,
+                currentMonthTotalDays: [],
+                sumMonthlyLearninGandRenewal: [],
+                sumMonthlyMeetings: [],
+                sumMonthlyStickerFlyers: [],
+                sumMonthlyNegotiationsInTheProcess: [],
+                sumMonthlyActualTransactions: [],
+                sumMonthlyRentalTours: [],
+                sumMonthlyCollaborations: [],
+                sumMonthlyConversationsWithPreviousClients: [],
+                sumMonthlyPricesOffer: [],
+                currentDayFromMonth: []
+            };
+            Statistic.find({ "agent.id": req.params.id }, function (err, statistic) {
+                if (err) {
+                    res.redirect("back")
+                } else {
+                    for (i = 0; i < statistic.length; i++) {
+                        analisys.monthlyNeedMeetings = statistic[i].meeting
+                        analisys.monthlyNeedstickerFlyers = statistic[i].stickerFlyers
+                        analisys.monthlyNeedlearninGandRenewal = statistic[i].learninGandRenewal
+                        analisys.monthlyNeednegotiationsInTheProcess = statistic[i].negotiationsInTheProcess
+                        analisys.monthlyNeedactualTransactions = statistic[i].actualTransactions
+                        analisys.monthlyNeedrentalTours = statistic[i].rentalTours
+                        analisys.monthlyNeedcollaborations = statistic[i].collaborations
+                        analisys.monthlyNeedconversationsWithPreviousClients = statistic[i].conversationsWithPreviousClients
+                        analisys.monthlyNeedpricesOffer = statistic[i].pricesOffer
+                    }
 
-        console.log(result)
-        console.log("succsess")
-        res.redirect("back");
+                    for (i = 0; i < report.length; i++) {
+                        analisys.year.push(report[i]._id.year);
+                        analisys.month.push(report[i]._id.month);
+                        analisys.sumMonthlyMeetings.push(report[i].countmeeting);
+                        analisys.sumMonthlyStickerFlyers.push(report[i].countstickerflyers);
+                        analisys.sumMonthlyLearninGandRenewal.push(report[i].countlearninGandRenewal);
+                        analisys.sumMonthlyNegotiationsInTheProcess.push(report[i].countnegotiationsInTheProcess);
+                        analisys.sumMonthlyActualTransactions.push(report[i].countactualTransactions);
+                        analisys.sumMonthlyRentalTours.push(report[i].countrentalTours);
+                        analisys.sumMonthlyCollaborations.push(report[i].countcollaborations);
+                        analisys.sumMonthlyConversationsWithPreviousClients.push(report[i].countconversationsWithPreviousClients);
+                        analisys.sumMonthlyPricesOffer.push(report[i].countpricesOffer);
+                        analisys.currentMonthTotalDays.push(daysInMonth(analisys.month[i], analisys.year[i]))
+
+                        if (new Date().getMonth() + 1 == report[i]._id.month) {
+                            analisys.currentDayFromMonth.push(new Date().getDate())
+                        } else {
+                            analisys.currentDayFromMonth.push(daysInMonth(analisys.month[i], analisys.year[i]))
+                        }
+                    }
+              
+                    res.render("report/monthlyReports.ejs", { report: report, statistic: statistic, analisys: analisys })
+                }
+            })
+        }
+    })
+
+});
+route.get("/agent/:id/report/dayreport", function (req, res) {
+    Reports.aggregate([
+        {
+            $match: {
+                'agent.id': ObjectId(req.params.id)
+            }
+        }, {
+            $group: {
+
+                _id: {
+                    month: { '$month': '$date' },
+                    day: { '$dayOfMonth': '$date' },
+                },
+                countmeeting: {
+                    $sum: '$meeting'
+                },
+                countstickerflyers: {
+                    $sum: '$stickerFlyers'
+                },
+                countlearninGandRenewal: {
+                    $sum: '$learninGandRenewal'
+                },
+                countnegotiationsInTheProcess: {
+                    $sum: '$negotiationsInTheProcess'
+                },
+                countactualTransactions: {
+                    $sum: '$actualTransactions'
+                },
+                countrentalTours: {
+                    $sum: '$rentalTours'
+                },
+                countcollaborations: {
+                    $sum: '$collaborations'
+                },
+                countconversationsWithPreviousClients: {
+                    $sum: '$conversationsWithPreviousClients'
+                },
+                countpricesOffer: {
+                    $sum: '$pricesOffer'
+                }
+            }
+        }
+    ], function (err, report) {
+        if (err) {
+            console.log("error  : " + err)
+            res.redirect("back")
+        } else {
+       
+                    // I do not need that object  I can send just object from report  but ... i just do it 
+
+                    var monthlyGoals = {
+                        monthlyNeedMeetings: 0,
+                        monthlyNeedstickerFlyers: 0,
+                        monthlyNeedstickerFlyersa: 0,
+                        monthlyNeedlearninGandRenewal: 0,
+                        monthlyNeednegotiationsInTheProcess: 0,
+                        monthlyNeedactualTransactions: 0,
+                        monthlyNeedrentalTours: 0,
+                        monthlyNeedcollaborations: 0,
+                        monthlyNeedconversationsWithPreviousClients: 0,
+                        monthlyNeedpricesOffer: 0,
+                    }
+
+                    var analisys = {
+                        month: [],
+                        day: [],
+                        monthlyNeedMeetings: Number,
+                        monthlyNeedstickerFlyers: Number,
+                        monthlyNeedlearninGandRenewal: Number,
+                        monthlyNeednegotiationsInTheProcess: Number,
+                        monthlyNeedactualTransactions: Number,
+                        monthlyNeedrentalTours: Number,
+                        monthlyNeedcollaborations: Number,
+                        monthlyNeedconversationsWithPreviousClients: Number,
+                        monthlyNeedpricesOffer: Number,
+                        currentMonthTotalDays: [],
+                        sumMonthlyLearninGandRenewal: [],
+                        sumMonthlyMeetings: [],
+                        sumMonthlyStickerFlyers: [],
+                        sumMonthlyNegotiationsInTheProcess: [],
+                        sumMonthlyActualTransactions: [],
+                        sumMonthlyRentalTours: [],
+                        sumMonthlyCollaborations: [],
+                        sumMonthlyConversationsWithPreviousClients: [],
+                        sumMonthlyPricesOffer: [],
+                        currentDayFromMonth: [],
+                        sumDayMissung: []
+                    };
+                    Statistic.find({ "agent.id": req.params.id }, function (err, statistic) {
+                        if (err) {
+                            res.redirect("back")
+                        } else {
+                            var date = new Date()
+                            for (i = 0; i < statistic.length; i++) {
+
+                                var days = daysInMonth(date.getMonth() + 1, date.getFullYear())
+                                analisys.monthlyNeedMeetings = statistic[i].meeting / days
+                                analisys.monthlyNeedstickerFlyers = statistic[i].stickerFlyers / days
+                                analisys.monthlyNeedlearninGandRenewal = statistic[i].learninGandRenewal / days
+                                analisys.monthlyNeednegotiationsInTheProcess = statistic[i].negotiationsInTheProcess / days
+                                analisys.monthlyNeedactualTransactions = statistic[i].actualTransactions / days
+                                analisys.monthlyNeedrentalTours = statistic[i].rentalTours / days
+                                analisys.monthlyNeedcollaborations = statistic[i].collaborations / days
+                                analisys.monthlyNeedconversationsWithPreviousClients = statistic[i].conversationsWithPreviousClients / days
+                                analisys.monthlyNeedpricesOffer = statistic[i].pricesOffer / days
+                            }
+               
+                            for (i = 0; i < statistic.length; i++) {
+                                monthlyGoals.monthlyNeedMeetings = statistic[i].meeting
+                                monthlyGoals.monthlyNeedstickerFlyers = statistic[i].stickerFlyers
+                                monthlyGoals.monthlyNeedlearninGandRenewal = statistic[i].learninGandRenewal
+                                monthlyGoals.monthlyNeednegotiationsInTheProcess = statistic[i].negotiationsInTheProcess
+                                monthlyGoals.monthlyNeedactualTransactions = statistic[i].actualTransactions
+                                monthlyGoals.monthlyNeedrentalTours = statistic[i].rentalTours
+                                monthlyGoals.monthlyNeedcollaborations = statistic[i].collaborations
+                                monthlyGoals.monthlyNeedconversationsWithPreviousClients = statistic[i].conversationsWithPreviousClients
+                                monthlyGoals.monthlyNeedpricesOffer = statistic[i].pricesOffer
+                            }
+
+
+                            for (i = 0; i < report.length; i++) {
+
+                                analisys.month.push(report[i]._id.month);
+                                analisys.day.push(report[i]._id.day);
+                                analisys.sumMonthlyMeetings.push(report[i].countmeeting);
+                                analisys.sumMonthlyStickerFlyers.push(report[i].countstickerflyers);
+                                analisys.sumMonthlyLearninGandRenewal.push(report[i].countlearninGandRenewal);
+                                analisys.sumMonthlyNegotiationsInTheProcess.push(report[i].countnegotiationsInTheProcess);
+                                analisys.sumMonthlyActualTransactions.push(report[i].countactualTransactions);
+                                analisys.sumMonthlyRentalTours.push(report[i].countrentalTours);
+                                analisys.sumMonthlyCollaborations.push(report[i].countcollaborations);
+                                analisys.sumMonthlyConversationsWithPreviousClients.push(report[i].countconversationsWithPreviousClients);
+                                analisys.sumMonthlyPricesOffer.push(report[i].countpricesOffer);
+                                analisys.currentMonthTotalDays.push(daysInMonth(date.getMonth() + 1, date.getFullYear()))
+
+                                if (new Date().getMonth() + 1 == report[i]._id.month) {
+                                    analisys.currentDayFromMonth.push(new Date().getDate())
+                                } else {
+                                    analisys.currentDayFromMonth.push(daysInMonth(date.getMonth() + 1, date.getFullYear()))
+                                }
+
+                            }
+                      
+                            res.render("report/dayReport.ejs", { report: report, statistic: statistic, analisys: analisys, monthlyGoals: monthlyGoals })
+                        }
+                    })
+                }
+         
     })
 
 });
@@ -187,5 +402,10 @@ route.post("/agent/:id/report/:report_id", middlewhereObj.isMannager, function (
     })
 
 });
+
+function daysInMonth(month, year) {
+    return new Date(year, month, 0).getDate();
+}
+
 
 module.exports = route;
