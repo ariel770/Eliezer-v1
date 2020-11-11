@@ -7,6 +7,12 @@ var reportsSchema = new mongoose.Schema({
         },
         username: String
     },
+    statistics: {
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Statistics"
+        }
+    },
     date: Date,
     meeting: Number,
     stickerFlyers: Number,
@@ -17,7 +23,7 @@ var reportsSchema = new mongoose.Schema({
     collaborations: Number,
     conversationsWithPreviousClients: Number,
     pricesOffer: Number,
-    remarks:String
+    remarks: String
 
 })
 module.exports = mongoose.model("Reports", reportsSchema);

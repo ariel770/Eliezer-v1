@@ -113,49 +113,49 @@
                         <td>הדבקת פליירים</td>
                         <td><%=report[i].countstickerflyers%></td>
                         <td><%=dailyNeedStickerFliyers.toFixed(2)%></td>
-                        <td><%=currentDayGoalStickerFliyers.toFixed(2)%></td>
+                        <td  class="change_color"><%=currentDayGoalStickerFliyers.toFixed(2)%></td>
                         <td class="change_color"><%=monthlyStickerfliyersBalance.toFixed(2)%></td>
                     </tr>
                     <tr>
                         <td>פגישות אצל בעלי נכסים</td>
                         <td><%=report[i].countmeeting%></td>
                         <td><%=dailyNeedMeetings.toFixed(2)%></td>
-                        <td><%=currentDayGoal.toFixed(2)%></td>
+                        <td  class="change_color"><%=currentDayGoal.toFixed(2)%></td>
                         <td class="change_color"><%=monthlyMeetingsBalance.toFixed(2)%></td>
                     </tr>
                     <tr>
                         <td>למידה והתחדשות</td>
                         <td><%=report[i].countlearninGandRenewal%></td>
                         <td><%=dailyNeedLearninGandRenewal.toFixed(2)%></td>
-                        <td><%=currentDayGoalLearninGandRenewal.toFixed(2)%></td>
+                        <td  class="change_color"><%=currentDayGoalLearninGandRenewal.toFixed(2)%></td>
                         <td class="change_color"><%=monthlyLearninGandRenewalBalance.toFixed(2)%></td>
                     </tr>
                     <tr>
                         <td>משא ומתן בתהליך</td>
                         <td><%=report[i].countnegotiationsInTheProcess%></td>
                         <td><%=dailyNeedNegotiationsInTheProcess.toFixed(2)%></td>
-                        <td><%=currentDayGoalNegotiationsInTheProcess.toFixed(2)%></td>
+                        <td  class="change_color"><%=currentDayGoalNegotiationsInTheProcess.toFixed(2)%></td>
                         <td class="change_color"><%=monthlyNegotiationsInTheProcessBalance.toFixed(2)%></td>
                     </tr>
                     <tr>
                         <td>עסקאות בפועל </td>
                         <td><%=report[i].countactualTransactions%></td>
                         <td><%=dailyNeedActualTransactions.toFixed(2)%></td>
-                        <td><%=currentDayGoalActualTransactions.toFixed(2)%></td>
+                        <td  class="change_color"><%=currentDayGoalActualTransactions.toFixed(2)%></td>
                         <td class="change_color"><%=monthlyActualTransactionsBalance.toFixed(2)%></td>
                     </tr>
                     <tr>
                         <td>סיורי שוכרים </td>
                         <td><%=report[i].countrentalTours%></td>
                         <td><%=dailyNeedRentalTours.toFixed(2)%></td>
-                        <td><%=currentDayGoalRentalTours.toFixed(2)%></td>
+                        <td  class="change_color"><%=currentDayGoalRentalTours.toFixed(2)%></td>
                         <td class="change_color"><%=monthlyRentalToursBalance.toFixed(2)%></td>
                     </tr>
                     <tr>
                         <td>שתופי פעולה</td>
                         <td><%=report[i].countcollaborations%></td>
                         <td><%=dailyNeedCollaborations.toFixed(2)%></td>
-                        <td><%=currentDayGoalCollaborations.toFixed(2)%></td>
+                        <td  class="change_color"><%=currentDayGoalCollaborations.toFixed(2)%></td>
                         <td class="change_color"><%=monthlyCollaborationsBalance.toFixed(2)%></td>
                     </tr>
                     <tr>
@@ -163,14 +163,14 @@
                         <td>שיחות ללקוחות קודמים</td>
                         <td><%=report[i].countconversationsWithPreviousClients%></td>
                         <td><%=dailyNeedConversationsWithPreviousClients.toFixed(2)%></td>
-                        <td><%=currentDayGoalConversationsWithPreviousClients.toFixed(2)%></td>
+                        <td class="change_color"><%=currentDayGoalConversationsWithPreviousClients.toFixed(2)%></td>
                         <td class="change_color"><%=monthlyConversationsWithPreviousClientsBalance.toFixed(2)%></td>
                     </tr>
                     <tr>
                         <td>הצעות מחיר</td>
                         <td><%=report[i].countpricesOffer%></td>
                         <td><%=dailyNeedPricesOffer.toFixed(2)%></td>
-                        <td><%=currentDayGoalPricesOffer.toFixed(2)%></td>
+                        <td class="change_color"> <%=currentDayGoalPricesOffer.toFixed(2)%></td>
                         <td class="change_color"><%=monthlyPricesOfferBalance.toFixed(2)%></td>
 
                     </tr>
@@ -182,6 +182,21 @@
         </div>
     </div>
     <script>
+        var change_color = document.querySelectorAll(".change_color");
+        var i;
+        for (i = 0; i < change_color.length; i++) {
+            if(change_color[i].innerText > 0 ){
+    
+                change_color[i].style.backgroundColor = "green";
+            }else if(change_color[i].innerText == 0 ){
+                change_color[i].style.backgroundColor = "yellow";
+            }else{
+                change_color[i].style.backgroundColor = "red";
+    
+            }
+        }
+    </script>
+    <!-- <script>
         var x = document.querySelectorAll("td");
         var i;
         for (i = 0; i < x.length; i++) {
@@ -190,5 +205,5 @@
                 x[i].style.backgroundColor = "red";
             }
         }
-    </script>
+    </script> -->
     <%- include ("../partials/footer")%>

@@ -28,5 +28,9 @@ middlewhereObj.isMannager = function (req, res, next) {
         res.redirect("/");
     }
 }
+// middlewhereObj.confirm  =function(req,res,next){
+
+//       res.render("confirm.ejs")
+// }
 
 module.exports = middlewhereObj;

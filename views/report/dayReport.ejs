@@ -80,7 +80,6 @@
             <%if(analisys.month[i] == new Date().getMonth()+1){ %>
 
             <!-- flyers vars -->
-            <%var sumMonth = analisys.monthlyNeedstickerFlyers * analisys.currentMonthTotalDays[i] %>
             <%var currentDayGoalStickerFliyers = analisys.currentMonthTotalDays[i] * analisys.monthlyNeedstickerFlyers%>
             <%var monthlyStickerfliyersBalance = analisys.sumMonthlyStickerFlyers[i] - currentDayGoalStickerFliyers%>
             <%var sumDayMissing = report[i].countstickerflyers - analisys.monthlyNeedstickerFlyers%>
@@ -88,7 +87,6 @@
             <%bsfc = asfc-monthlyGoals.monthlyNeedstickerFlyers %>
 
             <!-- meetings vars -->
-            <%var sumMonth = analisys.monthlyNeedMeetings * analisys.currentMonthTotalDays[i] %>
             <%var currentDayGoal = analisys.currentMonthTotalDays[i] * analisys.monthlyNeedMeetings%>
             <%var monthlyMeetingsBalance = analisys.sumMonthlyMeetings[i] - currentDayGoal%>
             <%var sumDayMissingA = report[i].countmeeting - analisys.monthlyNeedMeetings%>
@@ -97,7 +95,6 @@
 
             <!-- learninGandRenewal vars -->
 
-            <%var sumMonth = analisys.monthlyNeedLearninGandRenewal * analisys.currentMonthTotalDays[i] %>
             <%var currentDayGoalLearninGandRenewal = analisys.currentMonthTotalDays[i] * analisys.monthlyNeedLearninGandRenewal%>
             <%var monthlyLearninGandRenewalBalance = analisys.sumMonthlyLearninGandRenewal[i] - currentDayGoalLearninGandRenewal%>
             <%var sumDayMissingB = report[i].countlearninGandRenewal - analisys.monthlyNeedlearninGandRenewal%>
@@ -106,7 +103,6 @@
 
             <!-- negotiationsInTheProcess -->
 
-            <%var  sumMonth = analisys.monthlyNeednegotiationsInTheProcess * analisys.currentMonthTotalDays[i] %>
             <%var currentDayGoalNegotiationsInTheProcess = analisys.currentMonthTotalDays[i] * analisys.monthlyNeednegotiationsInTheProcess%>
             <%var monthlyNegotiationsInTheProcessBalance = analisys.sumMonthlyNegotiationsInTheProcess[i] - currentDayGoalNegotiationsInTheProcess%>
             <%var sumDayMissingC = report[i].countnegotiationsInTheProcess - analisys.monthlyNeednegotiationsInTheProcess%>
@@ -114,7 +110,6 @@
             <%bnipc = anipc-monthlyGoals.monthlyNeednegotiationsInTheProcess%>
 
             <!-- sumMonthlyActualTransactions -->
-            <%var  sumMonth = analisys.monthlyNeedactualTransactions * analisys.currentMonthTotalDays[i] %>
             <%var currentDayGoalActualTransactions = analisys.currentMonthTotalDays[i] * analisys.monthlyNeedactualTransactions%>
             <%var monthlyActualTransactionsBalance = analisys.sumMonthlyActualTransactions[i] - currentDayGoalActualTransactions%>
             <%var sumDayMissingD = report[i].countactualTransactions - analisys.monthlyNeedactualTransactions%>
@@ -123,7 +118,6 @@
 
             <!-- RentalTours -->
 
-            <%var sumMonth = analisys.monthlyNeedrentalTours * analisys.currentMonthTotalDays[i] %>
 
             <%var currentDayGoalRentalTours = analisys.currentMonthTotalDays[i] *  analisys.monthlyNeedrentalTours%>
             <%var monthlyRentalToursBalance = analisys.sumMonthlyRentalTours[i] - currentDayGoalRentalTours%>
@@ -160,7 +154,7 @@
                     </tr>
                     <tr>
                         <th> </th>
-                        <th> בוצע סה"כ</th>
+                        <th> בוצע היןם </th>
                         <th> יעד יומי</th>
                         <th> פער מהיעד החודשי </th>
                         <th> פער מהיעד היומי </th>
@@ -174,50 +168,50 @@
                         <td><%=report[i].countstickerflyers%></td>
                         <td><%=analisys.monthlyNeedstickerFlyers.toFixed(2)%></td>
                         <td class="change_color"><%=bsfc%></td>
-                        <td class="change_color"><%=sumDayMissing.toFixed(1)%></td>
+                        <td class="change_color" ><%=sumDayMissing.toFixed(1)%></td>
                     </tr>
                     <tr>
                         <td>פגישות אצל בעלי נכסים</td>
                         <td><%=report[i].countmeeting%></td>
                         <td><%=analisys.monthlyNeedMeetings.toFixed(1)%></td>
                         <td class="change_color"><%=bmc%></td>
-                        <td class="change_color"><%=sumDayMissingA.toFixed(1)%></td>
+                        <td class="change_color" ><%=sumDayMissingA.toFixed(1)%></td>
                     </tr>
                     <tr>
                         <td>למידה והתחדשות</td>
                         <td><%=report[i].countlearninGandRenewal%></td>
                         <td><%=analisys.monthlyNeedlearninGandRenewal.toFixed(1)%></td>
-                        <td><%=blarc%></td>
-                        <td class="change_color"><%=sumDayMissingB.toFixed(2)%></td>
+                        <td class="change_color"><%=blarc%></td>
+                        <td class="change_color" ><%=sumDayMissingB.toFixed(2)%></td>
                     </tr>
                     <tr>
                         <td>משא ומתן בתהליך</td>
                         <td><%=report[i].countnegotiationsInTheProcess%></td>
                         <td><%=analisys.monthlyNeednegotiationsInTheProcess.toFixed(2)%></td>
-                        <td><%=bnipc%></td>
-                        <td class="change_color"><%=sumDayMissingC.toFixed(2)%></td>
+                        <td class="change_color"><%=bnipc%></td>
+                        <td class="change_color" ><%=sumDayMissingC.toFixed(2)%></td>
                     </tr>
                     <tr>
                         <td>עסקאות בפועל </td>
                         <td><%=report[i].countactualTransactions%></td>
                         <td><%=analisys.monthlyNeedactualTransactions.toFixed(2)%></td>
-                        <td><%=batc%></td>
-                        <td class="change_color"><%=sumDayMissingD.toFixed(2)%></td>
+                        <td  class="change_color"><%=batc%></td>
+                        <td class="change_color" ><%=sumDayMissingD.toFixed(2)%></td>
                     </tr>
 
                     <tr>
                         <td>סיורי שוכרים </td>
                         <td><%=report[i].countrentalTours%></td>
                         <td><%=analisys.monthlyNeedrentalTours.toFixed(2)%></td>
-                        <td><%=brtc%></td>
-                        <td class="change_color"><%=sumDayMissingE.toFixed(2)%></td>
+                        <td  class="change_color"><%=brtc%></td>
+                        <td class="change_color" ><%=sumDayMissingE.toFixed(2)%></td>
                     </tr>
                     <tr>
                         <td>שתופי פעולה</td>
                         <td><%=report[i].countcollaborations%></td>
                         <td><%=analisys.monthlyNeedcollaborations.toFixed(2)%></td>
-                        <td><%=bcc%></td>
-                        <td class="change_color"><%=sumDayMissingF.toFixed(2)%></td>
+                        <td  class="change_color"><%=bcc%></td>
+                        <td class="change_color" ><%=sumDayMissingF.toFixed(2)%></td>
                     </tr>
                     <tr>
 
@@ -228,8 +222,8 @@
                             <p> <%=report[i].countconversationsWithPreviousClients  %></p>
                         </td>
                         <td><%=analisys.monthlyNeedconversationsWithPreviousClients.toFixed(2)%></td>
-                        <td><%=bcpcc%></td>
-                        <td class="change_color"><%=sumDayMissingG.toFixed(2)%></td>
+                        <td  class="change_color"><%=bcpcc%></td>
+                        <td class="change_color" ><%=sumDayMissingG.toFixed(2)%></td>
                     </tr>
 
 
@@ -239,8 +233,8 @@
                         </td>
                         <td><%=report[i].countpricesOffer%></td>
                         <td><%=analisys.monthlyNeedpricesOffer.toFixed(2)%></td>
-                        <td><%=bpoc%></td>
-                        <td><%=sumDayMissingH.toFixed(2)%></td>
+                        <td  class="change_color"><%=bpoc%></td>
+                        <td class="change_color" ><%=sumDayMissingH.toFixed(2)%></td>
                     </tr>
 
                 </tbody>
@@ -252,12 +246,17 @@
     </div>
 </div>
 <script>
-    var x = document.querySelectorAll("td");
+    var change_color = document.querySelectorAll(".change_color");
     var i;
-    for (i = 0; i < x.length; i++) {
-        if(x[i].innerText < -5 ){
+    for (i = 0; i < change_color.length; i++) {
+        if(change_color[i].innerText > 0 ){
 
-            x[i].style.backgroundColor = "red";
+            change_color[i].style.backgroundColor = "green";
+        }else if(change_color[i].innerText == 0 ){
+            change_color[i].style.backgroundColor = "yellow";
+        }else{
+            change_color[i].style.backgroundColor = "red";
+
         }
     }
 </script>

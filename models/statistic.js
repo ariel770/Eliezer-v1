@@ -10,7 +10,7 @@ var statisticsSchema = new mongoose.Schema({
         username: String,
         status:String
     },
-    date:  Date,
+    date:Date,
     meeting: Number,
     stickerFlyers:Number,
     learninGandRenewal: Number,

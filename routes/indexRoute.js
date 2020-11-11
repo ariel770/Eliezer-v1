@@ -8,7 +8,7 @@ const middlewhereObj = require('../middlewhere/index.js');
 //AUTH ROUTE  == REGISER
 
 route.get("/register", function (req, res) {
-    res.render("indexview/register.ejs");
+    res.render("agents/newAgent.ejs")
 });
 var userType ;
 route.post("/register", function (req, res) {
