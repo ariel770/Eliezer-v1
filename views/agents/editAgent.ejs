@@ -7,20 +7,27 @@
                 <label for="username"> שם </label>
 
                 <div class="form-group">
-                    <input type="text" id="username" class="form-control" name="agent[username]"
+                    <input type="text" id="username" class="form-control" name="username"
                         value="<%=agent.username%>">
                 </div>
-                <label for="status"> סטטוס</label>
+              
+                <label for="status"> טלפון</label>
                 <div class="form-group">
-                    <input type="text" id="status" class="form-control" name="agent[status]" value="<%=agent.status%>">
+                    <input type="text" id="phone" class="form-control" name="phone"
+                        value="<%=agent.contact.phone%>">
                 </div>
-           
-    
-    <div class="form-group">
-        <button class="btn btn-lg btn-primary btn-block ">הוסף איש קשר </button>
-</div>
+                <label for="status"> מייל</label>
+                <div class="form-group">
+                    <input type="text" id="email" class="form-control" name="email"
+                        value="<%=agent.contact.email%>">
+                </div>
 
-</form>
+
+                <div class="form-group">
+                    <button class="btn btn-lg btn-primary btn-block ">עדכן פרטי סוכן </button>
+                </div>
+
+            </form>
 
         </div>
     </div>

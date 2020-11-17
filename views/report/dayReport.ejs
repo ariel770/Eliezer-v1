@@ -249,10 +249,10 @@
     var change_color = document.querySelectorAll(".change_color");
     var i;
     for (i = 0; i < change_color.length; i++) {
-        if(change_color[i].innerText > 0 ){
+        if(parseInt(change_color[i].innerText) > 0 ){
 
             change_color[i].style.backgroundColor = "green";
-        }else if(change_color[i].innerText == 0 ){
+        }else if(parseInt(change_color[i].innerText) == 0 ){
             change_color[i].style.backgroundColor = "yellow";
         }else{
             change_color[i].style.backgroundColor = "red";
@@ -261,4 +261,4 @@
     }
 </script>
 
-<!-- <%- include ("../partials/footer")%> -->
+<%- include ("../partials/footer")%>

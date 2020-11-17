@@ -5,14 +5,20 @@
 <!-- FIX REPORT PAGE (SHOW IN RED THE LOW RESULT)  \/ -->
 <!-- DELETE REPORTS WHEN DELETE AGENTS \/ -->
 <!-- why in reports day does not calculate ???? i(reports section ) \/ -->
-<!-- need to connect the statistics to the current report   \/  -->
+<!-- need t connect the statistics to the current report   \/  -->
 <!-- FIND SPECIFIC STATISTIC PAGE DEPENDEIG THE MONTH  \/ -->
 <!-- succsess messeage after the report \/-->
+<!-- WORK ON AN ALGORITHIM THAT PERFORMS STATISTICS      1) SET THE PAGE THAT DISPLAY THE STATISTICS CALCULATE BEFORE CREATE IN DB 
+                                                         2) CHANGE THIS TO A BACK TO  A FRONT END    
+ -->
+<!-- REDIRECT REQUEST BROWSE FROM MANAGER TO ANOTHER PAGE CALLED FIND DETAILLS  \/-->
 
 
+<!-- ADD ERRORS MESSEAGES AD DETAILS -->
+<!-- DESIGN THE PAGE  NEW REPORT , LOGIN , SHOW ,REGISTER ,MONTHLY REPORT ,DAY REPORT , ETC' ETC' -->
+<!-- UPDATE AND SET THE EDIT SECTION -->
 
 
-<!-- WORK ON AN ALGORITHIM THAT PERFORMS STATISTICS -->
 
 <div class="container">
     <div class="row">
@@ -24,13 +30,22 @@
             <button><a href="/agent">חזור לרשימת סוכנים </a></button>
             <button><a href="/agent/<%=agent.id%>/report"> הצג את כל הדוחות </a></button>
             <button><a href="/agent/<%=agent.id%>/edit">ערוך שם </a></button>
+
+            <!--  -->
             <button><a href="/agent/<%=agent.id%>/setgoals"> קבע יעד כספי </a></button>
-            <button> <a href="/agent/<%=agent.id%>/reportGoals">טבלת יעדים </a></button>
+            <!--  -->
+
+
             <form action="/agent/<%=agent.id%>?_method=DELETE" method="POST">
-                <button>מחק סוכן</button>
+                <button onclick="return confirmYourChoice()">מחק סוכן</button>
             </form>
 
             <button> <a href="/agent/<%=agent.id%>/report/monthlyreports"> הצג חודשים קודמים</a></button>
+
+
+
+
+
 
             <h3>חפש סטטיסטיקות קודמת </h3>
             <form action="/agent/getListStatistics/<%=agent.id%>" method="post">
@@ -57,84 +72,31 @@
 
 
 
-            <%for(var b=0 ; b<reportGoal.length; b++){%>
-            <%for(var i=0 ; i<statistics.length; i++){%>
-
-            <%if(reportGoal[b]._id.statistics == statistics[i].id){%>
-            <table class="table table-bordered table-dark " style="margin-bottom: 100px; width:200px">
-                <p> טבלת יעדים לחודש <%=reportGoal[b]._id.month%> סטטיסטיקה מספר :<%=b+1%></p>
 
 
-                <thead>
-                    <tr>
-                        <th scope="col"></th>
-                        <th scope="col">פגישות </th>
-                        <th scope="col">הדבקות סטיקרים </th>
-                        <th scope="col">למידה והתחדשות </th>
-                        <th scope="col">משא ומתן בתהליך</th>
-                        <th scope="col">עסקאות בפועל </th>
-                        <th scope="col">סיורי שוכרים </th>
-                        <th scope="col">שתופי פעולה </th>
-                        <th scope="col">שיחות ללקוחות קודמים </th>
-                        <th scope="col">הצעות מחיר </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>נדרש</strong></td>
-                        <td class="needed"><strong><%=statistics[i].meeting%></strong></td>
-                        <td class="needed"><strong> <%=statistics[i].stickerFlyers%></strong></td>
-                        <td class="needed"><strong><%=statistics[i].learninGandRenewal%></strong></td>
-                        <td class="needed"><strong><%=statistics[i].negotiationsInTheProcess%></strong></td>
-                        <td class="needed"><strong><%=statistics[i].actualTransactions%></strong></td>
-                        <td class="needed"><strong><%=statistics[i].rentalTours%></strong></td>
-                        <td class="needed"><strong><%=statistics[i].collaborations%></strong></td>
-                        <td class="needed"><strong><%=statistics[i].conversationsWithPreviousClients%></strong></td>
-                        <td class="needed"><strong><%=statistics[i].pricesOffer%></strong></td>
-                    </tr>
-                    <tr>
-                        <td><strong>בפועל</strong></td>
-                        <td class="actual"><strong><%=reportGoal[b].countmeeting%></strong></td>
-                        <td class="actual"><strong><%=reportGoal[b].countstickerflyers%></strong></td>
-                        <td class="actual"><strong><%=reportGoal[b].countlearninGandRenewal%></strong></td>
-                        <td class="actual"><strong><%=reportGoal[b].countactualTransactions%></strong></td>
-                        <td class="actual"><strong><%=reportGoal[b].countnegotiationsInTheProcess%></strong></td>
-                        <td class="actual"><strong><%=reportGoal[b].countrentalTours%></strong></td>
-                        <td class="actual"><strong><%=reportGoal[b].countcollaborations%></strong></td>
-                        <td class="actual"><strong><%=reportGoal[b].countconversationsWithPreviousClients%></strong>
-                        </td>
-                        <td class="actual"><strong><%=reportGoal[b].countpricesOffer%></strong></td>
-                    </tr>
-                </tbody>
-            </table>
-            <%}%>
-            <%}%>
-            <%}%>
-          
-          
-          
-        
+
+
             <h3>חפש דוחות קודמים </h3>
 
             <form action="/agent/getListReports/<%=agent.id%>" method="post">
 
-            <div class="form-group">
-                <input type="date" id="from" class="form-control myDate" name="from" placeholder="מתאריך"
-                    autocomplete="off">
-            </div>
-            <div class="form-group">
-                <input type="date" id="to" class="form-control myDate" name="to" placeholder="לתאריך"
-                    autocomplete="off">
-            </div>
-            <div class=" form-group">
-                <input class="btn btn-lg btn-primary btn-block" type="submit" class="form-control"
-                    value="בחר דוח לפי תאריך ">
-            </div>
+                <div class="form-group">
+                    <input type="date" id="from" class="form-control myDate" name="from" placeholder="מתאריך"
+                        autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <input type="date" id="to" class="form-control myDate" name="to" placeholder="לתאריך"
+                        autocomplete="off">
+                </div>
+                <div class=" form-group">
+                    <input class="btn btn-lg btn-primary btn-block" type="submit" class="form-control"
+                        value="בחר דוח לפי תאריך ">
+                </div>
 
-            <div class="form-group">
-                <button><a class="btn btn-sm btn-danger btn-block" href="javascript:history.back()">עמוד
-                        קודם</a></button>
-            </div>
+                <div class="form-group">
+                    <button><a class="btn btn-sm btn-danger btn-block" href="javascript:history.back()">עמוד
+                            קודם</a></button>
+                </div>
             </form>
 
 
@@ -191,6 +153,23 @@
 </div>
 </div>
 </div>
+
+<script>
+    function confirmYourChoice() {
+    
+      var x = confirm("האם הינך בטוח שברצונך למחוק סוכן זה ?");מצ
+      if (x)
+          return true;
+      else
+        return false;
+    
+   }
+
+
+</script>
+
+
+
 
 <!-- NEED WORK WITH THIS !!!!  -->
 <!-- <script>

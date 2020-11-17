@@ -4,7 +4,7 @@ var Reports = require("../models/reports.js");
 var Statistic = require("../models/statistic.js");
 var Agents = require("../models/agents.js");
 const middlewhereObj = require('../middlewhere/index.js');
-const statistic = require('../models/statistic.js');
+const { ready } = require('jquery');
 var ObjectId = require('mongodb').ObjectID;
 
 
@@ -27,93 +27,27 @@ route.get("/new", middlewhereObj.isMannager, function (req, res) {
 });
 
 
+
+
 //GET REPORTS BETWEEN 2 DAYS
 route.post("/getListReports/:id", function (req, res) {
-
-    Reports.find({ "agent.id": req.params.id }, function (err, reports) {
-
+    var date1 = new Date(req.body.from);
+    var date2 = new Date(req.body.to);
+    Reports.find({ "agent.id": req.params.id, date: { $gt: date1, $lt: date2 } }).sort({ date: -1 }).exec(function (err, report) {
         if (err) {
-            res.redirect("back")
+            console.log("error ! " + err)
+            res.redirect("back");
         } else {
-
-
-            var date1 = new Date(req.body.from);
-            var date2 = new Date(req.body.to);
-            Reports.find({ "agent.id": req.params.id, date: { $gt: date1, $lt: date2 } }, function (err, report) {
-                if (err) {
-                    res.redirect("back")
-                } else {
-                    Agents.findById(req.params.id, function (err, agent) {
-                        if (err) {
-                            res.redirect("back")
-                        } else {
-                            Statistic.find({ "agent.id": req.params.id }, function (err, statistics) {
-                                if (err) {
-                                    res.redirect("back")
-                                } else {
-
-                                    Reports.aggregate([
-                                        {
-                                            $match: {
-                                                'agent.id': ObjectId(req.params.id)
-                                            }
-                                        }, {
-                                            $group: {
-
-                                                _id: {
-                                                    year: { '$year': '$date' },
-                                                    month: { '$month': '$date' }
-                                                },
-                                                countmeeting: {
-                                                    $sum: '$meeting'
-                                                },
-                                                countstickerflyers: {
-                                                    $sum: '$stickerFlyers'
-                                                },
-                                                countlearninGandRenewal: {
-                                                    $sum: '$learninGandRenewal'
-                                                },
-                                                countnegotiationsInTheProcess: {
-                                                    $sum: '$negotiationsInTheProcess'
-                                                },
-                                                countactualTransactions: {
-                                                    $sum: '$actualTransactions'
-                                                },
-                                                countrentalTours: {
-                                                    $sum: '$rentalTours'
-                                                },
-                                                countcollaborations: {
-                                                    $sum: '$collaborations'
-                                                },
-                                                countconversationsWithPreviousClients: {
-                                                    $sum: '$conversationsWithPreviousClients'
-                                                },
-                                                countpricesOffer: {
-                                                    $sum: '$pricesOffer'
-                                                }
-                                            }
-                                        }
-                                    ], function (err, reportGoal) {
-                                        if (err) {
-                                            console.log("error ! " + err)
-                                            res.redirect("back");
-                                        } else {
-                                            console.log("succsees")
-                                            res.render("agents/show.ejs", { agent: agent, statistics: statistics, report: report, reportGoal: reportGoal })
-                                        }
-                                    })
-                                }
-                            })
-                        }
-                    })
-                }
-            })
+            console.log("succsees")
+            res.render("agents/specificListReports.ejs", { report: report })
         }
     })
 })
+
+//   ===> HERE 
 //GET STATISTICS BETWEEN 2 DAYS
 route.post("/getListStatistics/:id", function (req, res) {
-    
+
     Agents.findById(req.params.id, function (err, agent) {
         if (err) {
         } else {
@@ -121,18 +55,15 @@ route.post("/getListStatistics/:id", function (req, res) {
             var date2 = new Date(req.body.to);
             Statistic.find({ "agent.id": req.params.id, date: { $gt: date1, $lt: date2 } }, function (err, statistics) {
                 if (err) {
-                    console.log(err)
+                    res.redirect("back")
                 } else {
-
                     Reports.aggregate([
                         {
                             $match: {
                                 'agent.id': ObjectId(req.params.id),
-
                             }
                         }, {
                             $group: {
-
                                 _id: {
                                     statistics: '$statistics.id',
                                     year: { '$year': '$date' },
@@ -167,14 +98,12 @@ route.post("/getListStatistics/:id", function (req, res) {
                                 }
                             }
                         },
-
                         { $sort: { "_id": -1 } },
                     ], function (err, reportGoal) {
-                        if (err) {
-                            console.log(err)
+                        if (err || reportGoal.length == 0) {
+                            res.redirect("back")
                         } else {
-                            // console.log(reportGoal)
-                            res.render("agents/show.ejs", { agent: agent, statistics: statistics, report: "", reportGoal: reportGoal })
+                            res.render("agents/specificListStatistics.ejs", { agent: agent, statistics: statistics, reportGoal: reportGoal })
                         }
                     })
                 }
@@ -242,16 +171,11 @@ route.get("/:id", middlewhereObj.isMannager, function (req, res) {
 
                         { $sort: { "_id": -1 } },
                         { $limit: 1 },
-                        //   {  $match:{
 
-                        //         'statistics.id': statistics.id,
-                        //     }
-                        // }
                     ], function (err, reportGoal) {
                         if (err) {
                             console.log(err)
                         } else {
-                            // console.log(reportGoal)
                             res.render("agents/show.ejs", { agent: agent, statistics: statistics, report: "", reportGoal: reportGoal })
                         }
                     })
@@ -263,62 +187,58 @@ route.get("/:id", middlewhereObj.isMannager, function (req, res) {
 
 })
 
+//SET STATISTICS
+route.get("/:id/setgoals", function (req, res) {
 
-route.get("/:id/reportGoals", function (req, res) {
-    Agents.findById(req.params.id, function (err, agents) {
+    Agents.findById(req.params.id, function (err, agent) {
+        if (err) {
+            res.redirect("back");
+        } else {
+            res.render("agents/setgoals.ejs", { agent: agent })
+        }
+    })
+
+
+
+})
+
+//ADD THE STATISTICS TO DB
+route.post("/:id/setgoals", function (req, res) {
+
+    Agents.findById(req.params.id, function (err, agent) {
         if (err) {
             res.redirect("back")
         } else {
-            Reports.find({ "agent.id": req.params.id }, function (err, report) {
+            var id = agent.id;
+            var username = agent.username;
+            var a = {
+                agent: { id: id, username: username }, date: new Date(), meeting: req.body.meeting,
+                stickerFlyers: req.body.stickerFlyers, learninGandRenewal: req.body.learninGandRenewal,
+                negotiationsInTheProcess: req.body.negotiationsInTheProcess, actualTransactions: req.body.actualTransactions,
+                rentalTours: req.body.rentalTours, collaborations: req.body.collaborations,
+                conversationsWithPreviousClients: req.body.conversationsWithPreviousClients, pricesOffer: req.body.pricesOffer
+            }
 
+            //    console.log( b)
+            Statistic.create(a, function (err, statistics) {
                 if (err) {
+                    console.log("ERROR   :  " + err)
                     res.redirect("back");
                 } else {
-                    res.render("agents/reportGoals.ejs", { report: report, agents: agents })
+                    agent.statistic.push(statistics.id);
+                    agent.save();
+                    console.log(statistics)
+                    res.redirect("back")
                 }
             })
-        }
-    })
 
 
-})
-
-//need work in thi function 
-route.post("/:id/reportGoals", function (req, res) {
-    Agents.findById(req.params.id, function (err, agents) {
-        if (err) {
-
-        } else {
-            var newReport = {
-                agent: {
-                    id: agents.id,
-                    username: agents.username
-                },
-                date: new Date(),
-                meeting: req.body.meeting,
-                stickerFlyers: req.body.stickerFlyers,
-                learninGandRenewal: req.body.learninGandRenewal,
-                negotiationsInTheProcess: req.body.negotiationsInTheProcess,
-                actualTransactions: req.body.actualTransactions,
-                rentalTours: req.body.rentalTours,
-                collaborations: req.body.collaborations,
-                conversationsWithPreviousClients: req.body.conversationsWithPreviousClients,
-                pricesOffer: req.body.pricesOffer,
-            }
-            Statistic.create(newReport, function (err, statistic) {
-                console.log(statistic)
-                if (err) {
-                    console.log(err)
-                } else {
-                    agents.statistic.push(statistic.id);
-                    agents.save();
-                    res.redirect("/agent/" + agents.id);
-                }
-            })
         }
     })
 
 })
+
+
 
 //EDIT SPECIFIC AGENT 
 route.get("/:id/edit", function (req, res) {
@@ -327,6 +247,7 @@ route.get("/:id/edit", function (req, res) {
         if (err) {
             console.log(err)
         } else {
+            console.log("agent")
 
             res.render("agents/editAgent.ejs", { agent: agent })
 
@@ -335,10 +256,26 @@ route.get("/:id/edit", function (req, res) {
 
 
 });
-
+//  
+//  
+//   HERE  ===>  
+//  
+//  
 //INSERT THE FIX AGENTS TO THE DB
 route.put("/:id", function (req, res) {
-    Agents.findByIdAndUpdate(req.params.id, req.body.agent, function (err, agent) {
+    var agent = {
+        contact: {
+            phone: req.body.phone,
+            email: req.body.email
+        },
+        username: req.body.username
+
+    }
+    console.log(agent)
+
+
+    Agents.findByIdAndUpdate(req.params.id, agent, function (err, agent) {
+console.log(agent)
         if (err) {
             console.log(err)
         } else {
@@ -349,119 +286,10 @@ route.put("/:id", function (req, res) {
 });
 
 
-//SET STATISTICS
-route.get("/:id/setgoals", function (req, res) {
-
-    Agents.findById(req.params.id, function (err, agents) {
-        if (err) {
-            res.redirect("back");
-        } else {
-            res.render("agents/setgoals.ejs", { agents, agents })
-        }
-    })
-
-
-
-})
-
-//ADD THE STATISTICS TO DB
-route.post("/:id/setgoals", function (req, res) {
-    var avg;
-    var qtyOfMeeting;
-
-    Agents.findById(req.params.id, function (err, agents) {
-        if (err) {
-            res.redirect("back");
-        } else {
-            //=============================
-            //NEED TO FIX THE FUNCTIONS !!! 
-            //=============================
-            var goal = req.body.money;
-            var marketingActivity;
-            var meetings;
-            var apartmentView;
-            var qtyOfDeals;
-            agents.status = req.body.status;
-            agents.save();
-
-
-            if (req.body.status == "comersial") {
-                avg = 20000;
-
-            } else {
-                avg = 30000
-            }
-            //1 
-            qtyOfDeals = goal / avg;//33.3333
-            //2
-            apartmentView = qtyOfDeals / 6;
-            var c;
-            c = qtyOfDeals * apartmentView;
-            //3            
-            meetings = apartmentView / 5;
-            //4
-            marketingActivity = meetings / 5;
-
-
-            console.log("C :" + c)
-            console.log("avg :" + avg)
-            console.log("======================");
-            console.log("goal :" + goal);
-            console.log("======================");
-            console.log("qtyOfDeals :" + qtyOfDeals);
-            console.log("======================")
-            console.log("apartmentView :" + apartmentView);
-            console.log("======================");
-            console.log("mettings :" + meetings);
-            console.log("======================");
-            console.log("marketingActivity :" + marketingActivity);
-            console.log("======================");
-            // callsToBuyers = marketingActivity * 5;
-            // mettingToBuyers = (callsToBuyers * 3) + (callsToSalles * 2);
-            // mettingToSalles = (callsToBuyers * 3) + (callsToSalles * 2);
-            // deals = meetingsTosalles * 5 + mettingToBuyers * 10;
-            // delas = callsToBuyers + mettingToBuyers + mettingToSalles;
-
-            var statistic = {
-                agent: {
-                    username: agents.username,
-                    id: agents.id,
-                    status: req.body.status
-                },
-                meetings: qtyOfMeeting,
-                approachesToClosingDeal: qtyOfMeeting,
-                interestedWhoeBuying: qtyOfMeeting,
-                propertiesShowUp: qtyOfMeeting,
-                commissionFee: qtyOfMeeting,
-                averageTransaction: qtyOfMeeting,
-                salesExclusivity: avg,
-                meetingsExclusivity: goal
-            }
-            Statistic.create(statistic, function (err, statistics) {
-                if (err) {
-                    console.log(err)
-                } else {
-                    Agents.findByIdAndUpdate(req.params.id, statistic.agent, function (err, agents) {
-                        if (err) {
-                            res.redirect("back")
-                        } else {
-
-                            agents.statistic.push(statistics.id)
-
-                            res.redirect("/agent/" + req.params.id)
-
-                        }
-                    })
-
-                }
-            })
-
-        }
-    })
-})
 // DELETE COMPLETE AGENTS DETAILLS 
 route.delete("/:id", function (req, res) {
     Agents.findByIdAndDelete(req.params.id, function (err, agent) {
+
         if (err) {
             res.redirect("/agent");
         } else {
@@ -494,4 +322,33 @@ route.delete("/:id", function (req, res) {
         }
     })
 })
+
+
+function getStatistics(money, status, id, username) {
+
+    var sumaPorPropiedad;
+
+    if (status == "comersial") {
+        sumaPorPropiedad = 20000;
+    } else {
+        sumaPorPropiedad = 30000
+    }
+    var cantidadDePropiedadesN = money / sumaPorPropiedad;
+    console.log(cantidadDePropiedadesN)
+    var reunionesParaCerarrNegocio = cantidadDePropiedadesN * 20
+    console.log(reunionesParaCerarrNegocio)
+    var pegarStickers = reunionesParaCerarrNegocio * 2
+    console.log(pegarStickers)
+
+
+
+    var a = {
+        agent: { id: id, username: username }, date: new Date(), meeting: reunionesParaCerarrNegocio / 12,
+        stickerFlyers: pegarStickers / 12, learninGandRenewal: 2, learninGandRenewal: 3,
+        negotiationsInTheProcess: 4, actualTransactions: 5, rentalTours: 6, collaborations: 7,
+        conversationsWithPreviousClients: 8, pricesOffer: 9
+    }
+
+    return a;
+}
 module.exports = route;

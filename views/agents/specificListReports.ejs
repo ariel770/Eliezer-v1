@@ -1,0 +1,59 @@
+<%- include ("../partials/header")%>
+
+<div class="container">
+    
+    <div class="row">
+        <div style="text-align: center;">
+        
+         
+            <h1 style="text-align: center; text-decoration: underline;"> דוחות קודמים </h1>
+            
+            <%if(report == ""){%>
+                <h3>חפש תאריכים נכונים</h3>
+                <%}else if(report){%>
+                    <%for(i=0 ;i<report.length;i++){%>
+                        <% var date = new Date(report[i].date)%>
+                        <%var month  =  date.getMonth()+1%>
+                        <%var formatDate =  date.getDate()+" / "+month+" / "+ date.getFullYear() %>
+                        <table class="table table-bordered table-dark "
+                        style="margin-bottom: 100px; width:200px; text-align: center; ">
+                        <thead>
+                            <tr>
+                                
+                                <th scope="col">תאריך</th>
+                                <th scope="col">פגישות אצל בעלי נכסים</th>
+                                <th scope="col">הדבקת פליירים</th>
+                                <th scope="col">למידה והתחדשות</th>
+                                <th scope="col">משא ומתן בתהליך</th>
+                                <th scope="col">עסקאות בפועל </th>
+                                <th scope="col">סיורי שוכרים </th>
+                                <th scope="col">שתופי פעולה</th>
+                                <th scope="col">שיחות ללקוחות קודמים</th>
+                                <th scope="col">הצעות מחיר</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><Strong><%=formatDate%></Strong></td>
+                                <td><Strong><%=report[i].meeting%></Strong></td>
+                                <td><Strong><%=report[i].stickerFlyers%></Strong></td>
+                                <td><Strong><%=report[i].learninGandRenewal%></Strong></td>
+                                <td><Strong><%=report[i].negotiationsInTheProcess%></Strong></td>
+                                <td><Strong><%=report[i].actualTransactions%></Strong></td>
+                                <td><Strong><%=report[i].rentalTours%></Strong></td>
+                                <td><Strong><%=report[i].collaborations%></Strong></td>
+                                <td><Strong><%=report[i].conversationsWithPreviousClients%></Strong></td>
+                                <td><Strong><%=report[i].pricesOffer%></Strong></td>
+                            </td>
+                        </tr>
+                        <%}%>
+                        
+                    </tbody>
+                </table>
+                
+                <%}%>
+                
+            </div>
+        </div>
+    </div>
+    <%- include ("../partials/footer")%>

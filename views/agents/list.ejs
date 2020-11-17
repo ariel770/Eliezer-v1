@@ -13,22 +13,22 @@
 
                 <thead>
                     <tr>
-                        <th scope="col">סטטוס</th>
-                        <th scope="col">שם</th>
                         <th scope="col">#</th>
+                        <th scope="col">שם</th>
+                        <th scope="col">סטטוס</th>
                     </tr>
                 </thead>
                 <%for(i=0 ;i<agents.length;i++){%>
+                <%if(agents[i].username != process.env.MANAGER){%>
                 <tbody>
-
                     <tr>
-
-                        <td><Strong><%=agents[i].status%> </Strong></td>
-                        <td><Strong><%=agents[i].username%> </Strong></td>
                         <td> <a href="/agent/<%=agents[i].id%>"> הצג פרטים </a></td>
+                        <td><Strong><%=agents[i].username%> </Strong></td>
+                        <td id="changeText"><Strong><%=agents[i].status%> </Strong></td>
                     </tr>
                 </tbody>
                 <%}%>
+                    <%}%>
             </table>
 
 
@@ -37,4 +37,11 @@
     </div>
 </div>
 </div>
+<script>
+    var changeText = document.getElementById("changeText")
+    if (changeText.innerText == "") {
+        changeText.innerHTML ="<Strong>*עדיין לא נקבע*</Strong>" ;
+    }
+    
+</script>
 <%- include ("../partials/footer")%>
