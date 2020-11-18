@@ -4,7 +4,7 @@ var Reports = require("../models/reports.js");
 var Statistic = require("../models/statistic.js");
 var Agents = require("../models/agents.js");
 const middlewhereObj = require('../middlewhere/index.js');
-const { ready } = require('jquery');
+const statistic = require('../models/statistic.js');
 var ObjectId = require('mongodb').ObjectID;
 
 
@@ -44,7 +44,6 @@ route.post("/getListReports/:id", function (req, res) {
     })
 })
 
-//   ===> HERE 
 //GET STATISTICS BETWEEN 2 DAYS
 route.post("/getListStatistics/:id", function (req, res) {
 
@@ -116,75 +115,71 @@ route.post("/getListStatistics/:id", function (req, res) {
 
 //SHOW A SPECIFIC AGENT (WITH A  STATISTIC)
 route.get("/:id", middlewhereObj.isMannager, function (req, res) {
-
+    var date = new Date()
     Agents.findById(req.params.id, function (err, agent) {
         if (err) {
+            console.log(" you have a big problem2  : " + err)
         } else {
-            Statistic.find({ "agent.id": req.params.id }, function (err, statistics) {
-                if (err) {
-                    console.log(err)
-                } else {
+            Reports.aggregate([
+                {
+                    $match: {
+                        'agent.id': ObjectId(req.params.id),
+                    }
+                }, {
+                    $group: {
 
-                    Reports.aggregate([
-                        {
-                            $match: {
-                                'agent.id': ObjectId(req.params.id),
-
-                            }
-                        }, {
-                            $group: {
-
-                                _id: {
-                                    statistics: '$statistics.id',
-                                    year: { '$year': '$date' },
-                                    month: { '$month': '$date' }
-                                },
-                                countmeeting: {
-                                    $sum: '$meeting'
-                                },
-                                countstickerflyers: {
-                                    $sum: '$stickerFlyers'
-                                },
-                                countlearninGandRenewal: {
-                                    $sum: '$learninGandRenewal'
-                                },
-                                countnegotiationsInTheProcess: {
-                                    $sum: '$negotiationsInTheProcess'
-                                },
-                                countactualTransactions: {
-                                    $sum: '$actualTransactions'
-                                },
-                                countrentalTours: {
-                                    $sum: '$rentalTours'
-                                },
-                                countcollaborations: {
-                                    $sum: '$collaborations'
-                                },
-                                countconversationsWithPreviousClients: {
-                                    $sum: '$conversationsWithPreviousClients'
-                                },
-                                countpricesOffer: {
-                                    $sum: '$pricesOffer'
-                                }
-                            }
+                        _id: {
+                            statistics: '$statistics.id',
+                            year: { '$year': '$date' },
+                            month: { '$month': '$date' }
                         },
-
-                        { $sort: { "_id": -1 } },
-                        { $limit: 1 },
-
-                    ], function (err, reportGoal) {
+                        countmeeting: {
+                            $sum: '$meeting'
+                        },
+                        countstickerflyers: {
+                            $sum: '$stickerFlyers'
+                        },
+                        countlearninGandRenewal: {
+                            $sum: '$learninGandRenewal'
+                        },
+                        countnegotiationsInTheProcess: {
+                            $sum: '$negotiationsInTheProcess'
+                        },
+                        countactualTransactions: {
+                            $sum: '$actualTransactions'
+                        },
+                        countrentalTours: {
+                            $sum: '$rentalTours'
+                        },
+                        countcollaborations: {
+                            $sum: '$collaborations'
+                        },
+                        countconversationsWithPreviousClients: {
+                            $sum: '$conversationsWithPreviousClients'
+                        },
+                        countpricesOffer: {
+                            $sum: '$pricesOffer'
+                        }
+                    }
+                },
+                // =====> meaby i need to specific this to the last month
+                // { $match: { "_id.month": date.getMonth() + 1 } },
+                { $sort: { "_id": -1 } },
+                { $limit: 1 },
+            ], function (err, reportGoal) {
+                if (err) {
+                    res.redirect("back")
+                } else {
+                    Statistic.findById(reportGoal[0]._id.statistics, function (err, statistics) {
                         if (err) {
-                            console.log(err)
                         } else {
-                            res.render("agents/show.ejs", { agent: agent, statistics: statistics, report: "", reportGoal: reportGoal })
+                            res.render("agents/show.ejs", { agent: agent, statistics: statistics, reportGoal: reportGoal })
                         }
                     })
                 }
-
             })
         }
     })
-
 })
 
 //SET STATISTICS
@@ -209,26 +204,29 @@ route.post("/:id/setgoals", function (req, res) {
         if (err) {
             res.redirect("back")
         } else {
+
             var id = agent.id;
             var username = agent.username;
+            var status = req.body.filter
+
             var a = {
-                agent: { id: id, username: username }, date: new Date(), meeting: req.body.meeting,
+                agent: { id: id, username: username, status: status }, date: new Date(), meeting: req.body.meeting,
                 stickerFlyers: req.body.stickerFlyers, learninGandRenewal: req.body.learninGandRenewal,
                 negotiationsInTheProcess: req.body.negotiationsInTheProcess, actualTransactions: req.body.actualTransactions,
                 rentalTours: req.body.rentalTours, collaborations: req.body.collaborations,
                 conversationsWithPreviousClients: req.body.conversationsWithPreviousClients, pricesOffer: req.body.pricesOffer
             }
 
-            //    console.log( b)
             Statistic.create(a, function (err, statistics) {
                 if (err) {
                     console.log("ERROR   :  " + err)
                     res.redirect("back");
                 } else {
+                    agent.status = statistics.agent.status;
                     agent.statistic.push(statistics.id);
                     agent.save();
                     console.log(statistics)
-                    res.redirect("back")
+                    res.redirect("/agent/" + req.params.id)
                 }
             })
 
@@ -256,11 +254,6 @@ route.get("/:id/edit", function (req, res) {
 
 
 });
-//  
-//  
-//   HERE  ===>  
-//  
-//  
 //INSERT THE FIX AGENTS TO THE DB
 route.put("/:id", function (req, res) {
     var agent = {
@@ -271,11 +264,10 @@ route.put("/:id", function (req, res) {
         username: req.body.username
 
     }
-    console.log(agent)
 
 
     Agents.findByIdAndUpdate(req.params.id, agent, function (err, agent) {
-console.log(agent)
+        console.log(agent)
         if (err) {
             console.log(err)
         } else {

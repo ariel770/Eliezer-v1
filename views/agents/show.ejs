@@ -25,27 +25,22 @@
         <div style="text-align: center;">
 
 
-            <h1> <strong><%=agent.username%></strong></h1>
-            <h1 style="text-align: center; text-decoration: underline;"> יעדים לסוכן </h1>
+
+
+            <h1 style="text-align: center; text-decoration: underline;"> <strong> נתונים ויעדים
+                    <%=agent.username%></strong> </h1>
             <button><a href="/agent">חזור לרשימת סוכנים </a></button>
-            <button><a href="/agent/<%=agent.id%>/report"> הצג את כל הדוחות </a></button>
+            <button onclick="return disableWhenNull(<%=agent.reports.length%>)"><a href="/agent/<%=agent.id%>/report">
+                    הצג את כל הדוחות </a></button>
             <button><a href="/agent/<%=agent.id%>/edit">ערוך שם </a></button>
 
-            <!--  -->
             <button><a href="/agent/<%=agent.id%>/setgoals"> קבע יעד כספי </a></button>
-            <!--  -->
-
-
             <form action="/agent/<%=agent.id%>?_method=DELETE" method="POST">
                 <button onclick="return confirmYourChoice()">מחק סוכן</button>
             </form>
-
-            <button> <a href="/agent/<%=agent.id%>/report/monthlyreports"> הצג חודשים קודמים</a></button>
-
-
-
-
-
+            <button onclick="return disableWhenNull(<%=agent.statistic.length%>)"> <a
+                    href="/agent/<%=agent.id%>/report/monthlyreports"> הצג חודשים קודמים</a></button>
+            <!--  -->
 
             <h3>חפש סטטיסטיקות קודמת </h3>
             <form action="/agent/getListStatistics/<%=agent.id%>" method="post">
@@ -60,22 +55,10 @@
                 </div>
                 <div class=" form-group">
                     <input class="btn btn-lg btn-primary btn-block" type="submit" class="form-control"
-                        value="בחר דוח לפי תאריך ">
+                        value="סטטיסטיקות לתאריך ..">
                 </div>
 
-                <div class="form-group">
-                    <button><a class="btn btn-sm btn-danger btn-block" href="javascript:history.back()">עמוד
-                            קודם</a></button>
-                </div>
             </form>
-
-
-
-
-
-
-
-
             <h3>חפש דוחות קודמים </h3>
 
             <form action="/agent/getListReports/<%=agent.id%>" method="post">
@@ -90,32 +73,17 @@
                 </div>
                 <div class=" form-group">
                     <input class="btn btn-lg btn-primary btn-block" type="submit" class="form-control"
-                        value="בחר דוח לפי תאריך ">
+                        value="דוחות  לתאריך .. ">
                 </div>
 
-                <div class="form-group">
-                    <button><a class="btn btn-sm btn-danger btn-block" href="javascript:history.back()">עמוד
-                            קודם</a></button>
-                </div>
             </form>
 
-
-
-
-            <p></p>
-
-            <%if(report == ""){%>
-            <%}else if(report){%>
-            <%for(i=0 ;i<report.length;i++){%>
-            <% var date = new Date(report[i].date)%>
-            <%var month  =  date.getMonth()+1%>
-            <%var formatDate =  date.getDate()+" / "+month+" / "+ date.getFullYear() %>
             <table class="table table-bordered table-dark "
                 style="margin-bottom: 100px; width:200px; text-align: center; ">
                 <thead>
                     <tr>
 
-                        <th scope="col">תאריך</th>
+                        <th scope="col">#</th>
                         <th scope="col">פגישות אצל בעלי נכסים</th>
                         <th scope="col">הדבקת פליירים</th>
                         <th scope="col">למידה והתחדשות</th>
@@ -129,24 +97,37 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><Strong><%=formatDate%></Strong></td>
-                        <td><Strong><%=report[i].meeting%></Strong></td>
-                        <td><Strong><%=report[i].stickerFlyers%></Strong></td>
-                        <td><Strong><%=report[i].learninGandRenewal%></Strong></td>
-                        <td><Strong><%=report[i].negotiationsInTheProcess%></Strong></td>
-                        <td><Strong><%=report[i].actualTransactions%></Strong></td>
-                        <td><Strong><%=report[i].rentalTours%></Strong></td>
-                        <td><Strong><%=report[i].collaborations%></Strong></td>
-                        <td><Strong><%=report[i].conversationsWithPreviousClients%></Strong></td>
-                        <td><Strong><%=report[i].pricesOffer%></Strong></td>
+                        <td><Strong>נדרש עד היום </Strong></td>
+                        <td class="needed"><Strong><%=statistics.meeting%></Strong></td>
+                        <td class="needed"><Strong><%=statistics.stickerFlyers%></Strong></td>
+                        <td class="needed"><Strong><%=statistics.learninGandRenewal%></Strong></td>
+                        <td class="needed"><Strong><%=statistics.negotiationsInTheProcess%></Strong></td>
+                        <td class="needed"><Strong><%=statistics.actualTransactions%></Strong></td>
+                        <td class="needed"><Strong><%=statistics.rentalTours%></Strong></td>
+                        <td class="needed"><Strong><%=statistics.collaborations%></Strong></td>
+                        <td class="needed"><Strong><%=statistics.conversationsWithPreviousClients%></Strong></td>
+                        <td class="needed"><Strong><%=statistics.pricesOffer%></Strong></td>
+                        
+                    </tr>
+                    <%for(i=0;i<reportGoal.length ; i++){%>
+                    <tr>
+                        <td><Strong>בוצע עד היום</Strong></td>
+                        <td class="actual"><Strong><%=reportGoal[i].countmeeting%></Strong></td>
+                        <td class="actual"><Strong><%=reportGoal[i].countstickerflyers%></Strong></td>
+                        <td class="actual"><Strong><%=reportGoal[i].countlearninGandRenewal%></Strong></td>
+                        <td class="actual"><Strong><%=reportGoal[i].countnegotiationsInTheProcess%></Strong></td>
+                        <td class="actual"><Strong><%=reportGoal[i].countactualTransactions%></Strong></td>
+                        <td class="actual"><Strong><%=reportGoal[i].countrentalTours%></Strong></td>
+                        <td class="actual"><Strong><%=reportGoal[i].countcollaborations%></Strong></td>
+                        <td class="actual"><Strong><%=reportGoal[i].countconversationsWithPreviousClients%></Strong></td>
+                        <td class="actual"><Strong><%=reportGoal[i].countpricesOffer%></Strong></td>
                         </td>
                     </tr>
                     <%}%>
-                            
-                        </tbody>
-                    </table>
-                    
-                    <%}%>
+                
+            </tbody>
+        </table>
+
 
         </div>
     </div>
@@ -156,14 +137,42 @@
 
 <script>
     function confirmYourChoice() {
+
+        var x = confirm("האם הינך בטוח שברצונך למחוק סוכן זה?");
+        if (x)
+            return true;
+        else
+            return false;
+
+    }
+    function disableWhenNull(a) {
+        if (a == 0) {
+            alert("אין נתונים כרגע")
+            return false;
+        } else {
+            return true;
+        }
+
+    }
     
-      var x = confirm("האם הינך בטוח שברצונך למחוק סוכן זה ?");מצ
-      if (x)
-          return true;
-      else
-        return false;
-    
-   }
+    var actual = document.querySelectorAll(".actual");
+        var needed = document.querySelectorAll(".needed");
+        
+        var i;
+        var b;   
+        for (i = 0; i < needed.length; i++) {
+            if (parseInt(actual[i].innerText) > parseInt(needed[i].innerText)) {
+            
+                actual[i].style.backgroundColor = "green";
+            } else if (parseInt(actual[i].innerText ) < parseInt(needed[i].innerText)) {
+                
+                actual[i].style.backgroundColor = "red";
+                
+            } else if (parseInt(actual[i].innerText === 0)) {
+                actual[i].style.backgroundColor = "yellow";
+                
+            }
+        }
 
 
 </script>

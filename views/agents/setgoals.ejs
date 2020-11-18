@@ -1,10 +1,21 @@
 <%- include ("../partials/header")%>
+<form action="/agent/<%=agent.id%>/setgoals" method="POST">
 <table>
     <thead>
 
         <tr>
-            <td colspan="2"><input type="text" placeholder="הזן סכום ...." id="edu" /></td>
-            
+            <td><input type="text" placeholder="הזן סכום ...." id="edu" /></td>
+            <td>
+
+                <input type="text" list="filter" class="form-control" name="filter"
+                    placeholder="בחר סטטוס" />
+                <datalist id="filter">
+                    <option value="comersial">מסחרי</option>
+                    <option value="private">פרטי</option>
+                    <option value="rents">השכרות</option>
+                </datalist>
+            </td>
+
         </tr>
 
         <tr>
@@ -12,7 +23,6 @@
             <td><input type="button" value="בצע חישוב " onclick="cahngevalue()" /></td>
         </tr>
     </thead>
-    <form action="/agent/<%=agent.id%>/setgoals" method="POST">
 
         <tbody>
             <tr>
@@ -56,28 +66,45 @@
                 <td><input type="number" class="form-control" id="pricesOffer" name="pricesOffer"></td>
             </tr>
             <tr>
-                <td colspan="2"> <button class="btn btn-lg btn-primary btn-block " onclick="snedAlert()">שלח טופס</button> </td>
+                <td colspan="2"> <button class="btn btn-lg btn-primary btn-block " onclick="snedAlert()">שלח
+                        טופס</button> </td>
 
             </tr>
 
         </tbody>
+        
+    </table>
     </form>
-
-</table>
-<script>
-    //function for displaying values
+    <script>
+ 
 
     function clr() {
         document.getElementById("edu").value = ""
+        document.getElementsByName("filter")[0].value = ""
+        document.getElementById("meeting").value = ""
+        document.getElementById("stickerFlyers").value = ""
+        document.getElementById("cantidadDePropiedadesN").value = ""
+        document.getElementById("negotiationsInTheProcess").value = ""
+        document.getElementById("actualTransactions").value = ""
+        document.getElementById("rentalTours").value = ""
+        document.getElementById("collaborations").value = ""
+        document.getElementById("conversationsWithPreviousClients").value = ""
+        document.getElementById("pricesOffer").value = ""
     }
-
     function cahngevalue() {
         var a = document.getElementById("edu")
-        var sumaPorPropiedad = 30000;
+        var status = document.getElementsByName('filter')[0]
+        var sumaPorPropiedad;
+        if (status.value == "private") {
+            sumaPorPropiedad = 30000;
+        } else if (status.value == "comersial") {
+            sumaPorPropiedad = 20000;
+        } else {
+            sumaPorPropiedad = 10000;
+        }
         var cantidadDePropiedadesN = a.value / sumaPorPropiedad;
         var reunionesParaCerarrNegocio = cantidadDePropiedadesN * 20;
         var pegarStickers = reunionesParaCerarrNegocio * 2;
-
         document.getElementById("meeting").value = Math.round(reunionesParaCerarrNegocio / 12)
         document.getElementById("stickerFlyers").value = Math.round(pegarStickers / 12)
         document.getElementById("cantidadDePropiedadesN").value = Math.round(cantidadDePropiedadesN)
@@ -87,11 +114,10 @@
         document.getElementById("collaborations").value = 1
         document.getElementById("conversationsWithPreviousClients").value = 1
         document.getElementById("pricesOffer").value = 1
-
     }
-     function snedAlert(){
-         alert("Are you sure about the statistics goals ???")
-     }
+    function snedAlert() {
+        alert("הנך בטוח לגבי סטטיסטיקות אלו?")
+    }
 
 </script>
 

@@ -51,11 +51,6 @@ mongoose.connect(process.env.DATABASEURL, {
     console.log("ERROR!!!" + err);
 
 });
-
-console.log("=======================");
-console.log("process.env.DATABASEURL : "+process.env.DATABASEURL);
-console.log("=======================");
-
 var server_port = process.env.YOUR_PORT || process.env.PORT || 3000;
 var server_host = process.env.YOUR_HOST || '0.0.0.0';
 
