@@ -1,0 +1,218 @@
+<%- include ("../partials/header")%>
+<div class="container">
+
+    <div class="row">
+        <div style="text-align: center;">
+            <h1 style="text-align: center;"><strong> דוחות חודשיים </strong></h1>
+
+            <%for (i=0;i<statistics.length;i++){%>
+
+            <!-- meetings vars -->
+            <%var dailyNeedMeetings = statistics[i].avgmeeting / daysInCurrentMonth[i] %>
+            <%var currentDayGoal =currentDayInMonth[i] * dailyNeedMeetings%>
+            <%var monthlyMeetingsBalance = report[i].countmeeting - currentDayGoal%>
+
+            <!-- flyers vars -->
+            <%var dailyNeedStickerFlyers = statistics[i].avgstickerflyers / daysInCurrentMonth[i] %>
+            <%var currentDayGoalStickerFlyers =currentDayInMonth[i] * dailyNeedStickerFlyers%>
+            <%var monthlyStickerFlyersBalance = report[i].countstickerflyers - currentDayGoalStickerFlyers%>
+            <!-- learninGandRenewal -->
+            <%var dailyNeedLearninGandRenewal =  statistics[i].avglearninGandRenewal / daysInCurrentMonth[i] %>
+            <%var currentDayGoalLearninGandRenewal = currentDayInMonth[i] * dailyNeedLearninGandRenewal%>
+            <%var monthlyLearninGandRenewalBalance = report[i].countlearninGandRenewal - currentDayGoalLearninGandRenewal%>
+            <!-- negotiationsInTheProcess -->
+            <%var dailyNeedNegotiationsInTheProcess = statistics[i].avgnegotiationsInTheProcess   / daysInCurrentMonth[i] %>
+            <%var currentDayGoalNegotiationsInTheProcess = currentDayInMonth[i] * dailyNeedNegotiationsInTheProcess%>
+            <%var monthlyNegotiationsInTheProcessBalance = report[i].countnegotiationsInTheProcess - currentDayGoalNegotiationsInTheProcess%>
+
+            <!-- ActualTransactions -->
+            <%var dailyNeedActualTransactions = statistics[i].avgactualTransactions / daysInCurrentMonth[i] %>
+            <%var currentDayGoalActualTransactions = currentDayInMonth[i] * dailyNeedActualTransactions%>
+            <%var monthlyActualTransactionsBalance = report[i].countactualTransactions - currentDayGoalActualTransactions%>
+            <!-- RentalTours -->
+            <%var dailyNeedRentalTours = statistics[i].avgrentalTours / daysInCurrentMonth[i] %>
+            <%var currentDayGoalRentalTours = currentDayInMonth[i] * dailyNeedRentalTours%>
+            <%var monthlyRentalToursBalance = report[i].countrentalTours- currentDayGoalRentalTours%>
+            <!-- Collaborations -->
+            <%var dailyNeedCollaborations = statistics[i].avgcollaborations / daysInCurrentMonth[i]%>
+            <%var currentDayGoalCollaborations =currentDayInMonth[i] * dailyNeedCollaborations%>
+            <%var monthlyCollaborationsBalance = report[i].countcollaborations - currentDayGoalCollaborations%>
+            <!-- ConversationsWithPreviousClients -->
+            <%var dailyNeedConversationsWithPreviousClients = statistics[i].avgconversationsWithPreviousClients / daysInCurrentMonth[i] %>
+            <%var currentDayGoalConversationsWithPreviousClients = currentDayInMonth[i] * dailyNeedConversationsWithPreviousClients%>
+            <%var monthlyConversationsWithPreviousClientsBalance = report[i].countconversationsWithPreviousClients - currentDayGoalConversationsWithPreviousClients%>
+            <!-- PricesOffer -->
+            <%var dailyNeedPricesOffer =statistics[i].avgpricesOffer / daysInCurrentMonth[i] %>
+            <%var currentDayGoalPricesOffer = currentDayInMonth[i] * dailyNeedPricesOffer%>
+            <%var monthlyPricesOfferBalance = report[i].countpricesOffer - currentDayGoalPricesOffer%>
+
+
+
+
+
+            <table class="table table-bordered table-dark " style="margin-bottom: 130px; width:230px;">
+                <thead>
+                    <tr>
+                        <th colspan="6"><%=statistics[i]._id.year +" / "+statistics[i]._id.month %></th>
+                    </tr>
+                    <tr>
+                        <th> </th>
+                        <th> יעד לחודש נוכחי </th>
+                        <th> בוצע עד לתאריך נוכחי</th>
+                        <th> יעד יומי</th>
+                        <th> פער מהיעד הנוכחי</th>
+                        <th> יעד עד לתאריך הנוכחי</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>פגישות </td>
+                        <td>
+                            <%=Math.floor(statistics[i].avgmeeting)%>
+                        </td>
+                        <td class="actual">
+                            <%=Math.floor(report[i].countmeeting)%>
+                        </td>
+                        <td><%=Math.floor(dailyNeedMeetings)%></td>
+                        <td class="abovezero"><%=Math.floor(monthlyMeetingsBalance)%></td>
+                        <td class="needed"><%=Math.floor(currentDayGoal)%></td>
+                    </tr>
+                    <tr>
+                        <td>הדבקת מודעות </td>
+                        <td>
+                            <%=Math.floor(statistics[i].avgstickerflyers)%>
+                        </td>
+                        <td class="actual">
+                            <%=Math.floor(report[i].countstickerflyers)%>
+                        </td>
+                        <td><%=Math.floor(dailyNeedStickerFlyers)%></td>
+                        <td class="abovezero"><%=Math.floor(monthlyStickerFlyersBalance)%></td>
+                        <td class="needed"><%=Math.floor(currentDayGoalStickerFlyers)%></td>
+                    </tr>
+                    <tr>
+                        <td>לימוד והתקדמות </td>
+                        <td>
+                            <%=Math.floor(statistics[i].avglearninGandRenewal)%>
+                        </td>
+                        <td class="actual">
+                            <%=Math.floor(report[i].countlearninGandRenewal)%>
+                        </td>
+                        <td><%=Math.floor(dailyNeedLearninGandRenewal )%></td>
+                        <td class="abovezero"><%=Math.floor(monthlyLearninGandRenewalBalance)%></td>
+                        <td class="needed"><%=Math.floor(currentDayGoalLearninGandRenewal)%></td>
+                    </tr>
+                    <tr>
+                    
+                        <td>משא ומתן בתהליך </td>
+                        <td>
+                            <%=Math.floor(statistics[i].avgnegotiationsInTheProcess)%>
+                        </td>
+                        <td class="actual">
+                            <%=Math.floor(report[i].countnegotiationsInTheProcess)%>
+                        </td>
+                        <td><%=Math.floor(dailyNeedNegotiationsInTheProcess)%></td>
+                        <td class="abovezero"><%=Math.floor(monthlyNegotiationsInTheProcessBalance)%></td>
+                        <td class="needed"><%=Math.floor(currentDayGoalNegotiationsInTheProcess)%></td>
+                    </tr>
+                    <tr>
+                        <td>עסקאות בפועל </td>
+                        <td>
+                            <%=Math.floor(statistics[i].avgactualTransactions)%>
+                        </td>
+                        <td class="actual">
+                            <%=Math.floor(report[i].countactualTransactions)%>
+                        </td>
+                        <td><%=Math.floor(dailyNeedActualTransactions)%></td>
+                        <td class="abovezero"><%=Math.floor(monthlyActualTransactionsBalance)%></td>
+                        <td class="needed"><%=Math.floor(currentDayGoalActualTransactions)%></td>
+                    </tr>
+                    <tr>
+                        <td>סיורי שוכרים </td>
+                        <td>
+                            <%=Math.floor(statistics[i].avgrentalTours)%>
+                        </td>
+                        <td class="actual">
+                            <%=Math.floor(report[i].countrentalTours)%>
+                        </td>
+                        <td><%=Math.floor(dailyNeedRentalTours)%></td>
+                        <td class="abovezero"><%=Math.floor(monthlyRentalToursBalance)%></td>
+                        <td class="needed"><%=Math.floor(currentDayGoalRentalTours)%></td>
+                    </tr>
+                    <tr>
+                        <td>שתופי פעולה </td>
+                        <td>
+                            <%=Math.floor(statistics[i].avgcollaborations)%>
+                        </td>
+                        <td class="actual">
+                            <%=Math.floor(report[i].countcollaborations)%>
+                        </td>
+                        <td><%=Math.floor(dailyNeedCollaborations)%></td>
+                        <td class="abovezero"><%=Math.floor(monthlyCollaborationsBalance)%></td>
+                        <td class="needed"><%=Math.floor(currentDayGoalCollaborations)%></td>
+                    </tr>
+                    <tr>
+                        <td>שיחות ללקוחות קודמים </td>
+                        <td>
+                            <%=Math.floor(statistics[i].avgconversationsWithPreviousClients)%>
+                        </td>
+                        <td class="actual">
+                            <%=Math.floor(report[i].countconversationsWithPreviousClients)%>
+                        </td>
+                        <td><%=Math.floor(dailyNeedConversationsWithPreviousClients)%></td>
+                        <td class="abovezero"><%=Math.floor(monthlyConversationsWithPreviousClientsBalance)%></td>
+                        <td class="needed"><%=Math.floor(currentDayGoalConversationsWithPreviousClients)%></td>
+                    </tr>
+                    <tr>
+                        <td>הצעות מחיר </td>
+                        <td>
+                            <%=Math.floor(statistics[i].avgpricesOffer )%>
+                        </td>
+                        <td class="actual">
+                            <%=Math.floor(report[i].countpricesOffer )%>
+                        </td>
+                        <td><%=Math.floor(dailyNeedPricesOffer)%></td>
+                        <td class="abovezero"><%=Math.floor(monthlyPricesOfferBalance)%></td>
+                        <td class="needed"><%=Math.floor(currentDayGoalPricesOffer)%></td>
+                    </tr>
+                </tbody>
+                <%}%>
+                
+            </table>
+            
+
+            </div>
+        </div>
+    </div>
+    <script>
+
+        var actual = document.querySelectorAll(".actual");
+        var needed = document.querySelectorAll(".needed");
+        var abovezero = document.querySelectorAll(".abovezero");
+
+        var i;
+      
+        for (i = 0; i < needed.length; i++) {
+          
+
+
+            if (parseInt(actual[i].innerText) > parseInt(needed[i].innerText)) {
+             
+                actual[i].style.backgroundColor = "green";
+                abovezero[i].style.backgroundColor = "green";
+            } else if (parseInt(actual[i].innerText) < parseInt(needed[i].innerText)) {
+
+                actual[i].style.backgroundColor = "red";
+                abovezero[i].style.backgroundColor = "red";
+
+            } else if (parseInt(actual[i].innerText === 0)) {
+                actual[i].style.backgroundColor = "yellow";
+                actual[i].style.backgroundColor = "yellow";
+
+            }
+
+        }
+
+    </script>
+   
+    <%- include ("../partials/footer")%>

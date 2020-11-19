@@ -113,7 +113,7 @@ route.post("/getListStatistics/:id", function (req, res) {
 
 })
 
-//SHOW A SPECIFIC AGENT (WITH A  STATISTIC)
+//SHOW A SPECIFIC AGENT (WITH A LAST  STATISTIC ======> FROM LAST MONTH ?<====(CURRENT STATISTICS))
 route.get("/:id", middlewhereObj.isMannager, function (req, res) {
     var date = new Date()
     Agents.findById(req.params.id, function (err, agent) {
