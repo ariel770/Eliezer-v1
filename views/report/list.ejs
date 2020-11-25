@@ -1,10 +1,10 @@
 <%- include ("../partials/header")%>
 <div class="container">
 
-    <div class="row">
 
-        <h1 style="text-align: center;">טופס מעקב <strong> <%=agents.username%></strong></h1>
-        <div style="text-align: center;">
+        <div style="width:70%; margin: 100px auto;padding: 4px;text-align: center;">
+    
+        <h1 style="text-align: center; padding: 30px;"><strong>יומן </strong></h1>
         
           
             <%for (var i = report.length - 1; i >= 0; i--) {%>
@@ -26,8 +26,8 @@
             <%if(report[i].id == agents.reports[b]){%>
                
      
-
-            <table class="table table-bordered table-dark " style="margin-bottom: 100px; width:200px;">
+                <table class="table table-bordered table-dark mx-auto w-auto  " style="margin-bottom: 130px; width:230px;">
+           
                 <thead>
                     <tr>
                         <th colspan="2"><%=datestring%></th>
@@ -103,8 +103,6 @@
 
 
 
-        </div>
-    </div>
 </div>
 </div>
 <%- include ("../partials/footer")%>

@@ -236,7 +236,7 @@ route.get("/agent/:id/report/monthlyreportsA", function (req, res) {
 
 
             ], function (err, statistics) {
-                console.log(statistics)
+                
                 var daysInCurrentMonth = []
                 var currentDayInMonth = []
                 for (i = 0; i < statistics.length; i++) {
@@ -544,7 +544,7 @@ route.post("/agent/:id/report", middlewhereObj.isUser, function (req, res) {
                             agents.reports.push(report.id);
                             agents.save();
                             // res.redirect("/agent/" + agents.id + "/report/new");
-                            console.log(report)
+                         
                             res.redirect("back");
 
                         }
