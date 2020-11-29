@@ -236,23 +236,33 @@ route.get("/agent/:id/report/monthlyreportsA", function (req, res) {
 
 
             ], function (err, statistics) {
-                
-                var daysInCurrentMonth = []
-                var currentDayInMonth = []
-                for (i = 0; i < statistics.length; i++) {
+                if (err) {
+                    res.redirect("back")
+                } else if (report.length == 0) {
+                    res.render("report/monthlyReportsA.ejs", {
+                        report: "", statistics: "",
+                        daysInCurrentMonth: "", currentDayInMonth: ""
+                    })
+                } else {
 
-                    daysInCurrentMonth.push(daysInMonth(statistics[i]._id.month, statistics[i]._id.year));
 
-                    if (new Date().getMonth() + 1 == statistics[i]._id.month) {
-                        currentDayInMonth.push(new Date().getDate())
-                    } else {
-                        currentDayInMonth.push(daysInMonth(statistics[i]._id.month, statistics[i]._id.year))
+                    var daysInCurrentMonth = []
+                    var currentDayInMonth = []
+                    for (i = 0; i < statistics.length; i++) {
+
+                        daysInCurrentMonth.push(daysInMonth(statistics[i]._id.month, statistics[i]._id.year));
+
+                        if (new Date().getMonth() + 1 == statistics[i]._id.month) {
+                            currentDayInMonth.push(new Date().getDate())
+                        } else {
+                            currentDayInMonth.push(daysInMonth(statistics[i]._id.month, statistics[i]._id.year))
+                        }
                     }
+                    res.render("report/monthlyReportsA.ejs", {
+                        report: report, statistics: statistics,
+                        daysInCurrentMonth: daysInCurrentMonth, currentDayInMonth: currentDayInMonth
+                    })
                 }
-                res.render("report/monthlyReportsA.ejs", {
-                    report: report, statistics: statistics,
-                    daysInCurrentMonth: daysInCurrentMonth, currentDayInMonth: currentDayInMonth
-                })
             })
 
             // ======================================================================================
@@ -337,6 +347,9 @@ route.get("/agent/:id/report/monthlyreportsA", function (req, res) {
     })
 
 });
+
+
+//  ALL HAPANIM !!!!! ON THE FACE !!!!!
 route.get("/agent/:id/report/dayreport", function (req, res) {
     Reports.aggregate([
         {
@@ -386,110 +399,201 @@ route.get("/agent/:id/report/dayreport", function (req, res) {
 
     ], function (err, report) {
         if (err) {
-            console.log("error  : " + err)
-            res.redirect("back")
         } else {
-            var monthlyGoals = {
-                monthlyNeedMeetings: 0,
-                monthlyNeedstickerFlyers: 0,
-                monthlyNeedstickerFlyersa: 0,
-                monthlyNeedlearninGandRenewal: 0,
-                monthlyNeednegotiationsInTheProcess: 0,
-                monthlyNeedactualTransactions: 0,
-                monthlyNeedrentalTours: 0,
-                monthlyNeedcollaborations: 0,
-                monthlyNeedconversationsWithPreviousClients: 0,
-                monthlyNeedpricesOffer: 0,
-            }
-
-            var analisys = {
-                month: [],
-                day: [],
-                monthlyNeedMeetings: 0,
-                monthlyNeedstickerFlyers: 0,
-                monthlyNeedlearninGandRenewal: 0,
-                monthlyNeednegotiationsInTheProcess: 0,
-                monthlyNeedactualTransactions: 0,
-                monthlyNeedrentalTours: 0,
-                monthlyNeedcollaborations: 0,
-                monthlyNeedconversationsWithPreviousClients: 0,
-                monthlyNeedpricesOffer: 0,
-                currentMonthTotalDays: [],
-                sumMonthlyLearninGandRenewal: [],
-                sumMonthlyMeetings: [],
-                sumMonthlyStickerFlyers: [],
-                sumMonthlyNegotiationsInTheProcess: [],
-                sumMonthlyActualTransactions: [],
-                sumMonthlyRentalTours: [],
-                sumMonthlyCollaborations: [],
-                sumMonthlyConversationsWithPreviousClients: [],
-                sumMonthlyPricesOffer: [],
-                currentDayFromMonth: [],
-                sumDayMissung: []
-            };
-            Statistic.find({ "agent.id": req.params.id }, function (err, statistic) {
+            Statistic.find({ "agent.id": req.params.id }).sort({ date: -1 }).limit(1).exec(function (err, statistic) {
                 if (err) {
+                    console.log("ERROR  " + err)
                     res.redirect("back")
                 } else {
-                    var date = new Date()
-                    for (i = 0; i < statistic.length; i++) {
-
-                        var days = daysInMonth(date.getMonth() + 1, date.getFullYear())
-                        analisys.monthlyNeedMeetings = statistic[i].meeting / days
-                        analisys.monthlyNeedstickerFlyers = statistic[i].stickerFlyers / days
-                        analisys.monthlyNeedlearninGandRenewal = statistic[i].learninGandRenewal / days
-                        analisys.monthlyNeednegotiationsInTheProcess = statistic[i].negotiationsInTheProcess / days
-                        analisys.monthlyNeedactualTransactions = statistic[i].actualTransactions / days
-                        analisys.monthlyNeedrentalTours = statistic[i].rentalTours / days
-                        analisys.monthlyNeedcollaborations = statistic[i].collaborations / days
-                        analisys.monthlyNeedconversationsWithPreviousClients = statistic[i].conversationsWithPreviousClients / days
-                        analisys.monthlyNeedpricesOffer = statistic[i].pricesOffer / days
-                    }
-
-                    for (i = 0; i < statistic.length; i++) {
-                        monthlyGoals.monthlyNeedMeetings = statistic[i].meeting
-                        monthlyGoals.monthlyNeedstickerFlyers = statistic[i].stickerFlyers
-                        monthlyGoals.monthlyNeedlearninGandRenewal = statistic[i].learninGandRenewal
-                        monthlyGoals.monthlyNeednegotiationsInTheProcess = statistic[i].negotiationsInTheProcess
-                        monthlyGoals.monthlyNeedactualTransactions = statistic[i].actualTransactions
-                        monthlyGoals.monthlyNeedrentalTours = statistic[i].rentalTours
-                        monthlyGoals.monthlyNeedcollaborations = statistic[i].collaborations
-                        monthlyGoals.monthlyNeedconversationsWithPreviousClients = statistic[i].conversationsWithPreviousClients
-                        monthlyGoals.monthlyNeedpricesOffer = statistic[i].pricesOffer
-                    }
-
-
+                    console.log(statistic)
+                    console.log(report)
+                    var daysInCurrentMonth = []
+                    var currentDayInMonth = []
                     for (i = 0; i < report.length; i++) {
 
-                        analisys.month.push(report[i]._id.month);
-                        analisys.day.push(report[i]._id.day);
-                        analisys.sumMonthlyMeetings.push(report[i].countmeeting);
-                        analisys.sumMonthlyStickerFlyers.push(report[i].countstickerflyers);
-                        analisys.sumMonthlyLearninGandRenewal.push(report[i].countlearninGandRenewal);
-                        analisys.sumMonthlyNegotiationsInTheProcess.push(report[i].countnegotiationsInTheProcess);
-                        analisys.sumMonthlyActualTransactions.push(report[i].countactualTransactions);
-                        analisys.sumMonthlyRentalTours.push(report[i].countrentalTours);
-                        analisys.sumMonthlyCollaborations.push(report[i].countcollaborations);
-                        analisys.sumMonthlyConversationsWithPreviousClients.push(report[i].countconversationsWithPreviousClients);
-                        analisys.sumMonthlyPricesOffer.push(report[i].countpricesOffer);
-                        analisys.currentMonthTotalDays.push(daysInMonth(date.getMonth() + 1, date.getFullYear()))
+                        // ==========   ======   >    
+                        daysInCurrentMonth.push(daysInMonth(report[i]._id.month, new Date().getFullYear()))
 
                         if (new Date().getMonth() + 1 == report[i]._id.month) {
-                            analisys.currentDayFromMonth.push(new Date().getDate())
+                            currentDayInMonth.push(new Date().getDate())
                         } else {
-                            analisys.currentDayFromMonth.push(daysInMonth(date.getMonth() + 1, date.getFullYear()))
+                            currentDayInMonth.push(daysInMonth(report[i]._id.month, new Date().getFullYear()))
                         }
-
                     }
-
-                    res.render("report/dayReport.ejs", { report: report, statistic: statistic, analisys: analisys, monthlyGoals: monthlyGoals })
+                    res.render("report/dayReport.ejs", { report: report, statistic: statistic,
+                         daysInCurrentMonth: daysInCurrentMonth, currentDayInMonth: currentDayInMonth })
+                    // res.redirect("back")
                 }
             })
         }
-
-    })
-
+    });
 });
+
+// route.get("/agent/:id/report/dayreport", function (req, res) {
+//     Reports.aggregate([
+//         {
+//             $match: {
+//                 'agent.id': ObjectId(req.params.id)
+//             }
+//         }, {
+//             $group: {
+
+//                 _id: {
+//                     month: { '$month': '$date' },
+//                     day: { '$dayOfMonth': '$date' },
+//                 },
+//                 countmeeting: {
+//                     $sum: '$meeting'
+//                 },
+//                 countstickerflyers: {
+//                     $sum: '$stickerFlyers'
+//                 },
+//                 countlearninGandRenewal: {
+//                     $sum: '$learninGandRenewal'
+//                 },
+//                 countnegotiationsInTheProcess: {
+//                     $sum: '$negotiationsInTheProcess'
+//                 },
+//                 countactualTransactions: {
+//                     $sum: '$actualTransactions'
+//                 },
+//                 countrentalTours: {
+//                     $sum: '$rentalTours'
+//                 },
+//                 countcollaborations: {
+//                     $sum: '$collaborations'
+//                 },
+//                 countconversationsWithPreviousClients: {
+//                     $sum: '$conversationsWithPreviousClients'
+//                 },
+//                 countpricesOffer: {
+//                     $sum: '$pricesOffer'
+//                 }
+//             }
+
+//         },
+
+//         { $sort: { "_id": 1 } },
+//         { $limit: 7 }
+
+//     ], function (err, report) {
+//         if (err) {
+//             console.log("error  : " + err)
+//             res.redirect("back")
+//         } else {
+//             var monthlyGoals = {
+//                 monthlyNeedMeetings: 0,
+//                 monthlyNeedstickerFlyers: 0,
+//                 monthlyNeedstickerFlyersa: 0,
+//                 monthlyNeedlearninGandRenewal: 0,
+//                 monthlyNeednegotiationsInTheProcess: 0,
+//                 monthlyNeedactualTransactions: 0,
+//                 monthlyNeedrentalTours: 0,
+//                 monthlyNeedcollaborations: 0,
+//                 monthlyNeedconversationsWithPreviousClients: 0,
+//                 monthlyNeedpricesOffer: 0,
+//             }
+
+//             var analisys = {
+//                 month: [],
+//                 day: [],
+//                 monthlyNeedMeetings: 0,
+//                 monthlyNeedstickerFlyers: 0,
+//                 monthlyNeedlearninGandRenewal: 0,
+//                 monthlyNeednegotiationsInTheProcess: 0,
+//                 monthlyNeedactualTransactions: 0,
+//                 monthlyNeedrentalTours: 0,
+//                 monthlyNeedcollaborations: 0,
+//                 monthlyNeedconversationsWithPreviousClients: 0,
+//                 monthlyNeedpricesOffer: 0,
+//                 currentMonthTotalDays: [],
+//                 sumMonthlyLearninGandRenewal: [],
+//                 sumMonthlyMeetings: [],
+//                 sumMonthlyStickerFlyers: [],
+//                 sumMonthlyNegotiationsInTheProcess: [],
+//                 sumMonthlyActualTransactions: [],
+//                 sumMonthlyRentalTours: [],
+//                 sumMonthlyCollaborations: [],
+//                 sumMonthlyConversationsWithPreviousClients: [],
+//                 sumMonthlyPricesOffer: [],
+//                 currentDayFromMonth: [],
+//                 sumDayMissung: []
+//             };
+//             Statistic.find({ "agent.id": req.params.id }, function (err, statistic) {
+//                 if (err) {
+//                     res.redirect("back")
+//                 } else {
+//                     var date = new Date()
+//                     for (i = 0; i < statistic.length; i++) {
+
+//                         var days = daysInMonth(date.getMonth() + 1, date.getFullYear())
+//                         analisys.monthlyNeedMeetings = statistic[i].meeting / days
+//                         analisys.monthlyNeedstickerFlyers = statistic[i].stickerFlyers / days
+//                         analisys.monthlyNeedlearninGandRenewal = statistic[i].learninGandRenewal / days
+//                         analisys.monthlyNeednegotiationsInTheProcess = statistic[i].negotiationsInTheProcess / days
+//                         analisys.monthlyNeedactualTransactions = statistic[i].actualTransactions / days
+//                         analisys.monthlyNeedrentalTours = statistic[i].rentalTours / days
+//                         analisys.monthlyNeedcollaborations = statistic[i].collaborations / days
+//                         analisys.monthlyNeedconversationsWithPreviousClients = statistic[i].conversationsWithPreviousClients / days
+//                         analisys.monthlyNeedpricesOffer = statistic[i].pricesOffer / days
+//                     }
+
+//                     for (i = 0; i < statistic.length; i++) {
+//                         monthlyGoals.monthlyNeedMeetings = statistic[i].meeting
+//                         monthlyGoals.monthlyNeedstickerFlyers = statistic[i].stickerFlyers
+//                         monthlyGoals.monthlyNeedlearninGandRenewal = statistic[i].learninGandRenewal
+//                         monthlyGoals.monthlyNeednegotiationsInTheProcess = statistic[i].negotiationsInTheProcess
+//                         monthlyGoals.monthlyNeedactualTransactions = statistic[i].actualTransactions
+//                         monthlyGoals.monthlyNeedrentalTours = statistic[i].rentalTours
+//                         monthlyGoals.monthlyNeedcollaborations = statistic[i].collaborations
+//                         monthlyGoals.monthlyNeedconversationsWithPreviousClients = statistic[i].conversationsWithPreviousClients
+//                         monthlyGoals.monthlyNeedpricesOffer = statistic[i].pricesOffer
+//                     }
+
+
+//                     for (i = 0; i < report.length; i++) {
+
+//                         analisys.month.push(report[i]._id.month);
+//                         analisys.day.push(report[i]._id.day);
+//                         analisys.sumMonthlyMeetings.push(report[i].countmeeting);
+//                         analisys.sumMonthlyStickerFlyers.push(report[i].countstickerflyers);
+//                         analisys.sumMonthlyLearninGandRenewal.push(report[i].countlearninGandRenewal);
+//                         analisys.sumMonthlyNegotiationsInTheProcess.push(report[i].countnegotiationsInTheProcess);
+//                         analisys.sumMonthlyActualTransactions.push(report[i].countactualTransactions);
+//                         analisys.sumMonthlyRentalTours.push(report[i].countrentalTours);
+//                         analisys.sumMonthlyCollaborations.push(report[i].countcollaborations);
+//                         analisys.sumMonthlyConversationsWithPreviousClients.push(report[i].countconversationsWithPreviousClients);
+//                         analisys.sumMonthlyPricesOffer.push(report[i].countpricesOffer);
+//                         analisys.currentMonthTotalDays.push(daysInMonth(date.getMonth() + 1, date.getFullYear()))
+
+//                         if (new Date().getMonth() + 1 == report[i]._id.month) {
+//                             analisys.currentDayFromMonth.push(new Date().getDate())
+//                         } else {
+//                             analisys.currentDayFromMonth.push(daysInMonth(date.getMonth() + 1, date.getFullYear()))
+//                         }
+
+//                     }
+//                     console.log("monthlyGoals");
+//                     console.log(monthlyGoals);
+// console.log("===================================")
+// console.log("analisys");
+// console.log(analisys);
+// console.log("===================================")
+// console.log("statistic");
+// console.log(statistic);
+// console.log("===================================")
+// console.log("report");
+// console.log(report);
+// console.log("===================================")
+
+//                     res.render("report/dayReport.ejs", { report: report, statistic: statistic, analisys: analisys, monthlyGoals: monthlyGoals })
+//                 }
+//             })
+//         }
+
+//     })
+
+// });
 
 //CREATE NEW REPORT 
 route.get("/agent/:id/report/new", middlewhereObj.isUser, function (req, res) {
@@ -544,7 +648,7 @@ route.post("/agent/:id/report", middlewhereObj.isUser, function (req, res) {
                             agents.reports.push(report.id);
                             agents.save();
                             // res.redirect("/agent/" + agents.id + "/report/new");
-                         
+
                             res.redirect("back");
 
                         }

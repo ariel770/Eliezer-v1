@@ -114,12 +114,14 @@ route.post("/getListStatistics/:id", function (req, res) {
 })
 
 //SHOW A SPECIFIC AGENT (WITH A LAST  STATISTIC ======> FROM LAST MONTH ?<====(CURRENT STATISTICS))
-route.get("/:id", middlewhereObj.isMannager, function (req, res) {
-    var date = new Date()
+route.get("/:id", function (req, res) {
+    console.log("1")
     Agents.findById(req.params.id, function (err, agent) {
+        console.log("2")
         if (err) {
             console.log(" you have a big problem2  : " + err)
         } else {
+            console.log("3")
             Reports.aggregate([
                 {
                     $match: {
@@ -167,11 +169,19 @@ route.get("/:id", middlewhereObj.isMannager, function (req, res) {
                 { $sort: { "_id": -1 } },
                 { $limit: 1 },
             ], function (err, reportGoal) {
+                console.log("4")
                 if (err) {
                     res.redirect("back")
+                } else if (reportGoal.length == 0) {
+                    res.render("agents/show.ejs", { agent: agent, statistics: "", reportGoal: "" })
+
                 } else {
                     Statistic.findById(reportGoal[0]._id.statistics, function (err, statistics) {
                         if (err) {
+                            console.log("ERROR TO FIND STATISTICS")
+                            res.redirect("back")
+                        } else if (statistics== null) {
+                            res.render("agents/show.ejs", { agent: agent, statistics: "", reportGoal: "" })
                         } else {
                             res.render("agents/show.ejs", { agent: agent, statistics: statistics, reportGoal: reportGoal })
                         }

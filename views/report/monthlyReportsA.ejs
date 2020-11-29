@@ -3,6 +3,7 @@
 
     <div style="width:70%; margin: 100px auto;padding: 4px;;text-align: center;">
         <h1 style="text-align: center;"><strong> דוחות חודשיים</strong> </h1>
+
         <%for (i=0;i<statistics.length;i++){%>
         <!-- meetings vars -->
         <%var dailyNeedMeetings = statistics[i].avgmeeting / daysInCurrentMonth[i] %>
@@ -43,7 +44,6 @@
         <%var monthlyPricesOfferBalance = report[i].countpricesOffer - currentDayGoalPricesOffer%>
 
  <!-- I can do this table with class .flex-fill  to make list in equal rows-->
-
 
 
         <div class="form-group">

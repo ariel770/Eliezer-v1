@@ -7,100 +7,79 @@
 
         <h1 style="text-align: center;"><strong> דוחות יומיים </strong></h1>
 
-        <%var asfc = 0 %>
-        <%var bsfc =0%>
-        <%var amc =0%>
-        <%var bmc =0%>
-        <%var alarc =0%>
-        <%var blarc =0%>
-        <%var anipc =0%>
-        <%var bnipc =0%>
-        <%var aatc =0%>
-        <%var batc =0%>
-        <%var artc =0%>
-        <%var brtc =0%>
-        <%var acc =0%>
-        <%var bcc =0%>
-        <%var apoc =0%>
-        <%var bpoc =0%>
-        <%var acpcc =0%>
-        <%var bcpcc =0%>
-
         <%for(i=0;i<report.length;i++){%>
-        <%if(analisys.month[i] == new Date().getMonth()+1){ %>
+            
+     <!-- meetings vars -->
+     
+     <%var dayGoalMeeting = statistic[0].meeting/daysInCurrentMonth[i]%>
+     <%var currentDayGoalMeeting = dayGoalMeeting * currentDayInMonth[i] %> 
+     <%var disparityFromToday =report[i].countmeeting- currentDayGoalMeeting %> 
+     <%var disparityFromAllMonth =report[i].countmeeting-  statistic[0].meeting %> 
+     <!-- stickerFlyers vars -->
+     
+     <%var dayGoalStickerFlyers = statistic[0].stickerFlyers/daysInCurrentMonth[i]%>
+     <%var currentDayGoalStickerFlyers = dayGoalStickerFlyers * currentDayInMonth[i] %> 
+     <%var disparityFromTodaySF =report[i].countstickerflyers- currentDayGoalStickerFlyers %> 
+     <%var disparityFromAllMonthSF =report[i].countstickerflyers-  statistic[0].stickerFlyers %> 
+     <!-- learninGandRenewal vars -->
+      
+     <%var dayGoalLearningAndRenewal = statistic[0].learninGandRenewal/daysInCurrentMonth[i]%>
+     <%var currentDayGoalLearningAndRenewal = dayGoalLearningAndRenewal * currentDayInMonth[i] %> 
+     <%var disparityFromTodayLAR =report[i].countlearninGandRenewal- currentDayGoalLearningAndRenewal %> 
+     <%var disparityFromAllMonthLAR =report[i].countlearninGandRenewal-  statistic[0].learninGandRenewal %> 
+     
 
-        <!-- flyers vars -->
-        <%var currentDayGoalStickerFliyers = analisys.currentMonthTotalDays[i] * analisys.monthlyNeedstickerFlyers%>
-        <%var monthlyStickerfliyersBalance = analisys.sumMonthlyStickerFlyers[i] - currentDayGoalStickerFliyers%>
-        <%var sumDayMissing = report[i].countstickerflyers - analisys.monthlyNeedstickerFlyers%>
-        <%asfc += report[i].countstickerflyers%>
-        <%bsfc = asfc-monthlyGoals.monthlyNeedstickerFlyers %>
-
-        <!-- meetings vars -->
-        <%var currentDayGoal = analisys.currentMonthTotalDays[i] * analisys.monthlyNeedMeetings%>
-        <%var monthlyMeetingsBalance = analisys.sumMonthlyMeetings[i] - currentDayGoal%>
-        <%var sumDayMissingA = report[i].countmeeting - analisys.monthlyNeedMeetings%>
-        <%amc += report[i].countmeeting%>
-        <%bmc = amc-monthlyGoals.monthlyNeedMeetings %>
-
-        <!-- learninGandRenewal vars -->
-
-        <%var currentDayGoalLearninGandRenewal = analisys.currentMonthTotalDays[i] * analisys.monthlyNeedLearninGandRenewal%>
-        <%var monthlyLearninGandRenewalBalance = analisys.sumMonthlyLearninGandRenewal[i] - currentDayGoalLearninGandRenewal%>
-        <%var sumDayMissingB = report[i].countlearninGandRenewal - analisys.monthlyNeedlearninGandRenewal%>
-        <%alarc += report[i].countlearninGandRenewal%>
-        <%blarc = alarc-monthlyGoals.monthlyNeedlearninGandRenewal %>
-
-        <!-- negotiationsInTheProcess -->
-
-        <%var currentDayGoalNegotiationsInTheProcess = analisys.currentMonthTotalDays[i] * analisys.monthlyNeednegotiationsInTheProcess%>
-        <%var monthlyNegotiationsInTheProcessBalance = analisys.sumMonthlyNegotiationsInTheProcess[i] - currentDayGoalNegotiationsInTheProcess%>
-        <%var sumDayMissingC = report[i].countnegotiationsInTheProcess - analisys.monthlyNeednegotiationsInTheProcess%>
-        <%anipc += report[i].countnegotiationsInTheProcess%>
-        <%bnipc = anipc-monthlyGoals.monthlyNeednegotiationsInTheProcess%>
-
-        <!-- sumMonthlyActualTransactions -->
-        <%var currentDayGoalActualTransactions = analisys.currentMonthTotalDays[i] * analisys.monthlyNeedactualTransactions%>
-        <%var monthlyActualTransactionsBalance = analisys.sumMonthlyActualTransactions[i] - currentDayGoalActualTransactions%>
-        <%var sumDayMissingD = report[i].countactualTransactions - analisys.monthlyNeedactualTransactions%>
-        <%aatc += report[i].countactualTransactions %>
-        <%batc = aatc-monthlyGoals.monthlyNeedactualTransactions%>
-
-        <!-- RentalTours -->
-
-
-        <%var currentDayGoalRentalTours = analisys.currentMonthTotalDays[i] *  analisys.monthlyNeedrentalTours%>
-        <%var monthlyRentalToursBalance = analisys.sumMonthlyRentalTours[i] - currentDayGoalRentalTours%>
-        <%var sumDayMissingE = report[i].countrentalTours - analisys.monthlyNeedrentalTours%>
-        <%artc += report[i].countrentalTours   %>
-        <%brtc = artc-monthlyGoals.monthlyNeedrentalTours%>
-
-        <!-- Collaborations -->
-
-        <%var  currentDayGoalCollaborations = analisys.currentMonthTotalDays[i] *  analisys.monthlyNeedcollaborations %>
-        <%var monthlyCollaborationsBalance = analisys.sumMonthlyCollaborations[i] - currentDayGoalCollaborations%>
-        <%var sumDayMissingF = report[i].countcollaborations - analisys.monthlyNeedcollaborations%>
-        <%acc += report[i].countcollaborations   %>
-        <%bcc = acc-monthlyGoals.monthlyNeedcollaborations%>
-
-        <!-- ConversationsWithPreviousClients -->
-        <%var currentDayGoalConversationsWithPreviousClients = analisys.currentMonthTotalDays[i] * analisys.monthlyNeedconversationsWithPreviousClients%>
-        <%var monthlyConversationsWithPreviousClientsBalance = analisys.sumMonthlyConversationsWithPreviousClients[i] - currentDayGoalConversationsWithPreviousClients%>
-        <%var sumDayMissingG = report[i].countconversationsWithPreviousClients - analisys.monthlyNeedconversationsWithPreviousClients%>
-        <%acpcc += report[i].countconversationsWithPreviousClients %>
-        <%bcpcc = acpcc-monthlyGoals.monthlyNeedconversationsWithPreviousClients %>
-
-        <!-- PricesOffer -->
-        <%var currentDayGoalPricesOffer = analisys.currentMonthTotalDays[i] * analisys.monthlyNeedpricesOffer %>
-        <%var monthlyPricesOfferBalance = analisys.sumMonthlyPricesOffer[i] - currentDayGoalPricesOffer%>
-        <%var sumDayMissingH = report[i].countpricesOffer - analisys.monthlyNeedpricesOffer %>
-        <%apoc += report[i].countpricesOffer %>
-        <%bpoc = apoc-monthlyGoals.monthlyNeedpricesOffer   %>
-
+     <!-- learninGandRenewal vars -->
+     <%var dayGoalNegotiationsInTheProcess = statistic[0].negotiationsInTheProcess/daysInCurrentMonth[i]%>
+     <%var currentDayGoalNegotiationsInTheProcess = dayGoalNegotiationsInTheProcess * currentDayInMonth[i] %> 
+     <%var disparityFromTodayNITP =report[i].countnegotiationsInTheProcess- currentDayGoalNegotiationsInTheProcess %> 
+     <%var disparityFromAllMonthNITP =report[i].countnegotiationsInTheProcess-  statistic[0].negotiationsInTheProcess %> 
+     
+     <!-- actualTransactions vars -->
+     <%var dayGoalActualTransactions = statistic[0].actualTransactions/daysInCurrentMonth[i]%>
+     <%var currentDayGoalActualTransactions = dayGoalActualTransactions * currentDayInMonth[i] %> 
+     <%var disparityFromTodayAT =report[i].countactualTransactions- currentDayGoalActualTransactions %> 
+     <%var disparityFromAllMonthAT =report[i].countactualTransactions-  statistic[0].actualTransactions %> 
+   
+     <!-- rentalTours vars -->
+     <%var dayGoalRentalTours = statistic[0].rentalTours/daysInCurrentMonth[i]%>
+     <%var currentDayGoalRedayGoalRentalTours = dayGoalRentalTours * currentDayInMonth[i] %> 
+     <%var disparityFromTodayRT =report[i].countrentalTours- currentDayGoalRedayGoalRentalTours %> 
+     <%var disparityFromAllMonthRT =report[i].countrentalTours-  statistic[0].rentalTours %> 
+    
+     <!-- rentalTours vars -->
+     <%var dayGoalCollaborations = statistic[0].collaborations/daysInCurrentMonth[i]%>
+     <%var currentDayGoalRedayGoalCollaborations = dayGoalCollaborations * currentDayInMonth[i] %> 
+     <%var disparityFromTodayC =report[i].countcollaborations- currentDayGoalRedayGoalCollaborations %> 
+     <%var disparityFromAllMonthC =report[i].countcollaborations-  statistic[0].collaborations %> 
+       
+     <!-- conversationsWithPreviousClients vars -->
+     <%var dayGoalCWPC = statistic[0].conversationsWithPreviousClients/daysInCurrentMonth[i]%>
+     <%var currentDayGoalCWPC = dayGoalCWPC * currentDayInMonth[i] %> 
+     <%var disparityFromTodayCWPC =report[i].countconversationsWithPreviousClients- currentDayGoalCWPC %> 
+     <%var disparityFromAllMonthCWPC =report[i].countconversationsWithPreviousClients-  statistic[0].conversationsWithPreviousClients %> 
+       
+     <!-- pricesOffer vars -->
+     <%var dayGoalPO = statistic[0].pricesOffer/daysInCurrentMonth[i]%>
+     <%var currentDayGoalPO = dayGoalPO * currentDayInMonth[i] %> 
+     <%var disparityFromTodayPO=report[i].countpricesOffer- currentDayGoalPO %> 
+     <%var disparityFromAllMonthPO =report[i].countpricesOffer-  statistic[0].pricesOffer %> 
+       
+     <!-- _id: { month: 11, day: 29 },
+     countmeeting: 333333,
+     countstickerflyers: 3333,
+     countlearninGandRenewal: 3333,
+     countnegotiationsInTheProcess: 3333,
+     countactualTransactions: 3333,
+     countcollaborations: 3333,
+     countcollaborations: 3333,
+     countconversationsWithPreviousClients: 3336,
+     countpricesOffer: 3333 -->
+       
         <div class="form-group">
             <button class="btn btn-lg btn btn-dark btn-block" type="button" data-toggle="collapse"
                 data-target="#days<%=i%>" aria-expanded="false"
-                aria-controls="days<%=i%>"><%=analisys.month[i] +" / "+analisys.day[i] %></button>
+                aria-controls="days<%=i%>"><%= report[i]._id.month +" / "+report[i]._id.day %></button>
 
         </div>
 
@@ -200,18 +179,19 @@
                             <%=Math.floor(report[i].countmeeting)%>
                         </td>
                         <td>
-                            <%=Math.floor(analisys.monthlyNeedMeetings)%>
+                            <%=Math.floor(dayGoalMeeting)%>
                         </td>
-                        <td class="change_color"><%=Math.floor(bmc)%></td>
-                        <td class="change_color"><%=Math.floor(sumDayMissingA)%></td>
+                       
+                        <td class="change_color"><%=Math.floor(disparityFromToday)%></td>
+                        <td class="change_color"><%=Math.floor(disparityFromAllMonth)%></td>
 
                     </tr>
                 </tbody>
             </table>
         </div>
-        <div class="collapse multi-collapse" id="stickerFlyers<%=i%>">
+        <div class="collapse multi-collapse " id="stickerFlyers<%=i%>">
 
-            <table class="table-sm mx-auto w-auto" style=" background-color: rgb(255, 230, 215); margin-top: 20px;">
+            <table class="table-sm  mx-auto w-auto" style=" background-color: rgb(255, 230, 215); margin-top: 20px;">
                 <tr>
                     <th> בוצע </th>
                     <th> יעד יומי</th>
@@ -225,16 +205,17 @@
                             <%=Math.floor(report[i].countstickerflyers)%>
                         </td>
                         <td>
-                            <%=Math.floor(analisys.monthlyNeedstickerFlyers)%>
+                            <%=Math.floor(dayGoalStickerFlyers)%>
                         </td>
-                        <td class="change_color"><%=Math.floor(bsfc)%></td>
-                        <td class="change_color"><%=Math.floor(sumDayMissing)%></td>
+                       
+                        <td class="change_color"><%=Math.floor(disparityFromTodaySF)%></td>
+                        <td class="change_color"><%=Math.floor(disparityFromAllMonthSF)%></td>
 
                     </tr>
                 </tbody>
             </table>
         </div>
-        <div class="collapse multi-collapse" id="learning<%=i%>">
+        <div class="collapse multi-collapse " id="learning<%=i%>">
 
             <table class="table-sm  mx-auto w-auto" style=" background-color: rgb(255, 230, 215); margin-top: 20px;">
                 <tr>
@@ -250,16 +231,17 @@
                             <%=Math.floor(report[i].countlearninGandRenewal)%>
                         </td>
                         <td>
-                            <%=Math.floor(analisys.monthlyNeedlearninGandRenewal)%>
+                            <%=Math.floor(dayGoalLearningAndRenewal)%>
                         </td>
-                        <td class="change_color"><%=Math.floor(blarc)%></td>
-                        <td class="change_color"><%=Math.floor(sumDayMissingB)%></td>
+                       
+                        <td class="change_color"><%=Math.floor(disparityFromTodayLAR)%></td>
+                        <td class="change_color"><%=Math.floor(disparityFromAllMonthLAR)%></td>
 
                     </tr>
                 </tbody>
             </table>
         </div>
-        <div class="collapse multi-collapse" id="negotiationsInTheProcess<%=i%>">
+        <div class="collapse multi-collapse " id="negotiationsInTheProcess<%=i%>">
 
             <table class="table-sm  mx-auto w-auto" style=" background-color: rgb(255, 230, 215); margin-top: 20px;">
                 <tr>
@@ -271,21 +253,21 @@
                 </thead>
                 <tbody>
                     <tr>
-
                         <td>
                             <%=Math.floor(report[i].countnegotiationsInTheProcess)%>
                         </td>
                         <td>
-                            <%=Math.floor(analisys.monthlyNeednegotiationsInTheProcess)%>
+                            <%=Math.floor(dayGoalNegotiationsInTheProcess)%>
                         </td>
-                        <td class="change_color"><%=Math.floor(bnipc)%></td>
-                        <td class="change_color"><%=Math.floor(sumDayMissingC)%></td>
+                       
+                        <td class="change_color"><%=Math.floor(disparityFromTodayAT)%></td>
+                        <td class="change_color"><%=Math.floor(disparityFromAllMonthAT)%></td>
 
                     </tr>
                 </tbody>
             </table>
         </div>
-        <div class="collapse multi-collapse" id="ActualTransactions<%=i%>">
+        <div class="collapse multi-collapse " id="actualTransactions<%=i%>">
 
             <table class="table-sm  mx-auto w-auto" style=" background-color: rgb(255, 230, 215); margin-top: 20px;">
                 <tr>
@@ -296,22 +278,22 @@
                 </tr>
                 </thead>
                 <tbody>
-
                     <tr>
                         <td>
-                            <%=Math.floor(report[i].countactualTransactions)%>
+                            <%=Math.floor(report[i].countnegotiationsInTheProcess)%>
                         </td>
                         <td>
-                            <%=Math.floor(analisys.monthlyNeedactualTransactions)%>
+                            <%=Math.floor(dayGoalActualTransactions)%>
                         </td>
-                        <td class="change_color"><%=Math.floor(batc)%></td>
-                        <td class="change_color"><%=Math.floor(sumDayMissingD)%></td>
+                       
+                        <td class="change_color"><%=Math.floor(disparityFromTodayNITP)%></td>
+                        <td class="change_color"><%=Math.floor(disparityFromAllMonthNITP)%></td>
 
                     </tr>
                 </tbody>
             </table>
         </div>
-        <div class="collapse multi-collapse" id="RentalTours<%=i%>">
+        <div class="collapse multi-collapse " id="RentalTours<%=i%>">
 
             <table class="table-sm  mx-auto w-auto" style=" background-color: rgb(255, 230, 215); margin-top: 20px;">
                 <tr>
@@ -327,18 +309,19 @@
                             <%=Math.floor(report[i].countrentalTours)%>
                         </td>
                         <td>
-                            <%=Math.floor(analisys.monthlyNeedrentalTours)%>
+                            <%=Math.floor(dayGoalRentalTours)%>
                         </td>
-                        <td class="change_color"><%=Math.floor(brtc)%></td>
-                        <td class="change_color"><%=Math.floor(sumDayMissingE)%></td>
+                       
+                        <td class="change_color"><%=Math.floor(disparityFromTodayRT)%></td>
+                        <td class="change_color"><%=Math.floor(disparityFromAllMonthRT)%></td>
 
                     </tr>
                 </tbody>
             </table>
         </div>
-        <div class="collapse multi-collapse" id="Collaborations<%=i%>">
+        <div class="collapse multi-collapse " id="Collaborations<%=i%>">
 
-            <table class="table-sm mx-auto w-auto" style=" background-color: rgb(255, 230, 215); margin-top: 20px;">
+            <table class="table-sm  mx-auto w-auto" style=" background-color: rgb(255, 230, 215); margin-top: 20px;">
                 <tr>
                     <th> בוצע </th>
                     <th> יעד יומי</th>
@@ -352,18 +335,20 @@
                             <%=Math.floor(report[i].countcollaborations)%>
                         </td>
                         <td>
-                            <%=Math.floor(analisys.monthlyNeedcollaborations)%>
+                            <%=Math.floor(dayGoalCollaborations)%>
                         </td>
-                        <td class="change_color"><%=Math.floor(bcc)%></td>
-                        <td class="change_color"><%=Math.floor(sumDayMissingF)%></td>
+                       
+                        <td class="change_color"><%=Math.floor(disparityFromTodayC)%></td>
+                        <td class="change_color"><%=Math.floor(disparityFromAllMonthC)%></td>
 
                     </tr>
                 </tbody>
             </table>
         </div>
-        <div class="collapse multi-collapse" id="ConversationsWithPreviousClients<%=i%>">
+      
+        <div class="collapse multi-collapse " id="ConversationsWithPreviousClients<%=i%>">
 
-            <table class="table-sm mx-auto w-auto" style=" background-color: rgb(255, 230, 215); margin-top: 20px;">
+            <table class="table-sm  mx-auto w-auto" style=" background-color: rgb(255, 230, 215); margin-top: 20px;">
                 <tr>
                     <th> בוצע </th>
                     <th> יעד יומי</th>
@@ -377,19 +362,19 @@
                             <%=Math.floor(report[i].countconversationsWithPreviousClients)%>
                         </td>
                         <td>
-                            <%=Math.floor(analisys.monthlyNeedconversationsWithPreviousClients)%>
+                            <%=Math.floor(dayGoalCWPC)%>
                         </td>
-                        <td class="change_color"><%=Math.floor(bcpcc)%></td>
-                        <td class="change_color"><%=Math.floor(sumDayMissingG)%></td>
+                       
+                        <td class="change_color"><%=Math.floor(disparityFromTodayCWPC)%></td>
+                        <td class="change_color"><%=Math.floor(disparityFromAllMonthCWPC)%></td>
 
                     </tr>
                 </tbody>
             </table>
         </div>
+        <div class="collapse multi-collapse " id="PricesOffer<%=i%>">
 
-        <div class="collapse multi-collapse" id="PricesOffer<%=i%>">
-
-            <table class="table-sm mx-auto w-auto" style=" background-color: rgb(255, 230, 215); margin-top: 20px;">
+            <table class="table-sm  mx-auto w-auto" style=" background-color: rgb(255, 230, 215); margin-top: 20px;">
                 <tr>
                     <th> בוצע </th>
                     <th> יעד יומי</th>
@@ -403,112 +388,17 @@
                             <%=Math.floor(report[i].countpricesOffer)%>
                         </td>
                         <td>
-                            <%=Math.floor(analisys.monthlyNeedpricesOffer)%>
+                            <%=Math.floor(dayGoalPO)%>
                         </td>
-                        <td class="change_color"><%=Math.floor(bpoc)%></td>
-                        <td class="change_color"><%=Math.floor(sumDayMissingH)%></td>
+                       
+                        <td class="change_color"><%=Math.floor(disparityFromTodayPO)%></td>
+                        <td class="change_color"><%=Math.floor(disparityFromAllMonthPO)%></td>
 
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <!-- <table class="table table-bordered table-dark " >
-        <thead>
-            <tr>
-                <th colspan="5"><%=analisys.month[i] +" / "+analisys.day[i] %></th>
-            </tr>
-                    <tr>
-                        <th> </th>
-                        <th> בוצע  </th>
-                        <th> יעד יומי</th>
-                        <th> פער מהיעד החודשי </th>
-                        <th> פער מהיעד היומי </th>
-                    </tr>
-                </thead>
-                <tbody>
-
-
-                    <tr>
-                        <td>הדבקת פליירים</td>
-                        <td><%=report[i].countstickerflyers%></td>
-                        <td><%=analisys.monthlyNeedstickerFlyers.toFixed(2)%></td>
-                        <td class="change_color"><%=bsfc%></td>
-                        <td class="change_color" ><%=sumDayMissing.toFixed(1)%></td>
-                    </tr>
-
-                    <tr>
-                        <td>פגישות אצל בעלי נכסים</td>
-                        <td><%=report[i].countmeeting%></td>
-                        <td><%=analisys.monthlyNeedMeetings.toFixed(1)%></td>
-                        <td class="change_color"><%=bmc%></td>
-                        <td class="change_color" ><%=sumDayMissingA.toFixed(1)%></td>
-                    </tr>
-                    <tr>
-                        <td>למידה והתחדשות</td>
-                        <td><%=report[i].countlearninGandRenewal%></td>
-                        <td><%=analisys.monthlyNeedlearninGandRenewal.toFixed(1)%></td>
-                        <td class="change_color"><%=blarc%></td>
-                        <td class="change_color" ><%=sumDayMissingB.toFixed(2)%></td>
-                    </tr>
-                    <tr>
-                        <td>משא ומתן בתהליך</td>
-                        <td><%=report[i].countnegotiationsInTheProcess%></td>
-                        <td><%=analisys.monthlyNeednegotiationsInTheProcess.toFixed(2)%></td>
-                        <td class="change_color"><%=bnipc%></td>
-                        <td class="change_color" ><%=sumDayMissingC.toFixed(2)%></td>
-                    </tr>
-                    <tr>
-                        <td>עסקאות בפועל </td>
-                        <td><%=report[i].countactualTransactions%></td>
-                        <td><%=analisys.monthlyNeedactualTransactions.toFixed(2)%></td>
-                        <td  class="change_color"><%=batc%></td>
-                        <td class="change_color" ><%=sumDayMissingD.toFixed(2)%></td>
-                    </tr>
-                    
-                    <tr>
-                        <td>סיורי שוכרים </td>
-                        <td><%=report[i].countrentalTours%></td>
-                        <td><%=analisys.monthlyNeedrentalTours.toFixed(2)%></td>
-                        <td  class="change_color"><%=brtc%></td>
-                        <td class="change_color" ><%=sumDayMissingE.toFixed(2)%></td>
-                    </tr>
-                    <tr>
-                        <td>שתופי פעולה</td>
-                        <td><%=report[i].countcollaborations%></td>
-                        <td><%=analisys.monthlyNeedcollaborations.toFixed(2)%></td>
-                        <td  class="change_color"><%=bcc%></td>
-                        <td class="change_color" ><%=sumDayMissingF.toFixed(2)%></td>
-                    </tr>
-                    <tr>
-                        
-                        <td>
-                            <p> שיחות ללקוחות קודמים </p>
-                        </td>
-                        <td>
-                            <p> <%=report[i].countconversationsWithPreviousClients  %></p>
-                        </td>
-                        <td><%=analisys.monthlyNeedconversationsWithPreviousClients.toFixed(2)%></td>
-                        <td  class="change_color"><%=bcpcc%></td>
-                        <td class="change_color" ><%=sumDayMissingG.toFixed(2)%></td>
-                    </tr>
-                    =====
-                    
-                    
-                    <tr>
-                        <td>
-                            <p> הצעות מחיר</p>
-                        </td>
-                        <td><%=report[i].countpricesOffer%></td>
-                        <td><%=analisys.monthlyNeedpricesOffer.toFixed(2)%></td>
-                        <td  class="change_color"><%=bpoc%></td>
-                        <td class="change_color" ><%=sumDayMissingH.toFixed(2)%></td>
-                    </tr>
-
-                </tbody>
-
-            </table> -->
-        <%}%>
             <%}%>
     </div>
 </div>
