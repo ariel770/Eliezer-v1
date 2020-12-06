@@ -4,6 +4,7 @@ var Reports = require("../models/reports.js");
 var Statistic = require("../models/statistic.js");
 var Agents = require("../models/agents.js");
 const middlewhereObj = require('../middlewhere/index.js');
+const statistic = require('../models/statistic.js');
 var ObjectId = require('mongodb').ObjectID;
 
 
@@ -52,10 +53,15 @@ route.post("/getListStatistics/:id", function (req, res) {
         } else {
             var date1 = new Date(req.body.from);
             var date2 = new Date(req.body.to);
+            console.log(date1)
+            console.log(date2)
             Statistic.find({ "agent.id": req.params.id, date: { $gt: date1, $lt: date2 } }, function (err, statistics) {
+                console.log("===========getlistStatistics=================")
+                console.log(statistics)
                 if (err) {
                     res.redirect("back")
                 } else {
+                    
                     Reports.aggregate([
                         {
                             $match: {
@@ -99,6 +105,8 @@ route.post("/getListStatistics/:id", function (req, res) {
                         },
                         { $sort: { "_id": -1 } },
                     ], function (err, reportGoal) {
+                        console.log(reportGoal)
+                    console.log("==========/=getlistStatistics=================")
                         if (err || reportGoal.length == 0) {
                             res.render("agents/specificListStatistics.ejs", { agent: agent, statistics: statistics, reportGoal: reportGoal, err: err })
                         } else {
@@ -181,19 +189,23 @@ route.get("/:id", function (req, res) {
               
                 if (err) {
                     res.redirect("back")
-                } else if (reportGoal.length == 0) {
-                    res.render("agents/testShow.ejs", { agent: agent, statistics: "", reportGoal: "" })
-
+               
                 } else {
 
                     Statistic.findOne({ "agent.id": req.params.id},{} ,{sort: {'date':-1} }, function (err, statistics) {
                         if (err) {
                             res.redirect("back")
-                        } else if (statistics == null) {
+                        }  else if(statistics == null && reportGoal == 0) {
                             res.render("agents/testShow.ejs", { agent: agent, statistics: "", reportGoal: "" })
-                        } else {
+                        } else if (reportGoal == 0) {
+                            res.render("agents/testShow.ejs", { agent: agent, statistics: statistics, reportGoal: "" })
+
+                        }  else if(statistics == null ) {
+                            res.render("agents/testShow.ejs", { agent: agent, statistics: "", reportGoal: reportGoal })
+                            
+                        }else{
+
                             res.render("agents/testShow.ejs", { agent: agent, statistics: statistics, reportGoal: reportGoal })
-              
                         }
                     })
                 }

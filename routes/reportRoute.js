@@ -26,129 +26,11 @@ route.get("/agent/:id/report", middlewhereObj.isLoggedIn, function (req, res) {
     })
 
 })
-
-
-
-// route.get("/agent/:id/report/monthlyreports", function (req, res) {
-//     Reports.aggregate([{
-//         $sort: { date: 1 }
-//     }, {
-//         $match: {
-//             'agent.id': ObjectId(req.params.id)
-//         }
-//     }, {
-//         $group: {
-
-//             _id: {
-//                 year: { '$year': '$date' },
-//                 month: { '$month': '$date' }
-//             },
-//             countmeeting: {
-//                 $sum: '$meeting'
-//             },
-//             countstickerflyers: {
-//                 $sum: '$stickerFlyers'
-//             },
-//             countlearninGandRenewal: {
-//                 $sum: '$learninGandRenewal'
-//             },
-//             countnegotiationsInTheProcess: {
-//                 $sum: '$negotiationsInTheProcess'
-//             },
-//             countactualTransactions: {
-//                 $sum: '$actualTransactions'
-//             },
-//             countrentalTours: {
-//                 $sum: '$rentalTours'
-//             },
-//             countcollaborations: {
-//                 $sum: '$collaborations'
-//             },
-//             countconversationsWithPreviousClients: {
-//                 $sum: '$conversationsWithPreviousClients'
-//             },
-//             countpricesOffer: {
-//                 $sum: '$pricesOffer'
-//             }
-//         }
-//     }
-//     ], function (err, report) {
-//         if (err) {
-//             console.log("error  : " + err)
-//             res.redirect("back")
-//         } else {   // I do not need that object  I can send just object from report  but ... i just do it 
-//             var analisys = {
-//                 year: [],
-//                 month: [],
-//                 monthlyNeedMeetings: Number,
-//                 monthlyNeedstickerFlyers: Number,
-//                 monthlyNeedlearninGandRenewal: Number,
-//                 monthlyNeednegotiationsInTheProcess: Number,
-//                 monthlyNeedactualTransactions: Number,
-//                 monthlyNeedrentalTours: Number,
-//                 monthlyNeedcollaborations: Number,
-//                 monthlyNeedconversationsWithPreviousClients: Number,
-//                 monthlyNeedpricesOffer: Number,
-//                 currentMonthTotalDays: [],
-//                 sumMonthlyLearninGandRenewal: [],
-//                 sumMonthlyMeetings: [],
-//                 sumMonthlyStickerFlyers: [],
-//                 sumMonthlyNegotiationsInTheProcess: [],
-//                 sumMonthlyActualTransactions: [],
-//                 sumMonthlyRentalTours: [],
-//                 sumMonthlyCollaborations: [],
-//                 sumMonthlyConversationsWithPreviousClients: [],
-//                 sumMonthlyPricesOffer: [],
-//                 currentDayFromMonth: []
-//             };
-//             Statistic.find({ "agent.id": req.params.id }, function (err, statistic) {
-//                 if (err) {
-//                     res.redirect("back")
-//                 } else {
-//                     for (i = 0; i < statistic.length; i++) {
-//                         analisys.monthlyNeedMeetings = statistic[i].meeting
-//                         analisys.monthlyNeedstickerFlyers = statistic[i].stickerFlyers
-//                         analisys.monthlyNeedlearninGandRenewal = statistic[i].learninGandRenewal
-//                         analisys.monthlyNeednegotiationsInTheProcess = statistic[i].negotiationsInTheProcess
-//                         analisys.monthlyNeedactualTransactions = statistic[i].actualTransactions
-//                         analisys.monthlyNeedrentalTours = statistic[i].rentalTours
-//                         analisys.monthlyNeedcollaborations = statistic[i].collaborations
-//                         analisys.monthlyNeedconversationsWithPreviousClients = statistic[i].conversationsWithPreviousClients
-//                         analisys.monthlyNeedpricesOffer = statistic[i].pricesOffer
-//                     }
-
-//                     for (i = 0; i < report.length; i++) {
-//                         analisys.year.push(report[i]._id.year);
-//                         analisys.month.push(report[i]._id.month);
-//                         analisys.sumMonthlyMeetings.push(report[i].countmeeting);
-//                         analisys.sumMonthlyStickerFlyers.push(report[i].countstickerflyers);
-//                         analisys.sumMonthlyLearninGandRenewal.push(report[i].countlearninGandRenewal);
-//                         analisys.sumMonthlyNegotiationsInTheProcess.push(report[i].countnegotiationsInTheProcess);
-//                         analisys.sumMonthlyActualTransactions.push(report[i].countactualTransactions);
-//                         analisys.sumMonthlyRentalTours.push(report[i].countrentalTours);
-//                         analisys.sumMonthlyCollaborations.push(report[i].countcollaborations);
-//                         analisys.sumMonthlyConversationsWithPreviousClients.push(report[i].countconversationsWithPreviousClients);
-//                         analisys.sumMonthlyPricesOffer.push(report[i].countpricesOffer);
-//                         analisys.currentMonthTotalDays.push(daysInMonth(analisys.month[i], analisys.year[i]))
-
-//                         if (new Date().getMonth() + 1 == report[i]._id.month) {
-//                             analisys.currentDayFromMonth.push(new Date().getDate())
-//                         } else {
-//                             analisys.currentDayFromMonth.push(daysInMonth(analisys.month[i], analisys.year[i]))
-//                         }
-//                     }
-
-//                     res.render("report/monthlyReports.ejs", { report: report, statistic: statistic, analisys: analisys })
-//                 }
-//             })
-
-//         }
-//     })
-
-// });
-
+// GIVE ALL MONTHLY REPORTS WITH AVG OF ALL THE STATISTICS THAT CREATE  IN THAT MONTH 
 route.get("/agent/:id/report/monthlyreportsA", function (req, res) {
-    Reports.aggregate([ {
+    Reports.aggregate([{
+        $sort: { date: 1 }
+    }, {
         $match: {
             'agent.id': ObjectId(req.params.id)
         }
@@ -158,7 +40,6 @@ route.get("/agent/:id/report/monthlyreportsA", function (req, res) {
             _id: {
                 year: { '$year': '$date' },
                 month: { '$month': '$date' }
-                // ,statistics:'$statistics.id'
             },
             countmeeting: {
                 $sum: '$meeting'
@@ -188,9 +69,10 @@ route.get("/agent/:id/report/monthlyreportsA", function (req, res) {
                 $sum: '$pricesOffer'
             }
         }
-    },{
-        $sort: { '_id.month': -1 }
     },
+    {
+        $sort: { '_id.month': -1 }
+    }
     ], function (err, report) {
         if (err) {
             console.log("error  : " + err)
@@ -199,13 +81,13 @@ route.get("/agent/:id/report/monthlyreportsA", function (req, res) {
 
 
             Statistic.aggregate([{
-                $sort: { date: -1 }
+                $sort: { date: 1 }
             }, {
                 $match: {
                     'agent.id': ObjectId(req.params.id)
                 }
-            },{
-                  $group: {
+            }, {
+                $group: {
 
                     _id: {
                         year: { '$year': '$date' },
@@ -239,14 +121,11 @@ route.get("/agent/:id/report/monthlyreportsA", function (req, res) {
                         $avg: '$pricesOffer'
                     }
                 }
-            },{
+            }, {
                 $sort: { '_id.month': -1 }
             }
-
-
-
             ], function (err, statistics) {
-              
+
                 if (err || report.length == 0) {
                     // res.redirect("back")
                     res.render("report/monthlyReportsA.ejs", {
@@ -268,26 +147,13 @@ route.get("/agent/:id/report/monthlyreportsA", function (req, res) {
                             currentDayInMonth.push(daysInMonth(statistics[i]._id.month, statistics[i]._id.year))
                         }
                     }
-                    console.log("=======monthlyreportsA route ===============")
-                    console.log("report")
-                    console.log(report)
-                    console.log("statistics")
-                    console.log(statistics)
-                    console.log("daysInCurrentMonth")
-                    console.log(daysInCurrentMonth)
-                    console.log("currentDayInMonth")
-                    console.log(currentDayInMonth)
 
-                    console.log("=======  /monthlyreportsA route/ ===============")
                     res.render("report/monthlyReportsA.ejs", {
                         report: report, statistics: statistics,
                         daysInCurrentMonth: daysInCurrentMonth, currentDayInMonth: currentDayInMonth
                     })
                 }
             })
-
-
-
         }
     })
 
@@ -350,8 +216,8 @@ route.get("/agent/:id/report/dayreport", function (req, res) {
                     console.log("ERROR  " + err)
                     res.redirect("back")
                 } else {
-                    console.log(statistic)
                     console.log(report)
+                    console.log(statistic)
                     var daysInCurrentMonth = []
                     var currentDayInMonth = []
                     for (i = 0; i < report.length; i++) {
@@ -376,7 +242,7 @@ route.get("/agent/:id/report/dayreport", function (req, res) {
 });
 
 
-//CREATE NEW REPORT 
+//CREATE NEW REPORT  WITH LATEST STATISTICS
 route.get("/agent/:id/report/new", middlewhereObj.isUser, function (req, res) {
     Agents.findById(req.params.id, function (err, agents) {
         if (err) {
@@ -396,14 +262,14 @@ route.post("/agent/:id/report", middlewhereObj.isUser, function (req, res) {
         if (err) {
             res.redirect("back")
         } else {
-            Statistic.findById(req.params.id,{sort: { 'date': -1 } }, function (err, stas) {
-                if (err) {
+            // Statistic.find(req.params.id,{sort:{'date': 1 }}, function (err, stas) {
+            Statistic.findOne({ "agent.id": req.params.id }, {}, { sort: { 'date':1 } }, function (err, stas) {
+                if (err  ||stas == null) {
                     res.render("report/monthlyReportsA.ejs", {
                         report: "", statistics: "",
                         daysInCurrentMonth: "", currentDayInMonth: ""
                     })
                 } else {
-              
                     var newReport = {
                         agent: {
                             id: agents.id,
@@ -426,7 +292,7 @@ route.post("/agent/:id/report", middlewhereObj.isUser, function (req, res) {
                     }
 
                     Reports.create(newReport, function (err, report) {
-                    
+
                         if (err) {
                             console.log(err)
                         } else {
