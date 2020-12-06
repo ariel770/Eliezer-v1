@@ -1,9 +1,12 @@
 <%- include ("../partials/header")%>
 <div class="container">
-    <div class="row">
-        <h1 style="text-align: center;"> <%=agent.username%> : עדכן</h1>
-        <div style="width:30%; margin: 20px auto;text-align: center;">
-            <form action="/agent/<%=agent.id%>?_method=PUT" method="POST">
+
+
+    <div style="width:70%; margin: 100px auto;padding: 4px;text-align: center;">
+
+        <h1 style="text-align: center;"><strong> עדכון פרטי סוכן</strong> </h1>
+    
+            <form action="/agent/<%=agent.id%>?_method=PUT" method="POST" autocomplete="off">
                 <label for="username"> שם </label>
 
                 <div class="form-group">
@@ -31,5 +34,5 @@
 
         </div>
     </div>
-</div>
+
 <%- include ("../partials/footer")%>

@@ -14,14 +14,36 @@
     crossorigin="anonymous" />
   <title>Eliezer</title>
   <style>
+  
+  #btn1{
+    outline:none;
+    border:none;
+    position:relative;
+    border-radius:5px;
+    box-shadow:0 6px black;
+  }
+  
+  #btn1:hover{
+    box-shadow:0 4px black;
+    top:4px;
+  }
+  
+  #btn1:active{
+    box-shadow:none;
+      top:6px;
+  }
+
     body,
     html {
       background-color: rgb(255, 240, 213)
     }
-
+ a{
+   color: white;
+ }
     table,
     td,
-    th {
+    th { 
+      
       text-align: center;
       border: 2px solid black;
 
@@ -31,6 +53,7 @@
       width: 83;
     }
 
+    input[type="image"],
     input[type="text"],
     input[type="number"],
     input[type="password"] {
@@ -116,9 +139,14 @@
           <a class="nav-link " href="/logout">התנתק </a>
         </li> 
         <%}else{%>
+     
           
           <li class="nav-item">
-            <a class="nav-link " href="/agent/new">צור איש קשר חדש  </a>
+            <a class="nav-link " href="/register">הוסף סוכן חדש  </a>
+          </li> 
+          
+          <li class="nav-item">
+            <a class="nav-link " href="/agent"> רשימת סוכנים </a>
           </li> 
           <li class="nav-item">
             <a class="nav-link " href="/logout">התנתק </a>

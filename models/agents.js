@@ -21,6 +21,13 @@ var agentsSchema = new mongoose.Schema({
     status: String,
     passport: String,
     UserType: String,
+    image :String,
+    comment: [
+        {
+            date:String,
+            newComment:String
+        } 
+    ]
 
 });
 agentsSchema.plugin(PassportLocalMongoose)

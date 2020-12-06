@@ -4,7 +4,6 @@ var Reports = require("../models/reports.js");
 var Statistic = require("../models/statistic.js");
 var Agents = require("../models/agents.js");
 const middlewhereObj = require('../middlewhere/index.js');
-const statistic = require('../models/statistic.js');
 var ObjectId = require('mongodb').ObjectID;
 
 
@@ -33,20 +32,21 @@ route.get("/new", middlewhereObj.isMannager, function (req, res) {
 route.post("/getListReports/:id", function (req, res) {
     var date1 = new Date(req.body.from);
     var date2 = new Date(req.body.to);
+    console.log("1")
     Reports.find({ "agent.id": req.params.id, date: { $gt: date1, $lt: date2 } }).sort({ date: -1 }).exec(function (err, report) {
-        if (err) {
+        console.log("3")
+        if (err || report.length == 0) {
             console.log("error ! " + err)
-            res.redirect("back");
+            res.render("agents/specificListReports.ejs", { err: err })
         } else {
-            console.log("succsees")
-            res.render("agents/specificListReports.ejs", { report: report })
+
+            res.render("agents/specificListReports.ejs", { report: report, err: "" })
         }
     })
 })
 
 //GET STATISTICS BETWEEN 2 DAYS
 route.post("/getListStatistics/:id", function (req, res) {
-
     Agents.findById(req.params.id, function (err, agent) {
         if (err) {
         } else {
@@ -65,8 +65,8 @@ route.post("/getListStatistics/:id", function (req, res) {
                             $group: {
                                 _id: {
                                     statistics: '$statistics.id',
-                                    year: { '$year': '$date' },
-                                    month: { '$month': '$date' }
+                                    // year: { '$year': '$date' },
+                                    // month: { '$month': '$date' }
                                 },
                                 countmeeting: {
                                     $sum: '$meeting'
@@ -100,9 +100,9 @@ route.post("/getListStatistics/:id", function (req, res) {
                         { $sort: { "_id": -1 } },
                     ], function (err, reportGoal) {
                         if (err || reportGoal.length == 0) {
-                            res.redirect("back")
+                            res.render("agents/specificListStatistics.ejs", { agent: agent, statistics: statistics, reportGoal: reportGoal, err: err })
                         } else {
-                            res.render("agents/specificListStatistics.ejs", { agent: agent, statistics: statistics, reportGoal: reportGoal })
+                            res.render("agents/specificListStatistics.ejs", { agent: agent, statistics: statistics, reportGoal: reportGoal, err: "" })
                         }
                     })
                 }
@@ -113,15 +113,25 @@ route.post("/getListStatistics/:id", function (req, res) {
 
 })
 
+route.get("/getListComment/:id", function (req, res) {
+
+    Agents.findById(req.params.id, function (err, agent) {
+        if (err) {
+            console.log(err)
+            res.redirect("back")
+        } else {
+
+            res.render("agents/specificListComments.ejs", { agent: agent, err: "" })
+        }
+    })
+})
 //SHOW A SPECIFIC AGENT (WITH A LAST  STATISTIC ======> FROM LAST MONTH ?<====(CURRENT STATISTICS))
 route.get("/:id", function (req, res) {
-    console.log("1")
+
     Agents.findById(req.params.id, function (err, agent) {
-        console.log("2")
         if (err) {
             console.log(" you have a big problem2  : " + err)
         } else {
-            console.log("3")
             Reports.aggregate([
                 {
                     $match: {
@@ -164,26 +174,26 @@ route.get("/:id", function (req, res) {
                         }
                     }
                 },
-                // =====> meaby i need to specific this to the last month
-                // { $match: { "_id.month": date.getMonth() + 1 } },
-                { $sort: { "_id": -1 } },
+            
+                { $sort: { "_id": 1 } },
                 { $limit: 1 },
             ], function (err, reportGoal) {
-                console.log("4")
+              
                 if (err) {
                     res.redirect("back")
                 } else if (reportGoal.length == 0) {
-                    res.render("agents/show.ejs", { agent: agent, statistics: "", reportGoal: "" })
+                    res.render("agents/testShow.ejs", { agent: agent, statistics: "", reportGoal: "" })
 
                 } else {
-                    Statistic.findById(reportGoal[0]._id.statistics, function (err, statistics) {
+
+                    Statistic.findOne({ "agent.id": req.params.id},{} ,{sort: {'date':-1} }, function (err, statistics) {
                         if (err) {
-                            console.log("ERROR TO FIND STATISTICS")
                             res.redirect("back")
-                        } else if (statistics== null) {
-                            res.render("agents/show.ejs", { agent: agent, statistics: "", reportGoal: "" })
+                        } else if (statistics == null) {
+                            res.render("agents/testShow.ejs", { agent: agent, statistics: "", reportGoal: "" })
                         } else {
-                            res.render("agents/show.ejs", { agent: agent, statistics: statistics, reportGoal: reportGoal })
+                            res.render("agents/testShow.ejs", { agent: agent, statistics: statistics, reportGoal: reportGoal })
+              
                         }
                     })
                 }
@@ -264,6 +274,22 @@ route.get("/:id/edit", function (req, res) {
 
 
 });
+route.put("/:id/addComment", function (req, res) {
+    var comment = {
+        date: new Date(),
+        newComment: req.body.comment
+    }
+    Agents.findById(req.params.id, function (err, agent) {
+        agent.comment.push(comment)
+        agent.save();
+        if (err) {
+            console.log(err)
+        } else {
+            res.redirect("/agent/" + req.params.id)
+        }
+    })
+
+})
 //INSERT THE FIX AGENTS TO THE DB
 route.put("/:id", function (req, res) {
     var agent = {
@@ -290,6 +316,7 @@ route.put("/:id", function (req, res) {
 
 // DELETE COMPLETE AGENTS DETAILLS 
 route.delete("/:id", function (req, res) {
+    console.log("delete ======= person")
     Agents.findByIdAndDelete(req.params.id, function (err, agent) {
 
         if (err) {

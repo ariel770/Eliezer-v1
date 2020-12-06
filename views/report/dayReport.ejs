@@ -7,6 +7,9 @@
 
         <h1 style="text-align: center;"><strong> דוחות יומיים </strong></h1>
 
+        <%if(statistic =="" || statistic.length == 0){%>
+            <h1 style="text-align: center;"><strong> אין יעד סטטיסטי לחודש זה </strong> </h1>
+        <%}else{%>
         <%for(i=0;i<report.length;i++){%>
             
      <!-- meetings vars -->
@@ -64,17 +67,7 @@
      <%var currentDayGoalPO = dayGoalPO * currentDayInMonth[i] %> 
      <%var disparityFromTodayPO=report[i].countpricesOffer- currentDayGoalPO %> 
      <%var disparityFromAllMonthPO =report[i].countpricesOffer-  statistic[0].pricesOffer %> 
-       
-     <!-- _id: { month: 11, day: 29 },
-     countmeeting: 333333,
-     countstickerflyers: 3333,
-     countlearninGandRenewal: 3333,
-     countnegotiationsInTheProcess: 3333,
-     countactualTransactions: 3333,
-     countcollaborations: 3333,
-     countcollaborations: 3333,
-     countconversationsWithPreviousClients: 3336,
-     countpricesOffer: 3333 -->
+   
        
         <div class="form-group">
             <button class="btn btn-lg btn btn-dark btn-block" type="button" data-toggle="collapse"
@@ -399,6 +392,7 @@
             </table>
         </div>
 
+            <%}%>
             <%}%>
     </div>
 </div>

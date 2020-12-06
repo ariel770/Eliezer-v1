@@ -1,82 +1,98 @@
-<!-- <%- include ("../partials/header")%> -->
-<form action="/agent/<%=agent.id%>/setgoals" method="POST">
-<table>
-    <thead>
+<%- include ("../partials/header")%>
+<div class="container">
 
-        <tr>
-            <td><input type="text" placeholder="הזן סכום ...." id="edu" /></td>
-            <td>
+    <div style="width:70%; margin: 100px auto;padding: 4px;text-align: center;">
+        <h1 style="text-align: center;"><strong> חישוב וקביעת יעדים</strong></h1>
+        <div class="row d-flex justify-content-center ">
 
-                <input type="text" list="filter" class="form-control" name="filter"
-                    placeholder="בחר סטטוס" />
-                <datalist id="filter">
-                    <option value="comersial">מסחרי</option>
-                    <option value="private">פרטי</option>
-                    <option value="rents">השכרות</option>
-                </datalist>
-            </td>
 
-        </tr>
+            <form action="/agent/<%=agent.id%>/setgoals" autocomplete="off" method="POST">
+                <table>
+                    <thead>
 
-        <tr>
-            <td><input type="button" value="בחר סכום אחר " onclick="clr()" /> </td>
-            <td><input type="button" value="בצע חישוב " onclick="cahngevalue()" /></td>
-        </tr>
-    </thead>
+                        <tr>
+                            <td><input type="text" class="form-control"  placeholder="הזן סכום ...." id="edu" /></td>
+                            <td>
 
-        <tbody>
-            <tr>
-                <td>פגישות </td>
-                <td><input type="number" class="form-control" id="meeting" name="meeting" required></td>
-            </tr>
-            <tr>
-                <td>הדבקת פליירים </td>
-                <td><input type="number" class="form-control" id="stickerFlyers" name="stickerFlyers"></td>
-            </tr>
-            <tr>
-                <td>נכסים נדרשים </td>
-                <td><input type="number" class="form-control" id="cantidadDePropiedadesN" name="learninGandRenewal">
-                </td>
-            </tr>
-            <tr>
-                <td>משא ומתן בתהליך </td>
-                <td><input type="number" class="form-control" id="negotiationsInTheProcess"
-                        name="negotiationsInTheProcess">
-                </td>
-            </tr>
-            <tr>
-                <td>עסקאות בפועל </td>
-                <td><input type="number" class="form-control" id="actualTransactions" name="actualTransactions"></td>
-            </tr>
-            <tr>
-                <td>סיורי שוכרים </td>
-                <td><input type="number" class="form-control" id="rentalTours" name="rentalTours"></td>
-            </tr>
-            <tr>
-                <td>שתופי פעולה </td>
-                <td><input type="number" class="form-control" id="collaborations" name="collaborations"></td>
-            </tr>
-            <tr>
-                <td>שיחות ללקוחות קודמים </td>
-                <td><input type="number" class="form-control" required id="conversationsWithPreviousClients"
-                        name="conversationsWithPreviousClients"></td>
-            </tr>
-            <tr>
-                <td>הצעות מחיר </td>
-                <td><input type="number" class="form-control" id="pricesOffer" name="pricesOffer"></td>
-            </tr>
-            <tr>
-                <td colspan="2"> <button class="btn btn-lg btn-primary btn-block " onclick="snedAlert()">שלח
-                        טופס</button> </td>
+                                <input type="text" list="filter" class="form-control" name="filter"
+                                    placeholder="בחר סטטוס" required />
+                                <datalist id="filter">
+                                    <option value="comersial">מסחרי</option>
+                                    <option value="private">פרטי</option>
+                                    <option value="rents">השכרות</option>
+                                </datalist>
+                            </td>
 
-            </tr>
+                        </tr>
 
-        </tbody>
-        
-    </table>
-    </form>
-    <script>
- 
+                        <tr>
+                            <td><input type="button" class="form-control btn btn-dark  "  value="בחר סכום אחר " onclick="clr()" /> </td>
+                            <td><input type="button" class="form-control btn btn-dark  " value="בצע חישוב " onclick="cahngevalue()" /></td>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>פגישות </td>
+                            <td><input type="number" class="form-control" id="meeting" name="meeting" required></td>
+                        </tr>
+                        <tr>
+                            <td>הדבקת פליירים </td>
+                            <td><input type="number" class="form-control" id="stickerFlyers" name="stickerFlyers"></td>
+                        </tr>
+                        <tr>
+                            <td>נכסים נדרשים </td>
+                            <td><input type="number" class="form-control" id="cantidadDePropiedadesN"
+                                    name="learninGandRenewal">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>משא ומתן בתהליך </td>
+                            <td><input type="number" class="form-control" id="negotiationsInTheProcess"
+                                    name="negotiationsInTheProcess">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>עסקאות בפועל </td>
+                            <td><input type="number" class="form-control" id="actualTransactions"
+                                    name="actualTransactions">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>סיורי שוכרים </td>
+                            <td><input type="number" class="form-control" id="rentalTours" name="rentalTours"></td>
+                        </tr>
+                        <tr>
+                            <td>שתופי פעולה </td>
+                            <td><input type="number" class="form-control" id="collaborations" name="collaborations">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>שיחות ללקוחות קודמים </td>
+                            <td><input type="number" class="form-control" required id="conversationsWithPreviousClients"
+                                    name="conversationsWithPreviousClients"></td>
+                        </tr>
+                        <tr>
+                            <td>הצעות מחיר </td>
+                            <td><input type="number" class="form-control" id="pricesOffer" name="pricesOffer"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"> <button class="btn btn-lg btn-dark btn-hover btn-block " onclick="snedAlert()">שלח
+                                    טופס</button> </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+<script>
+
 
     function clr() {
         document.getElementById("edu").value = ""
@@ -123,4 +139,4 @@
 
 
 
-<!-- <%- include ("../partials/footer")%> -->
+<%- include ("../partials/footer")%>

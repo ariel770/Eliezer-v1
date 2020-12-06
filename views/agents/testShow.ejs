@@ -1,0 +1,204 @@
+<%- include ("../partials/header")%>
+<div class="container">
+    <div style="width:100%; margin: 100px 5%;padding: 4px;text-align: center;">
+
+
+        <div class="row">
+            <div class="col-lg-3">
+                <!--   HERE COMING THE SERACH SECTION  -->
+                <div class="row">
+                    <form action="/agent/getListReports/<%=agent.id%> " method="post">
+
+                        <div class="form-group">
+                            <input type="date" id="from" class="form-control myDate" name="from" placeholder="מתאריך"
+                                autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <input type="date" id="to" class="form-control myDate" name="to" placeholder="לתאריך"
+                                autocomplete="off">
+                        </div>
+                        <div class=" form-group">
+                            <input class="btn btn-lg btn-primary btn-block" type="submit" class="form-control"
+                                value=" דוחות..">
+                        </div>
+
+                    </form>
+                </div>
+                <div class="row">
+                    <form action="/agent/getListStatistics/<%=agent.id%> " method="post">
+
+                        <div class="form-group">
+                            <input type="date" id="from" class="form-control myDate" name="from" placeholder="מתאריך"
+                                autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <input type="date" id="to" class="form-control myDate" name="to" placeholder="לתאריך"
+                                autocomplete="off">
+                        </div>
+                        <div class=" form-group">
+                            <input class="btn btn-lg btn-primary btn-block" type="submit" class="form-control"
+                                value=" סטטיסטיקה..">
+                            </div>
+                            <div class=" form-group  " id="btn1"    >
+                                <a style="height: 140px;padding-top: 25%;" class="btn btn-lg btn-dark btn-block" href="/agent/getListComment/<%=agent.id%>"> <strong>יומן מעסיק</strong> </a>
+                            </div>
+                    </form>
+                </div>
+
+            </div>
+            <div class="col-lg-9">
+                <div class="row">
+                    <!-- HERE COMMING THE CARD IMAGE AND THE BUTTONS GROUP -->
+                    <div class="col-lg-6">
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <button type="button" class="btn btn-dark btn-lg btn-block"><a
+                                        href="/agent/<%=agent.id%>/report">יומנים</a>
+                                </button>
+                                <button type="button" class="btn btn-dark btn-lg btn-block"><a
+                                        href="/agent/<%=agent.id%>/report/monthlyreportsA">דוחות חודשיים
+                                    </a></button>
+                                <button type="button" class="btn btn-dark btn-lg btn-block"> <a
+                                        href="/agent/<%=agent.id%>/setgoals"> חישוב יעדים</a>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+
+                                <form id="comment" action="/agent/<%=agent.id%>/addComment?_method=PUT"
+                                    method="post">
+
+                                    <div class="form-group">
+                                        <textarea class="form-control" id="textarea" onkeypress="enterPress(event)" rows="6"
+                                            style="resize: none;margin-top:20px;margin-bottom:0; 
+                                         padding-bottom: 0; border: 2px solid black;  background-color: rgb(255, 230, 215);"
+                                            placeholder="כתוב הערה ..." name="comment"></textarea>
+                                    </div>
+                               
+                                    <!-- <button class="btn btn-dark btn-sm" style="margin-top: 0;padding-top: 0;"> שלח -->
+                                    <!-- </button> -->
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6  d-flex justify-content-end">
+                        <div class="card" style="width: 18rem; margin-left: 10px;">
+                            <img class="card-img-top" src="<%=agent.image%>" alt="Card image cap">
+                            <div class="card-body">
+                                <p class="card-text"> <strong> נתונים ויעדים
+                                        <%=agent.username%></strong> </p>
+                                <form action="/agent/<%=agent.id%>?_method=DELETE" method="POST">
+                                    <button type="submit" class="btn btn-dark btn-block">מחק </button>
+                                </form>
+                                <button class="btn btn-dark btn-block"><a href="/agent/<%=agent.id%>/edit">ערוך</a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- HERE COMMING THE TABLE  -->
+                <div class="row">
+                    <div class="col-lg-12 ">
+             
+             
+             <!--  <table class="table" style=" border: 4px solid black; margin-left: 30%;margin-right: 30%;width: 40%; margin-bottom: 40px;
+             height: 130px; padding: 4px;"> -->
+             
+                        <table class="table table-bordered table-dark table-sm"
+                            style="margin-top: 20px;  text-align: center; margin-left :30%; margin-top:50px; ">
+                            <thead>
+                                <tr style="line-height:15px;">
+
+                                    <th scope="col">#</th>
+                                    <th scope="col">פגישות אצל בעלי נכסים</th>
+                                    <th scope="col">הדבקת פליירים</th>
+                                    <th scope="col">למידה והתחדשות</th>
+                                    <th scope="col">משא ומתן בתהליך</th>
+                                    <th scope="col">עסקאות בפועל </th>
+                                    <th scope="col">סיורי שוכרים </th>
+                                    <th scope="col">שתופי פעולה</th>
+                                    <th scope="col">שיחות ללקוחות קודמים</th>
+                                    <th scope="col">הצעות מחיר</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><Strong>נדרש עד היום </Strong></td>
+                                    <td class="needed"><Strong><%=statistics.meeting%></Strong></td>
+                                    <td class="needed"><Strong><%=statistics.stickerFlyers%></Strong></td>
+                                    <td class="needed"><Strong><%=statistics.learninGandRenewal%></Strong></td>
+                                    <td class="needed"><Strong><%=statistics.negotiationsInTheProcess%></Strong></td>
+                                    <td class="needed"><Strong><%=statistics.actualTransactions%></Strong></td>
+                                    <td class="needed"><Strong><%=statistics.rentalTours%></Strong></td>
+                                    <td class="needed"><Strong><%=statistics.collaborations%></Strong></td>
+                                    <td class="needed"><Strong><%=statistics.conversationsWithPreviousClients%></Strong>
+                                    </td>
+                                    <td class="needed"><Strong><%=statistics.pricesOffer%></Strong></td>
+
+                                </tr>
+                                <%for(i=0;i<reportGoal.length ; i++){%>
+                                <tr>
+                                    <td><Strong>בוצע עד היום</Strong></td>
+                                    <td class="actual"><Strong><%=reportGoal[i].countmeeting%></Strong></td>
+                                    <td class="actual"><Strong><%=reportGoal[i].countstickerflyers%></Strong></td>
+                                    <td class="actual"><Strong><%=reportGoal[i].countlearninGandRenewal%></Strong></td>
+                                    <td class="actual"><Strong><%=reportGoal[i].countnegotiationsInTheProcess%></Strong>
+                                    </td>
+                                    <td class="actual"><Strong><%=reportGoal[i].countactualTransactions%></Strong></td>
+                                    <td class="actual"><Strong><%=reportGoal[i].countrentalTours%></Strong></td>
+                                    <td class="actual"><Strong><%=reportGoal[i].countcollaborations%></Strong></td>
+                                    <td class="actual">
+                                        <Strong><%=reportGoal[i].countconversationsWithPreviousClients%></Strong>
+                                    </td>
+                                    <td class="actual"><Strong><%=reportGoal[i].countpricesOffer%></Strong></td>
+                                    </td>
+                                </tr>
+                                <%}%>
+                    
+                </tbody>
+            </table>
+                </div>
+            </div>
+        </div>
+      
+    </div>
+</div>
+</div>
+<script> 
+    function enterPress(event){
+    
+         if (event.keyCode === 13) {
+             document.getElementById("comment").submit();
+           
+            }
+            return true;
+    }
+
+
+
+
+
+
+
+    var actual = document.querySelectorAll(".actual");
+    var needed = document.querySelectorAll(".needed");
+
+    var i;
+    var b;
+    for (i = 0; i < needed.length; i++) {
+        if (parseInt(actual[i].innerText) > parseInt(needed[i].innerText)) {
+
+            actual[i].style.backgroundColor = "green";
+        } else if (parseInt(actual[i].innerText) < parseInt(needed[i].innerText)) {
+
+            actual[i].style.backgroundColor = "red";
+
+        } else if (parseInt(actual[i].innerText == 0)) {
+            actual[i].style.backgroundColor = "yellow";
+
+        }
+    }
+</script>
+<%- include ("../partials/footer")%>

@@ -17,12 +17,17 @@ route.post("/register", function (req, res) {
     }else{
         userType = 'user'
     }
-    var newuser = { username: req.body.username, UserType: userType, contact: req.body.contact }
+    console.log(req.body.image)
+    var newuser = {username: req.body.username, UserType: userType, contact: req.body.contact,image:req.body.image}
+ 
+    console.log(newuser)
+    console.log(newuser)
     Agents.register(new Agents(newuser), req.body.password, function (err, agent) {
         if (err) { 
-                res.render("agents/newAgent.ejs",{agent:agent})   
+              
             return res.redirect("back")
         }
+    console.log(agent)
         Agents.authenticate("local")(req, res, function () {
             console.log("authenticate success ... ");
             res.redirect("/agent")

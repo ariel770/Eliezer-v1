@@ -1,15 +1,11 @@
 <%- include ("../partials/header")%>
-
 <div class="container">
-    
-    <div class="row">
-        <div style="text-align: center;">
-        
+
+    <div style="width:70%; margin: 60px auto;padding: 4px;text-align: center;">
          
-            <h1 style="text-align: center; text-decoration: underline;"> דוחות קודמים </h1>
-            
-            <%if(report == ""){%>
-                <h3>חפש תאריכים נכונים</h3>
+            <h1 style="text-align: center; text-decoration: underline; margin-top: 100;"><strong> דוחות קודמים</strong> </h1>
+            <%if(err || report == "" || statistics == ""){%>    
+           <h3>שגיאת חיפוש </h3>
                 <%}else if(report){%>
                     <%for(i=0 ;i<report.length;i++){%>
                         <% var date = new Date(report[i].date)%>
@@ -55,5 +51,5 @@
                 
             </div>
         </div>
-    </div>
+
     <%- include ("../partials/footer")%>

@@ -1,0 +1,34 @@
+<%- include ("../partials/header")%>
+    <div style="width:70%; margin: 60px auto;padding: 4px;text-align: center;">
+        <h1 style="text-align: center; padding: 30px;"><strong>יומן </strong></h1>
+        <%for(i=agent.comment.length-1 ;i>=0;i--){%>
+            <% var d = new Date(agent.comment[i].date)%>
+            <%var month  =  d.getMonth()+1%>
+            <%var hour  =  d.getHours();%>
+            <%var minutes  =  d.getMinutes();%>
+            <%var year  =   d.getFullYear();%>
+            <%var date  =   d.getDate();%>
+            <%var datestring = date+ "-" + month+ "-" +year%>
+            
+            <table class="table" style=" border: 4px solid black; margin-left: 30%;margin-right: 30%;width: 40%; margin-bottom: 40px;
+             height: 130px; padding: 4px;">
+                <thead>
+                    <tr>
+                    <th style="background-color: brown; color: burlywood;" > <%=datestring%></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td ><%=agent.comment[i].newComment%></Strong></td>
+                    </td>
+                </tr>
+                <%}%>
+                        
+                    </tbody>
+                </table>
+                
+                
+            
+        </div>
+
+    <%- include ("../partials/footer")%>
