@@ -1,38 +1,53 @@
 <%- include ("../partials/header")%>
+<!-- ======== -->
+
 <div class="container">
 
-
     <div style="width:70%; margin: 100px auto;padding: 4px;text-align: center;">
-
         <h1 style="text-align: center;"><strong> עדכון פרטי סוכן</strong> </h1>
-    
-            <form action="/agent/<%=agent.id%>?_method=PUT" method="POST" autocomplete="off">
-                <label for="username"> שם </label>
-
-                <div class="form-group">
-                    <input type="text" id="username" class="form-control" name="username"
-                        value="<%=agent.username%>">
+        <form action="/agent/<%=agent.id%>?_method=PUT" method="POST" autocomplete="off">
+            <div class="form-group row">
+                <div class="col-lg-2"><Strong>שם :</Strong></div>
+                <div class="col-lg-10">
+                    <input type="text" id="username" class="form-control" name="username" value="<%=agent.username%>">
                 </div>
-              
-                <label for="status"> טלפון</label>
-                <div class="form-group">
-                    <input type="text" id="phone" class="form-control" name="phone"
-                        value="<%=agent.contact.phone%>">
+            </div>
+            
+            <div class="form-group row">
+                <div class="col-lg-2"><Strong>טלפון/פלאפון:</Strong></div>
+                <div class="col-lg-10">
+                    <input type="text" id="phone" class="form-control" name="phone" value="<%=agent.contact.phone%>">
                 </div>
-                <label for="status"> מייל</label>
-                <div class="form-group">
-                    <input type="text" id="email" class="form-control" name="email"
-                        value="<%=agent.contact.email%>">
+            </div>
+            <div class="form-group row">
+                <div class="col-lg-2"><Strong> מייל :</Strong></div>
+                <div class="col-lg-10">
+                    <input type="text" id="email" class="form-control" name="email" value="<%=agent.contact.email%>">
+                    
                 </div>
-
-
-                <div class="form-group">
-                    <button class="btn btn-lg btn-primary btn-block ">עדכן פרטי סוכן </button>
+            </div>
+            
+            <div class="form-group row">
+                <div class="col-lg-2"><Strong> תמונה :</Strong></div>
+                <div class="col-lg-10">
+                    <!-- <input type="file" class="custom-file-input" id="inputGroupFile04" > -->
+                    <input type="text" class="form-control" name="image" id="image" value="<%=agent.image%>">
                 </div>
+            </div>
 
-            </form>
+            <div class="form-group">
+                <button class="btn btn-lg btn-primary btn-block ">עדכן פרטי סוכן </button>
+            </div>
 
-        </div>
+        </form>
+
     </div>
+</div>
+</div>
+
+
+
+
+
 
 <%- include ("../partials/footer")%>

@@ -33,14 +33,11 @@ route.get("/new", middlewhereObj.isMannager, function (req, res) {
 route.post("/getListReports/:id", function (req, res) {
     var date1 = new Date(req.body.from);
     var date2 = new Date(req.body.to);
-    console.log("1")
     Reports.find({ "agent.id": req.params.id, date: { $gt: date1, $lt: date2 } }).sort({ date: -1 }).exec(function (err, report) {
-        console.log("3")
         if (err || report.length == 0) {
             console.log("error ! " + err)
             res.render("agents/specificListReports.ejs", { err: err })
         } else {
-
             res.render("agents/specificListReports.ejs", { report: report, err: "" })
         }
     })
@@ -48,76 +45,77 @@ route.post("/getListReports/:id", function (req, res) {
 
 //GET STATISTICS BETWEEN 2 DAYS
 route.post("/getListStatistics/:id", function (req, res) {
-    Agents.findById(req.params.id, function (err, agent) {
+    var date1 = new Date(req.body.from)
+    var date2 = new Date(req.body.to)
+    Reports.aggregate([
+        {
+            $sort: { date: 1 }
+        },
+        {
+            $match: {
+
+                'agent.id': ObjectId(req.params.id), "date": { '$gte': date1, '$lte': date2 }
+            }
+        }, {
+            $group: {
+
+                _id: {
+                    year: { '$year': '$date' },
+                    month: { '$month': '$date' },
+                    statistics: '$statistics.id'
+                },
+                countmeeting: {
+                    $sum: '$meeting'
+                },
+                countstickerflyers: {
+                    $sum: '$stickerFlyers'
+                },
+                countlearninGandRenewal: {
+                    $sum: '$learninGandRenewal'
+                },
+                countnegotiationsInTheProcess: {
+                    $sum: '$negotiationsInTheProcess'
+                },
+                countactualTransactions: {
+                    $sum: '$actualTransactions'
+                },
+                countrentalTours: {
+                    $sum: '$rentalTours'
+                },
+                countcollaborations: {
+                    $sum: '$collaborations'
+                },
+                countconversationsWithPreviousClients: {
+                    $sum: '$conversationsWithPreviousClients'
+                },
+                countpricesOffer: {
+                    $sum: '$pricesOffer'
+                }
+            }
+        },
+        {
+            $sort: { '_id.month': -1 }
+        }
+    ], function (err, report) {
         if (err) {
+
         } else {
-            var date1 = new Date(req.body.from);
-            var date2 = new Date(req.body.to);
-            console.log(date1)
-            console.log(date2)
-            Statistic.find({ "agent.id": req.params.id, date: { $gt: date1, $lt: date2 } }, function (err, statistics) {
-                console.log("===========getlistStatistics=================")
-                console.log(statistics)
+            Statistic.find({ date: { '$gte': date1, '$lte': date2 }, "agent.id": req.params.id }).sort({ date: -1 }).exec(function (err, statistics) {
                 if (err) {
                     res.redirect("back")
                 } else {
-                    
-                    Reports.aggregate([
-                        {
-                            $match: {
-                                'agent.id': ObjectId(req.params.id),
-                            }
-                        }, {
-                            $group: {
-                                _id: {
-                                    statistics: '$statistics.id',
-                                    // year: { '$year': '$date' },
-                                    // month: { '$month': '$date' }
-                                },
-                                countmeeting: {
-                                    $sum: '$meeting'
-                                },
-                                countstickerflyers: {
-                                    $sum: '$stickerFlyers'
-                                },
-                                countlearninGandRenewal: {
-                                    $sum: '$learninGandRenewal'
-                                },
-                                countnegotiationsInTheProcess: {
-                                    $sum: '$negotiationsInTheProcess'
-                                },
-                                countactualTransactions: {
-                                    $sum: '$actualTransactions'
-                                },
-                                countrentalTours: {
-                                    $sum: '$rentalTours'
-                                },
-                                countcollaborations: {
-                                    $sum: '$collaborations'
-                                },
-                                countconversationsWithPreviousClients: {
-                                    $sum: '$conversationsWithPreviousClients'
-                                },
-                                countpricesOffer: {
-                                    $sum: '$pricesOffer'
-                                }
-                            }
-                        },
-                        { $sort: { "_id": -1 } },
-                    ], function (err, reportGoal) {
-                        console.log(reportGoal)
-                    console.log("==========/=getlistStatistics=================")
-                        if (err || reportGoal.length == 0) {
-                            res.render("agents/specificListStatistics.ejs", { agent: agent, statistics: statistics, reportGoal: reportGoal, err: err })
-                        } else {
-                            res.render("agents/specificListStatistics.ejs", { agent: agent, statistics: statistics, reportGoal: reportGoal, err: "" })
-                        }
-                    })
+                    res.render("agents/specificListStatistics.ejs", { report: report, statistics: statistics });
+
                 }
 
             })
+
+
         }
+
+
     })
+
 
 })
 
@@ -182,28 +180,27 @@ route.get("/:id", function (req, res) {
                         }
                     }
                 },
-            
+
                 { $sort: { "_id": 1 } },
                 { $limit: 1 },
             ], function (err, reportGoal) {
-              
+
                 if (err) {
                     res.redirect("back")
-               
-                } else {
 
-                    Statistic.findOne({ "agent.id": req.params.id},{} ,{sort: {'date':-1} }, function (err, statistics) {
+                } else {
+                    Statistic.findOne({ "agent.id": req.params.id }, {}, { sort: { 'date': -1 } }, function (err, statistics) {
                         if (err) {
                             res.redirect("back")
-                        }  else if(statistics == null && reportGoal == 0) {
+                        } else if (statistics == null && reportGoal == 0) {
                             res.render("agents/testShow.ejs", { agent: agent, statistics: "", reportGoal: "" })
                         } else if (reportGoal == 0) {
                             res.render("agents/testShow.ejs", { agent: agent, statistics: statistics, reportGoal: "" })
 
-                        }  else if(statistics == null ) {
+                        } else if (statistics == null) {
                             res.render("agents/testShow.ejs", { agent: agent, statistics: "", reportGoal: reportGoal })
-                            
-                        }else{
+
+                        } else {
 
                             res.render("agents/testShow.ejs", { agent: agent, statistics: statistics, reportGoal: reportGoal })
                         }
@@ -267,20 +264,13 @@ route.post("/:id/setgoals", function (req, res) {
     })
 
 })
-
-
-
 //EDIT SPECIFIC AGENT 
 route.get("/:id/edit", function (req, res) {
-
     Agents.findById(req.params.id, function (err, agent) {
         if (err) {
             console.log(err)
         } else {
-            console.log("agent")
-
             res.render("agents/editAgent.ejs", { agent: agent })
-
         }
     })
 
@@ -309,13 +299,16 @@ route.put("/:id", function (req, res) {
             phone: req.body.phone,
             email: req.body.email
         },
-        username: req.body.username
+        username: req.body.username,
+        image:req.body.image
+    
 
     }
 
 
+
     Agents.findByIdAndUpdate(req.params.id, agent, function (err, agent) {
-        console.log(agent)
+  
         if (err) {
             console.log(err)
         } else {
@@ -375,11 +368,9 @@ function getStatistics(money, status, id, username) {
         sumaPorPropiedad = 30000
     }
     var cantidadDePropiedadesN = money / sumaPorPropiedad;
-    console.log(cantidadDePropiedadesN)
+
     var reunionesParaCerarrNegocio = cantidadDePropiedadesN * 20
-    console.log(reunionesParaCerarrNegocio)
     var pegarStickers = reunionesParaCerarrNegocio * 2
-    console.log(pegarStickers)
 
 
 

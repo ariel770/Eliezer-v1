@@ -20,8 +20,7 @@ route.post("/register", function (req, res) {
     console.log(req.body.image)
     var newuser = {username: req.body.username, UserType: userType, contact: req.body.contact,image:req.body.image}
  
-    console.log(newuser)
-    console.log(newuser)
+
     Agents.register(new Agents(newuser), req.body.password, function (err, agent) {
         if (err) { 
               

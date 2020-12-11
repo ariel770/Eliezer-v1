@@ -17,11 +17,17 @@ var agentsSchema = new mongoose.Schema({
             ref: "Statistics"
         },
     ],
+    // image:
+    // {
+    //     data: Buffer,
+    //     contentType: String
+    // },
+    image:String,
     username: String,
     status: String,
     passport: String,
     UserType: String,
-    image :String,
+    // image :String,
     comment: [
         {
             date:String,

@@ -216,8 +216,7 @@ route.get("/agent/:id/report/dayreport", function (req, res) {
                     console.log("ERROR  " + err)
                     res.redirect("back")
                 } else {
-                    console.log(report)
-                    console.log(statistic)
+                
                     var daysInCurrentMonth = []
                     var currentDayInMonth = []
                     for (i = 0; i < report.length; i++) {
@@ -262,14 +261,15 @@ route.post("/agent/:id/report", middlewhereObj.isUser, function (req, res) {
         if (err) {
             res.redirect("back")
         } else {
-            // Statistic.find(req.params.id,{sort:{'date': 1 }}, function (err, stas) {
-            Statistic.findOne({ "agent.id": req.params.id }, {}, { sort: { 'date':1 } }, function (err, stas) {
-                if (err  ||stas == null) {
+
+            Statistic.findOne({ "agent.id": req.params.id }, {}, { sort: { 'date': -1 } }, function (err, stas) {
+                if (err || stas == null) {
                     res.render("report/monthlyReportsA.ejs", {
                         report: "", statistics: "",
                         daysInCurrentMonth: "", currentDayInMonth: ""
                     })
                 } else {
+
                     var newReport = {
                         agent: {
                             id: agents.id,
@@ -296,17 +296,8 @@ route.post("/agent/:id/report", middlewhereObj.isUser, function (req, res) {
                         if (err) {
                             console.log(err)
                         } else {
-                            console.log("==============/agent/:id/report ===============")
-                            console.log(report)
-                            console.log("==============/agent/:id/report ===============")
                             agents.reports.push(report.id);
                             agents.save();
-                            console.log("==============/agent/:id/report ===============")
-                            console.log(agents)
-                            console.log("==============/agent/:id/report ===============")
-
-                            // res.redirect("/agent/" + agents.id + "/report/new");
-
                             res.redirect("back");
 
                         }

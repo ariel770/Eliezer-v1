@@ -8,12 +8,26 @@ var Agents = require('./models/agents.js');
 var reportRoute = require('./routes/reportRoute');
 var agentRoute = require('./routes/agentRoute');
 var indexRoute = require('./routes/indexRoute');
+
 var methodOverride = require('method-override');
 var //AUTHENTICATE
 passport = require('passport'),
 LocalStrategy = require('passport-local'),
 PassportLocalMongoose = require('passport-local-mongoose');
 
+var fs = require('fs');
+var path = require('path');
+var multer = require('multer');
+var storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads')
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + '-' + Date.now())
+    }
+});
+ 
+var upload = multer({ storage: storage });
 app.use(methodOverride("_method"));
 //passport configurate
 app.use(require('cookie-parser')());

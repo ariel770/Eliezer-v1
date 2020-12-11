@@ -1,4 +1,7 @@
 var middlewhereObj = {};
+var fs = require('fs');
+var path = require('path');
+var multer = require('multer');
 
 middlewhereObj.isLoggedIn = function (req, res, next) {
 
@@ -32,5 +35,15 @@ middlewhereObj.isMannager = function (req, res, next) {
 
 //       res.render("confirm.ejs")
 // }
-
+ 
+var storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads')
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + '-' + Date.now())
+    }
+});
+ 
+var upload = multer({ storage: storage });
 module.exports = middlewhereObj;
