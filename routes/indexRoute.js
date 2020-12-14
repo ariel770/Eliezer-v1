@@ -7,7 +7,7 @@ const middlewhereObj = require('../middlewhere/index.js');
 var path = require('path');
 var multer = require('multer');
 var fs = require('fs');
-var sharp = require('sharp')
+
 
 
 //  set storage engine
