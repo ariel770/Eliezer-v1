@@ -85,7 +85,10 @@
                     </div>
                     <div class="col-lg-6  d-flex justify-content-end">
                         <div class="card" style="width: 18rem; margin-left: 10px;">
-                            <img class="img-thumbnial" src="<%=agent.image%>" alt="Card image cap">
+                            <img class="img-thumbnial img-fluid" 
+                            
+                            src=" data:image/<%=agent.image.contentType%>;base64,
+                            <%=agent.image.data.toString('base64')%>">
                             <div class="card-body">
                                 <p class="card-text"> <strong> נתונים ויעדים
                                         <%=agent.username%></strong> </p>

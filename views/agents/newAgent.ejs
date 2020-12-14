@@ -4,7 +4,7 @@
 
     <div style="width:70%; margin: 100px auto;padding: 4px;text-align: center;">
         <h1 style="text-align: center;"><strong>הוספת סוכן</strong></h1>
-        <form action="/register" autocomplete="off" method="POST">
+        <form action="/register" enctype="multipart/form-data"  autocomplete="off" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <input type="text" id="username" class="form-control" name="username" placeholder="שם פרטי ומשפחה">
             </div>
@@ -14,7 +14,7 @@
 
 
             <div class="form-group">
-                <input type="text" class="form-control" name="image" id="image" placeholder="הוסף  תמונה ככתובת URL">
+                <input type="file" class="form-control" name="image" placeholder="הוסף  תמונה ככתובת URL">
             </div>
 
             <div class="form-group">

@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var PassportLocalMongoose = require('passport-local-mongoose');
+
 var agentsSchema = new mongoose.Schema({
     contact: {
         phone: Number,
@@ -17,17 +18,17 @@ var agentsSchema = new mongoose.Schema({
             ref: "Statistics"
         },
     ],
-    // image:
-    // {
-    //     data: Buffer,
-    //     contentType: String
-    // },
-    image:String,
+    image:
+    {
+        data: Buffer,
+        contentType: String
+    },
+
     username: String,
     status: String,
     passport: String,
     UserType: String,
-    // image :String,
+  
     comment: [
         {
             date:String,

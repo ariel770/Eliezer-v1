@@ -8,26 +8,16 @@ var Agents = require('./models/agents.js');
 var reportRoute = require('./routes/reportRoute');
 var agentRoute = require('./routes/agentRoute');
 var indexRoute = require('./routes/indexRoute');
-
+app.use(bodyParser.json())
 var methodOverride = require('method-override');
 var //AUTHENTICATE
-passport = require('passport'),
-LocalStrategy = require('passport-local'),
-PassportLocalMongoose = require('passport-local-mongoose');
+    passport = require('passport'),
+    LocalStrategy = require('passport-local'),
+    PassportLocalMongoose = require('passport-local-mongoose');
 
-var fs = require('fs');
-var path = require('path');
-var multer = require('multer');
-var storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads')
-    },
-    filename: (req, file, cb) => {
-        cb(null, file.fieldname + '-' + Date.now())
-    }
-});
- 
-var upload = multer({ storage: storage });
+
+app.use(express.static(__dirname + "/public"));
+
 app.use(methodOverride("_method"));
 //passport configurate
 app.use(require('cookie-parser')());
@@ -44,16 +34,16 @@ passport.serializeUser(Agents.serializeUser());
 passport.deserializeUser(Agents.deserializeUser());
 
 
-app.use(function(req,res,next){
-    res.locals.currentUser = req.user; 
-    res.locals.report = ""; 
+app.use(function (req, res, next) {
+    res.locals.currentUser = req.user;
+    res.locals.report = "";
     next();
 })
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(indexRoute);
-app.use("/agent",agentRoute);
+app.use("/agent", agentRoute);
 app.use(reportRoute);
 
 mongoose.connect(process.env.DATABASEURL, {
