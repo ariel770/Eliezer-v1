@@ -15,36 +15,44 @@
 
   <title>Eliezer</title>
   <style>
-  
-  #btn1{
-    outline:none;
-    border:none;
-    position:relative;
-    border-radius:5px;
-    box-shadow:0 6px black;
-  }
-  
-  #btn1:hover{
-    box-shadow:0 4px black;
-    top:4px;
-  }
-  
-  #btn1:active{
-    box-shadow:none;
-      top:6px;
-  }
+    .caption {
+      background-color: grey;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+
+    #btn1 {
+      outline: none;
+      border: none;
+      position: relative;
+      border-radius: 5px;
+      box-shadow: 0 6px black;
+    }
+
+    #btn1:hover {
+      box-shadow: 0 4px black;
+      top: 4px;
+    }
+
+    #btn1:active {
+      box-shadow: none;
+      top: 6px;
+    }
 
     body,
     html {
       background-color: rgb(255, 240, 213)
     }
- a{
-   color: white;
- }
+
+    a {
+      color: white;
+    }
+
     table,
     td,
-    th { 
-      
+    th {
+
       text-align: center;
       border: 2px solid black;
 
@@ -54,9 +62,10 @@
       width: 83;
     }
 
-    input[type="file"],
-    input[type="image"],
+
     input[type="text"],
+    input[type="email"],
+    input[type="file"],
     input[type="number"],
     input[type="password"] {
 
@@ -64,48 +73,19 @@
 
     }
 
-.thumbnail img{
-  vertical-align: middle;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-}
+    .thumbnail img {
+      width: 100%;
+      height: 60%;
 
-/* 
-    {
-    outline:none;
-    border:none;
-    position:relative;
-    color:white;
-    font-weight:300px;
-    font-size:16px;
-    padding:25px 80px;
-    margin:0 auto;
-    border-radius:5px;
-    box-shadow:0 6px black;
-  } */
-      /* outline:none;
-    border:none;
-    position:relative;
-    color:white;
-    font-weight:300px;
-    font-size:16px;
-    padding:25px 80px;
-    margin:0 auto;
-    border-radius:5px;
-    box-shadow:0 6px black; */
+    }
+
     .thumbnail {
-      border-radius:20px;
+      position: relative;
+      height: 300px;
+      background-color: white;
       width: 262px;
       height: 340px;
-    
-    }
-    .caption {
-      height: 100px;
-    }
-
-    .thumbnail .caption-full {
-      padding: 9px;
+      margin-bottom: 50px;
     }
   </style>
 </head>
@@ -114,17 +94,17 @@
 
   <nav class="navbar  fixed-top navbar-dark bg-dark">
     <a class="navbar-brand" href="/"><i class="fas fa-warehouse"> תיווך אליעזר</i> </a>
- 
+
     <%if(currentUser){%>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01"
       aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
       <span><%=currentUser.username%></span>
     </button>
-      
+
     <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
       <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-          <%if(currentUser.UserType == "user"){%>
+        <%if(currentUser.UserType == "user"){%>
         <li class="nav-item active">
           <a class="nav-link" href="/agent/<%=currentUser.id%>/report">יומן <span class="sr-only">(current)</span></a>
         </li>
@@ -139,21 +119,21 @@
         </li>
         <li class="nav-item">
           <a class="nav-link " href="/logout">התנתק </a>
-        </li> 
+        </li>
         <%}else{%>
-     
-          
-          <li class="nav-item">
-            <a class="nav-link " href="/register">הוסף סוכן חדש  </a>
-          </li> 
-          
-          <li class="nav-item">
-            <a class="nav-link " href="/agent"> רשימת סוכנים </a>
-          </li> 
-          <li class="nav-item">
-            <a class="nav-link " href="/logout">התנתק </a>
-          </li> 
-          <%} %>
+
+
+        <li class="nav-item">
+          <a class="nav-link " href="/register">הוסף סוכן חדש </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link " href="/agent"> רשימת סוכנים </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="/logout">התנתק </a>
+        </li>
+        <%} %>
       </ul>
     </div>
     <%} %>

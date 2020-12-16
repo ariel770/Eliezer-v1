@@ -85,10 +85,11 @@
                     </div>
                     <div class="col-lg-6  d-flex justify-content-end">
                         <div class="card" style="width: 18rem; margin-left: 10px;">
+                            <%if(agent.image.contentType != undefined ){%>
                             <img class="img-thumbnial img-fluid" 
-                            
                             src=" data:image/<%=agent.image.contentType%>;base64,
                             <%=agent.image.data.toString('base64')%>">
+                            <%}%>
                             <div class="card-body">
                                 <p class="card-text"> <strong> נתונים ויעדים
                                         <%=agent.username%></strong> </p>

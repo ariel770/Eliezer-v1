@@ -5,7 +5,7 @@
 
     <div style="width:70%; margin: 100px auto;padding: 4px;text-align: center;">
         <h1 style="text-align: center;"><strong> עדכון פרטי סוכן</strong> </h1>
-        <form action="/agent/<%=agent.id%>?_method=PUT" method="POST" autocomplete="off">
+        <form action="/agent/<%=agent.id%>?_method=PUT" method="POST" autocomplete="off" enctype="multipart/form-data">
             <div class="form-group row">
                 <div class="col-lg-2"><Strong>שם :</Strong></div>
                 <div class="col-lg-10">
@@ -30,8 +30,7 @@
             <div class="form-group row">
                 <div class="col-lg-2"><Strong> תמונה :</Strong></div>
                 <div class="col-lg-10">
-                    <!-- <input type="file" class="custom-file-input" id="inputGroupFile04" > -->
-                    <input type="file" class="form-control" name="image" id="image" value="<%%>">
+                    <input type="file" class="form-control" name="image">
                 </div>
             </div>
 

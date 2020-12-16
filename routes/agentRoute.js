@@ -6,6 +6,45 @@ var Agents = require("../models/agents.js");
 const middlewhereObj = require('../middlewhere/index.js');
 const statistic = require('../models/statistic.js');
 var ObjectId = require('mongodb').ObjectID;
+var path = require('path');
+var multer = require('multer');
+var fs = require('fs');
+
+
+//  set storage engine
+var storage = multer.diskStorage({
+    destination: './public/uploads',
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname)
+        )
+    }
+});
+// init upload
+var upload = multer({
+
+    limits: { fileSize: 1000000 },
+    fileFilter: function (req, file, cb) {
+        checkFileType(file, cb);
+    },
+    storage: storage
+});
+
+// check files 
+function checkFileType(file, cb) {
+
+    var fileType = /jpg|jpeg|png|gif/;
+
+    var extname = fileType.test(path.extname(file.originalname).toLowerCase());
+
+    var mimetype = fileType.test(file.mimetype)
+
+    if (extname && mimetype) {
+        return cb(null, true)
+    } else {
+        cb('Error : Images Only ')
+    }
+
+}
 
 
 //SHOW ALL THE AGENTS (NEED TO SPECIFIC TO THE AGENT )
@@ -293,14 +332,17 @@ route.put("/:id/addComment", function (req, res) {
 
 })
 //INSERT THE FIX AGENTS TO THE DB
-route.put("/:id", function (req, res) {
+route.put("/:id",  upload.single('image'),function (req, res) {
     var agent = {
         contact: {
             phone: req.body.phone,
             email: req.body.email
         },
         username: req.body.username,
-        image:req.body.image
+        image: {
+            data: fs.readFileSync(path.join('./public/uploads/' + req.file.filename)),
+            contentType: 'image/png'
+        }
     
 
     }

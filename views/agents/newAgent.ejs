@@ -6,22 +6,22 @@
         <h1 style="text-align: center;"><strong>הוספת סוכן</strong></h1>
         <form action="/register" enctype="multipart/form-data"  autocomplete="off" method="POST" enctype="multipart/form-data">
             <div class="form-group">
-                <input type="text" id="username" class="form-control" name="username" placeholder="שם פרטי ומשפחה">
+                <input type="text" id="username" class="form-control" required name="username" placeholder="שם פרטי ומשפחה">
             </div>
             <div class="form-group">
-                <input type="password" id="password" class="form-control" name="password" placeholder="סיסמא">
-            </div>
-
-
-            <div class="form-group">
-                <input type="file" class="form-control" name="image">
+                <input type="password" id="password" class="form-control" required name="password" placeholder="סיסמא">
             </div>
 
+
             <div class="form-group">
-                <input type="text" id="phone" class="form-control" name="contact[phone]" placeholder="טלפון /פלאפון">
+                <input type="file" class="form-control" required name="image">
+            </div>
+
+            <div class="form-group">
+                <input type="number" id="phone" class="form-control" name="contact[phone]" required placeholder="טלפון /פלאפון">
             </div>
             <div class="form-group">
-                <input type="text" id="mail" class="form-control" name="contact[email]" placeholder="כתובת מייל">
+                <input type="email" id="mail" class="form-control" name="contact[email]" required placeholder="כתובת מייל">
             </div>
 
 
