@@ -49,6 +49,7 @@ function checkFileType(file, cb) {
 
 //SHOW ALL THE AGENTS (NEED TO SPECIFIC TO THE AGENT )
 route.get("/", middlewhereObj.isMannager, function (req, res) {
+    console.log("@ in list route @")
     Agents.find({}, function (err, agents) {
         if (err) {
             console.log(err)

@@ -48,6 +48,8 @@ function checkFileType(file, cb) {
 
 
 route.get("/register", function (req, res) {
+    console.log("@ in register get route @")
+
     res.render("agents/newAgent.ejs")
 });
 
@@ -56,11 +58,14 @@ route.get("/register", function (req, res) {
 
 var userType;
 route.post("/register", upload.single('image'), function (req, res) {
+    console.log("@ in register post route @")
+
     if (req.body.username == process.env.MANAGER) {
         userType = 'manager'
     } else {
         userType = 'user'
     }
+    console.log(process.env.MANAGER)
     var newuser = {
         username: req.body.username,
         UserType: userType, contact: req.body.contact,
@@ -69,14 +74,17 @@ route.post("/register", upload.single('image'), function (req, res) {
             contentType: 'image/png'
         }
     }
+
     console.log(newuser)
     Agents.register(new Agents(newuser), req.body.password, function (err, agent) {
         if (err) {
+            console.log("A")
             console.log(err)
             return res.redirect("back")
         }
         console.log(agent)
         Agents.authenticate("local")(req, res, function () {
+            console.log("B")
             console.log("authenticate success ... ");
             res.redirect("/agent")
         })
