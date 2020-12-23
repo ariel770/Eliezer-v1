@@ -4,7 +4,6 @@ var Reports = require("../models/reports.js");
 var Statistic = require("../models/statistic.js");
 var Agents = require("../models/agents.js");
 const middlewhereObj = require('../middlewhere/index.js');
-const statistic = require('../models/statistic.js');
 var ObjectId = require('mongodb').ObjectID;
 var path = require('path');
 var multer = require('multer');
@@ -23,7 +22,7 @@ var storage = multer.diskStorage({
 // init upload
 var upload = multer({
 
-    limits: { fileSize: 2000000 },
+    // limits: { fileSize: 2000000 },
     fileFilter: function (req, file, cb) {
         checkFileType(file, cb);
     },
