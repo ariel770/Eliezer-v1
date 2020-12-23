@@ -7,9 +7,11 @@ const middlewhereObj = require('../middlewhere/index.js');
 var path = require('path');
 var multer = require('multer');
 var fs = require('fs');
+var userType;
 
 
-
+// ==> SAVE IMAGE IN DB
+// =================================================
 //  set storage engine
 var storage = multer.diskStorage({
     destination: './public/uploads',
@@ -45,27 +47,18 @@ function checkFileType(file, cb) {
 
 }
 
-
-
+// ==> REGISTER ROUTES
+// =================================================
 route.get("/register", function (req, res) {
-    console.log("@ in register get route @")
-
     res.render("agents/newAgent.ejs")
 });
 
-
-
-
-var userType;
 route.post("/register", upload.single('image'), function (req, res) {
-    console.log("@ in register post route @")
-
     if (req.body.username == process.env.MANAGER) {
         userType = 'manager'
     } else {
         userType = 'user'
     }
-    console.log(process.env.MANAGER)
     var newuser = {
         username: req.body.username,
         UserType: userType, contact: req.body.contact,
@@ -75,16 +68,12 @@ route.post("/register", upload.single('image'), function (req, res) {
         }
     }
 
-    console.log(newuser)
     Agents.register(new Agents(newuser), req.body.password, function (err, agent) {
         if (err) {
-            console.log("A")
             console.log(err)
             return res.redirect("back")
         }
-        console.log(agent)
         Agents.authenticate("local")(req, res, function () {
-            console.log("B")
             console.log("authenticate success ... ");
             res.redirect("/agent")
         })
@@ -94,7 +83,8 @@ route.post("/register", upload.single('image'), function (req, res) {
 
 })
 
-
+// ==> LOGIN ROUTES
+// =================================================
 route.get("/", function (req, res) {
     res.render("indexview/login.ejs");
 })
@@ -108,8 +98,8 @@ route.post("/", passport.authenticate("local", {
 
 })
 
-//AUTH ROUTE  == LOGOUT
-
+// ==> LOGOUT
+// =================================================
 route.get("/logout", function (req, res) {
     req.logout();
     res.redirect("/");

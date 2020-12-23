@@ -1,51 +1,54 @@
 <%- include ("../partials/header")%>
-<div class="container">
-    <div style="width:90%; margin: 15% auto;padding: 4px;text-align: center;">
+    <div class="container">
+        <div style="width:90%; margin: 15% auto;padding: 4px;text-align: center;">
 
-        <h1 style="text-align: center;"> סוכנים </h1>
+            <h1 style="text-align: center;"> סוכנים </h1>
 
-        <div class="row text-center">
-            <%for (i=0 ; i < agents.length ; i++){%>
-            <%if(agents[i].username !== process.env.MANAGER){%>
-            <div class=" col-lg-4 col-md-4 col-sm-6">
-                <div class="thumbnail">
-                    <%if(agents[i].image.contentType != undefined ){%>
-                    <img class="img-thumbnail img-fluid"  src="data:image/<%=agents[i].image.contentType%>;base64,
+            <div class="row text-center">
+                <%for (i=0 ; i < agents.length ; i++){%>
+                    <%if(agents[i].username !==process.env.MANAGER){%>
+                        <div class=" col-lg-4 col-md-4 col-sm-6">
+                            <div class="thumbnail">
+                                <%if(agents[i].image.contentType !=undefined ){%>
+                                    <img class="img-thumbnail img-fluid" src="data:image/<%=agents[i].image.contentType%>;base64,
                     <%=agents[i].image.data.toString('base64')%>" alt="חסרה תמונה!">
-                    <%}%>
-  
-            <div class="caption">
-               
+                                    <%}%>
 
-                <h4><%=agents[i].username%> </h4>
-                    <h4 id="changeText"><%= agents[i].status%> </h4>
-                    <div class="row text-align-center">
-                        <div class="col text-center">
-                            <a class="btn  btn-outline-info btn-index-thumbnail" href="/agent/<%=agents[i]._id%>">פרטים</a>
+                                        <div class="caption">
+                                            <h4>
+                                                <%=agents[i].username%>
+                                            </h4>
+                                            <h4 id="changeText">
+                                                <%= agents[i].status%>
+                                            </h4>
+                                            <div class="row text-align-center">
+                                                <div class="col text-center">
+                                                    <a class="btn  btn-outline-info btn-index-thumbnail"
+                                                        href="/agent/<%=agents[i]._id%>">פרטים</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <%}%>
-<%}%>
+                        <%}%>
+                            <%}%>
+            </div>
+
+        </div>
     </div>
 
-</div>
-</div>
 
-
-<script>
+    <script>
 
 
 
-    var changeText = document.getElementById("changeText")
+        var changeText = document.getElementById("changeText")
 
-    if (changeText.innerText == "") {
-        changeText.innerHTML = "<Strong>*עדיין לא נקבע*</Strong>";
-    }
-    var changeImage = document.querySelector('img[name="changeImage"]').src;
+        if (changeText.innerText == "") {
+            changeText.innerHTML = "<Strong>*עדיין לא נקבע*</Strong>";
+        }
+        var changeImage = document.querySelector('img[name="changeImage"]').src;
 
-</script>
-<%- include ("../partials/footer")%>
+    </script>
+    <%- include ("../partials/footer")%>

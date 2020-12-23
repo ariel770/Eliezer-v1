@@ -4,9 +4,10 @@ var Reports = require("../models/reports.js");
 var Statistic = require("../models/statistic.js");
 const Agents = require('../models/agents.js');
 const middlewhereObj = require('../middlewhere/index.js');
-const statistic = require('../models/statistic.js');
 var ObjectId = require('mongodb').ObjectID;
 
+// ==> VIEW ALL REPORTS MADE BY A SPECIFIC AGENT , WITHOUT ANALIZYNG THE DATA
+// =================================================
 route.get("/agent/:id/report", middlewhereObj.isLoggedIn, function (req, res) {
 
     Agents.findById(req.params.id, function (err, agents) {
@@ -26,8 +27,11 @@ route.get("/agent/:id/report", middlewhereObj.isLoggedIn, function (req, res) {
     })
 
 })
-// GIVE ALL MONTHLY REPORTS WITH AVG OF ALL THE STATISTICS THAT CREATE  IN THAT MONTH 
-route.get("/agent/:id/report/monthlyreportsA", function (req, res) {
+
+// ==> PROCESSES THE  REPORTS AND PRESENTS IT BY DIVISION OF THE MONTHLY STATISTICS AVERAGES, BY MONTH
+// ==> THE DATA IS COLORED GREEN AND RED 
+// =================================================
+route.get("/agent/:id/report/monthlyreports", function (req, res) {
     Reports.aggregate([{
         $sort: { date: 1 }
     }, {
@@ -127,8 +131,7 @@ route.get("/agent/:id/report/monthlyreportsA", function (req, res) {
             ], function (err, statistics) {
 
                 if (err || report.length == 0) {
-                    // res.redirect("back")
-                    res.render("report/monthlyReportsA.ejs", {
+                    res.render("report/monthlyReports.ejs", {
                         report: "", statistics: "",
                         daysInCurrentMonth: "", currentDayInMonth: ""
                     })
@@ -148,7 +151,7 @@ route.get("/agent/:id/report/monthlyreportsA", function (req, res) {
                         }
                     }
 
-                    res.render("report/monthlyReportsA.ejs", {
+                    res.render("report/monthlyReports.ejs", {
                         report: report, statistics: statistics,
                         daysInCurrentMonth: daysInCurrentMonth, currentDayInMonth: currentDayInMonth
                     })
@@ -159,8 +162,9 @@ route.get("/agent/:id/report/monthlyreportsA", function (req, res) {
 
 });
 
-
-//  ALL HAPANIM !!!!! ON THE FACE !!!!!
+// ==> PROCESSES THE  REPORTS AND PRESENTS IT BY DIVISION OF THE LAST STATISTICS, BY DAY 
+// ==> THE DATA IS COLORED GREEN AND RED 
+// =================================================
 route.get("/agent/:id/report/dayreport", function (req, res) {
     Reports.aggregate([
         {
@@ -241,7 +245,8 @@ route.get("/agent/:id/report/dayreport", function (req, res) {
 });
 
 
-//CREATE NEW REPORT  WITH LATEST STATISTICS
+// ==> CREATE NEW REPORT  WITH LATEST STATISTICS ( MAIN PAGE )
+// =================================================
 route.get("/agent/:id/report/new", middlewhereObj.isUser, function (req, res) {
     Agents.findById(req.params.id, function (err, agents) {
         if (err) {
@@ -255,7 +260,8 @@ route.get("/agent/:id/report/new", middlewhereObj.isUser, function (req, res) {
 
 
 
-//INSERT TO DATABASE AND REDIRECT TO THE REPORT PAGE FORM 
+// ==> INSERT TO DATABASE AND REDIRECT TO THE REPORT PAGE FORM 
+// =================================================
 route.post("/agent/:id/report", middlewhereObj.isUser, function (req, res) {
     Agents.findById(req.params.id, function (err, agents) {
         if (err) {
@@ -264,7 +270,7 @@ route.post("/agent/:id/report", middlewhereObj.isUser, function (req, res) {
 
             Statistic.findOne({ "agent.id": req.params.id }, {}, { sort: { 'date': -1 } }, function (err, stas) {
                 if (err || stas == null) {
-                    res.render("report/monthlyReportsA.ejs", {
+                    res.render("report/monthlyReports.ejs", {
                         report: "", statistics: "",
                         daysInCurrentMonth: "", currentDayInMonth: ""
                     })
@@ -313,7 +319,8 @@ route.post("/agent/:id/report", middlewhereObj.isUser, function (req, res) {
 
 
 })
-//SHOW SPECIFIC REPORTS TO A SPECIFIC AGENT
+// ==> SHOW  REPORTS TO A  AGENT
+// =================================================
 route.get("/agent/:id/report/:report_id", middlewhereObj.isLoggedIn, function (req, res) {
     Agents.findById(req.params.id, function (err, agents) {
         if (err) {
@@ -322,49 +329,48 @@ route.get("/agent/:id/report/:report_id", middlewhereObj.isLoggedIn, function (r
                 if (err) {
                     console.log(err)
                 } else {
-
                     res.render("report/show.ejs", { report: report, agents: agents });
                 }
             })
         }
     })
 })
-
+//  ==> NOT IN USE <==
 //EDIT SPECIFIC REPORT 
-route.get("/agent/:id/report/:report_id/edit", middlewhereObj.isMannager, function (req, res) {
-    Agents.findById(req.params.id, function (err, agents) {
-        if (err) {
-            console.log(err)
-        } else {
+// route.get("/agent/:id/report/:report_id/edit", middlewhereObj.isMannager, function (req, res) {
+//     Agents.findById(req.params.id, function (err, agents) {
+//         if (err) {
+//             console.log(err)
+//         } else {
 
-            Reports.findById(req.params.report_id, function (err, report) {
-                if (err) {
-                    console.log(err)
-                } else {
-                    res.render("report/editReport.ejs", { agents: agents, report: report })
-                }
-            })
+//             Reports.findById(req.params.report_id, function (err, report) {
+//                 if (err) {
+//                     console.log(err)
+//                 } else {
+//                     res.render("report/editReport.ejs", { agents: agents, report: report })
+//                 }
+//             })
 
-        }
-    })
-
-
-});
-
-//INSERT THE FIX REPORT TO THE DB
-route.post("/agent/:id/report/:report_id", middlewhereObj.isMannager, function (req, res) {
+//         }
+//     })
 
 
-    Reports.findByIdAndUpdate(req.params.report_id, req.body.report, function (err, report) {
+// });
 
-        if (err) {
-            console.log(err)
-        } else {
-            res.redirect("/agent/" + req.params.id + "/report/" + req.params.report_id)
-        }
-    })
+// //INSERT THE FIX REPORT TO THE DB
+// route.post("/agent/:id/report/:report_id", middlewhereObj.isMannager, function (req, res) {
 
-});
+
+//     Reports.findByIdAndUpdate(req.params.report_id, req.body.report, function (err, report) {
+
+//         if (err) {
+//             console.log(err)
+//         } else {
+//             res.redirect("/agent/" + req.params.id + "/report/" + req.params.report_id)
+//         }
+//     })
+
+// });
 
 function daysInMonth(month, year) {
     return new Date(year, month, 0).getDate();
