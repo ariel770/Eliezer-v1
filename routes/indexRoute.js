@@ -65,7 +65,7 @@ route.post("/register", upload.single('image'), function (req, res) {
             contentType: 'image/png'
         }
     }
-
+//git remote add origin https://github.com/ariel770/Eliezer-v1.git
     Agents.register(new Agents(newuser), req.body.password, function (err, agent) {
         if (err) {
             console.log(err)
@@ -80,6 +80,7 @@ route.post("/register", upload.single('image'), function (req, res) {
 
 
 })
+
 
 // ==> LOGIN ROUTES
 // =================================================
